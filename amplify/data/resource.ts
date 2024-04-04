@@ -15,6 +15,7 @@ const schema = a.schema({
     })
     .authorization([a.allow.owner()]),
 });
+
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
