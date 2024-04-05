@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "backendecommerce8c6dfca6": {}
+      },
+      "api": {
+        "backendecommerce": {}
+      },
+      "storage": {
+        "s3afd047b1": {}
       }
     }
   }
