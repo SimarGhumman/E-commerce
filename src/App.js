@@ -18,6 +18,15 @@ import {
 } from "./graphql/mutations";
 import { generateClient } from 'aws-amplify/api';
 import { uploadData, getUrl, remove } from 'aws-amplify/storage';
+import {
+  Navigation 
+ } from './ui-components';
+ import {
+  Pageheading 
+ } from './ui-components';
+ import {
+  Item2 
+ } from './ui-components';
 
 const client = generateClient();
 
@@ -74,8 +83,28 @@ const App = ({ signOut }) => {
     });
   }
 
+  const containerStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '20px', // Adjust as needed
+    paddingLeft: '40px', // Adjust as needed
+  };
+  
+  const itemStyle = {
+    flex: '1 1 calc(50% - 20px)', // Adjust as needed
+    width: '40px', // Adjust width as needed
+    height: 'auto', // Adjust height as needed or keep it auto
+    paddingLeft: '100px', // Adjust as needed
+  };
+
   return (
-    <View className="App">
+    <View style={containerStyle} className="App">
+      <Navigation />
+      <Pageheading />
+      <div style={itemStyle}><Item2 /></div>
+      <div style={itemStyle}><Item2 /></div>
+      <div style={itemStyle}><Item2 /></div>
+      <div style={itemStyle}><Item2 /></div>
       <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
