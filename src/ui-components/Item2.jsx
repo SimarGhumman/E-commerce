@@ -13,7 +13,7 @@ export default function Item2(props) {
   return (
     <View
       width="395px"
-      height="444px"
+      height="538px"
       display="block"
       gap="unset"
       alignItems="unset"
@@ -71,28 +71,6 @@ export default function Item2(props) {
         children="$5.99 / lb"
         {...getOverrideProps(overrides, "$5.99 / lb")}
       ></Text>
-      <Text
-        fontFamily="Inter"
-        fontSize="16px"
-        fontWeight="400"
-        color="rgba(109,109,109,1)"
-        lineHeight="24px"
-        textAlign="left"
-        display="block"
-        direction="column"
-        justifyContent="unset"
-        width="unset"
-        height="unset"
-        gap="unset"
-        alignItems="unset"
-        position="absolute"
-        bottom="28px"
-        left="24px"
-        padding="0px 0px 0px 0px"
-        whiteSpace="pre-wrap"
-        children="Grown in San Juan Capistrano, CA"
-        {...getOverrideProps(overrides, "Grown in San Juan Capistrano, CA")}
-      ></Text>
       <Image
         width="calc(100% - 0px)"
         height="calc(100% - 148px)"
@@ -109,6 +87,11 @@ export default function Item2(props) {
         objectFit="cover"
         {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
       ></Image>
+      <View
+        width="395px"
+        height="70px"
+        {...getOverrideProps(overrides, "big-button")}
+      ></View>
     </View>
   );
 }

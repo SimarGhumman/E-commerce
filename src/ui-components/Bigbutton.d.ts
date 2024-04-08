@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { ImageProps, TextProps, ViewProps } from "@aws-amplify/ui-react";
+import { ViewProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -17,14 +17,11 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type Item2OverridesProps = {
-    Item2?: PrimitiveOverrideProps<ViewProps>;
-    "Heirloom tomato"?: PrimitiveOverrideProps<TextProps>;
-    "$5.99 / lb"?: PrimitiveOverrideProps<TextProps>;
-    "ed-o-neil-AvvdZlhDowA-unsplash 1"?: PrimitiveOverrideProps<ImageProps>;
+export declare type BigbuttonOverridesProps = {
+    Bigbutton?: PrimitiveOverrideProps<ViewProps>;
     "big-button"?: PrimitiveOverrideProps<ViewProps>;
 } & EscapeHatchProps;
-export declare type Item2Props = React.PropsWithChildren<Partial<ViewProps> & {
-    overrides?: Item2OverridesProps | undefined | null;
+export declare type BigbuttonProps = React.PropsWithChildren<Partial<ViewProps> & {
+    overrides?: BigbuttonOverridesProps | undefined | null;
 }>;
-export default function Item2(props: Item2Props): React.ReactElement;
+export default function Bigbutton(props: BigbuttonProps): React.ReactElement;

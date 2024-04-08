@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3afd047b1",
+  "policyUUID": "afd047b1",
+  "bucketName": "backendecommerce3bfaadfd375e448299afdf728b226d3",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

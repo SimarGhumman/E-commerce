@@ -28,6 +28,8 @@ import {
   Item2 
  } from './ui-components';
 
+ import Navigation from "./ui-components/Navigation"; 
+
 const client = generateClient();
 
 const App = ({ signOut }) => {
