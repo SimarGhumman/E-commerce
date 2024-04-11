@@ -9,7 +9,7 @@ import * as React from "react";
 import { getOverrideProps } from "./utils";
 import { Image, Text, View } from "@aws-amplify/ui-react";
 export default function Item2(props) {
-  const { overrides, ...rest } = props;
+  const { tomato, overrides, ...rest } = props;
   return (
     <View
       width="395px"
@@ -46,7 +46,7 @@ export default function Item2(props) {
         left="24px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="Heirloom tomato"
+        children={tomato?.name}
         {...getOverrideProps(overrides, "Heirloom tomato")}
       ></Text>
       <Text
@@ -68,7 +68,7 @@ export default function Item2(props) {
         left="24px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="$5.99 / lb"
+        children={tomato?.price}
         {...getOverrideProps(overrides, "$5.99 / lb")}
       ></Text>
       <Image
@@ -85,13 +85,9 @@ export default function Item2(props) {
         right="0px"
         padding="0px 0px 0px 0px"
         objectFit="cover"
+        src={tomato?.image}
         {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
       ></Image>
-      <View
-        width="395px"
-        height="70px"
-        {...getOverrideProps(overrides, "big-button")}
-      ></View>
     </View>
   );
 }

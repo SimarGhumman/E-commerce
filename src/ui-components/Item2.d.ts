@@ -5,6 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
+import { Product } from "../models";
 import { ImageProps, TextProps, ViewProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
@@ -22,9 +23,10 @@ export declare type Item2OverridesProps = {
     "Heirloom tomato"?: PrimitiveOverrideProps<TextProps>;
     "$5.99 / lb"?: PrimitiveOverrideProps<TextProps>;
     "ed-o-neil-AvvdZlhDowA-unsplash 1"?: PrimitiveOverrideProps<ImageProps>;
-    "big-button"?: PrimitiveOverrideProps<ViewProps>;
 } & EscapeHatchProps;
 export declare type Item2Props = React.PropsWithChildren<Partial<ViewProps> & {
+    tomato?: Product;
+} & {
     overrides?: Item2OverridesProps | undefined | null;
 }>;
 export default function Item2(props: Item2Props): React.ReactElement;

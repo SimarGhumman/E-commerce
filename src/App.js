@@ -18,9 +18,9 @@ import {
 } from "./graphql/mutations";
 import { generateClient } from 'aws-amplify/api';
 import { uploadData, getUrl, remove } from 'aws-amplify/storage';
-import {
-  Navigation 
- } from './ui-components';
+//import {
+//  Navigation 
+// } from './ui-components';
  import {
   Pageheading 
  } from './ui-components';
@@ -103,7 +103,7 @@ const App = ({ signOut }) => {
     <View style={containerStyle} className="App">
       <Navigation />
       <Pageheading />
-      <div style={itemStyle}><Item2 /></div>
+      <div style={itemStyle}><Item2 tomato={{ name: "Heirloom Tomato", price: "$5.99 / lb",  image: "https://backendecommerce3bfaadfd375e448299afdf728b226d3235658-staging.s3.us-west-1.amazonaws.com/public/tomato.png" }} /></div>
       <div style={itemStyle}><Item2 /></div>
       <div style={itemStyle}><Item2 /></div>
       <div style={itemStyle}><Item2 /></div>
