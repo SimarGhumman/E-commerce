@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import AboutUsPage from './AboutUs';
+import ProductPage from './Product';
 import "@aws-amplify/ui-react/styles.css";
 import {
   Button,
@@ -17,18 +19,17 @@ import {
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
 import { generateClient } from 'aws-amplify/api';
-import { uploadData, getUrl, remove } from 'aws-amplify/storage';
-//import {
-//  Navigation 
-// } from './ui-components';
+import { uploadData, getUrl, remove } from 'aws-amplify/storage'; 
+import Navigation from "./ui-components/Navigation"; 
  import {
-  Pageheading 
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from 'react-router-dom';
+import {
+  Aboutus 
  } from './ui-components';
- import {
-  Item2 
- } from './ui-components';
-
- import Navigation from "./ui-components/Navigation"; 
 
 const client = generateClient();
 
@@ -91,81 +92,23 @@ const App = ({ signOut }) => {
     gap: '20px', // Adjust as needed
     paddingLeft: '40px', // Adjust as needed
   };
-  
-  const itemStyle = {
-    flex: '1 1 calc(50% - 20px)', // Adjust as needed
-    width: '40px', // Adjust width as needed
-    height: 'auto', // Adjust height as needed or keep it auto
-    paddingLeft: '100px', // Adjust as needed
-  };
 
   return (
-    <View style={containerStyle} className="App">
-      <Navigation />
-      <Pageheading />
-      <div style={itemStyle}><Item2 tomato={{ name: "Heirloom Tomato", price: "$5.99 / lb",  image: "https://backendecommerce3bfaadfd375e448299afdf728b226d3235658-staging.s3.us-west-1.amazonaws.com/public/tomato.png" }} /></div>
-      <div style={itemStyle}><Item2 /></div>
-      <div style={itemStyle}><Item2 /></div>
-      <div style={itemStyle}><Item2 /></div>
-      <Heading level={1}>My Notes App</Heading>
-      <View as="form" margin="3rem 0" onSubmit={createNote}>
-        <Flex direction="row" justifyContent="center">
-          <TextField
-            name="name"
-            placeholder="Note Name"
-            label="Note Name"
-            labelHidden
-            variation="quiet"
-            required
-          />
-          <TextField
-            name="description"
-            placeholder="Note Description"
-            label="Note Description"
-            labelHidden
-            variation="quiet"
-            required
-          />
-          <View
-            name="image"
-            as="input"
-            type="file"
-            style={{ alignSelf: "end" }}
-          />
-          <Button type="submit" variation="primary">
-            Create Note
-          </Button>
-        </Flex>
+    <Router>
+      <View style={containerStyle} className="App">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Aboutus />
+            </>
+          } />
+          <Route path="/about-us" element={<AboutUsPage />} />
+          <Route path="/product" element={<ProductPage />} />
+        </Routes>
       </View>
-      <Heading level={2}>Current Notes</Heading>
-      <View margin="3rem 0">
-        {notes.map((note) => (
-          <Flex
-            key={note.id || note.name}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Text as="strong" fontWeight={700}>
-              {note.name}
-            </Text>
-            <Text as="span">{note.description}</Text>
-            {note.image && (
-              <Image
-                src={note.image}
-                alt={`visual aid for ${notes.name}`}
-                style={{ width: 400 }}
-              />
-            )}
-            <Button variation="link" onClick={() => deleteNote(note)}>
-              Delete note
-            </Button>
-          </Flex>
-        ))}
-      </View>
-      <Button onClick={signOut}>Sign Out</Button>
-    </View>
-  );
+    </Router>
+  );  
 };
 
 export default withAuthenticator(App);

@@ -23,6 +23,8 @@ export declare type Item2OverridesProps = {
     "Heirloom tomato"?: PrimitiveOverrideProps<TextProps>;
     "$5.99 / lb"?: PrimitiveOverrideProps<TextProps>;
     "ed-o-neil-AvvdZlhDowA-unsplash 1"?: PrimitiveOverrideProps<ImageProps>;
+    "Cart button"?: PrimitiveOverrideProps<ViewProps>;
+    "add to cart"?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
 export declare type Item2Props = React.PropsWithChildren<Partial<ViewProps> & {
     tomato?: Product;

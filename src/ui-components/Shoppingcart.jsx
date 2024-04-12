@@ -124,7 +124,7 @@ export default function Shoppingcart(props) {
           borderRadius="20px"
           padding="0px 0px 0px 0px"
           backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Input field4368321129")}
+          {...getOverrideProps(overrides, "Input field5645")}
         >
           <Text
             fontFamily="Inter"
@@ -159,7 +159,7 @@ export default function Shoppingcart(props) {
             top="calc(50% - 16px - 0px)"
             right="8px"
             padding="0px 0px 0px 0px"
-            {...getOverrideProps(overrides, "Icon4368321131")}
+            {...getOverrideProps(overrides, "Icon5647")}
           >
             <Icon
               width="16.5px"
@@ -184,7 +184,7 @@ export default function Shoppingcart(props) {
               position="absolute"
               top="7.86px"
               left="8.4px"
-              {...getOverrideProps(overrides, "Union4368321132")}
+              {...getOverrideProps(overrides, "Union5648")}
             >
               <Icon
                 width="6px"
@@ -212,7 +212,7 @@ export default function Shoppingcart(props) {
                 left="13.08px"
                 transformOrigin="top left"
                 transform="rotate(45deg)"
-                {...getOverrideProps(overrides, "Union4368321133")}
+                {...getOverrideProps(overrides, "Union5649")}
               >
                 <Icon
                   width="6px"
@@ -237,7 +237,7 @@ export default function Shoppingcart(props) {
                   position="absolute"
                   top="0px"
                   left="0px"
-                  {...getOverrideProps(overrides, "Rectangle 44368321134")}
+                  {...getOverrideProps(overrides, "Rectangle 45650")}
                 ></Icon>
                 <Icon
                   width="6px"
@@ -262,7 +262,7 @@ export default function Shoppingcart(props) {
                   position="absolute"
                   top="17px"
                   left="0px"
-                  {...getOverrideProps(overrides, "Rectangle 54368321135")}
+                  {...getOverrideProps(overrides, "Rectangle 55651")}
                 ></Icon>
               </Icon>
               <Icon
@@ -291,7 +291,7 @@ export default function Shoppingcart(props) {
                 left="10.61px"
                 transformOrigin="top left"
                 transform="rotate(45deg)"
-                {...getOverrideProps(overrides, "Vector4368321136")}
+                {...getOverrideProps(overrides, "Vector5652")}
               ></Icon>
             </Icon>
           </View>
@@ -389,7 +389,7 @@ export default function Shoppingcart(props) {
           borderRadius="20px"
           padding="0px 0px 0px 0px"
           backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Input field4368321140")}
+          {...getOverrideProps(overrides, "Input field5657")}
         >
           <Text
             fontFamily="Inter"
@@ -424,7 +424,7 @@ export default function Shoppingcart(props) {
             top="calc(50% - 16px - 0px)"
             right="8px"
             padding="0px 0px 0px 0px"
-            {...getOverrideProps(overrides, "Icon4368321142")}
+            {...getOverrideProps(overrides, "Icon5659")}
           >
             <Icon
               width="16.5px"
@@ -449,7 +449,7 @@ export default function Shoppingcart(props) {
               position="absolute"
               top="7.86px"
               left="8.4px"
-              {...getOverrideProps(overrides, "Union4368321143")}
+              {...getOverrideProps(overrides, "Union5660")}
             >
               <Icon
                 width="6px"
@@ -462,7 +462,7 @@ export default function Shoppingcart(props) {
                 }}
                 paths={[
                   {
-                    d: "M0 2L-1 2L0 2ZM9.09495e-13 17L-1 17L-1 17.3028L-0.83205 17.5547L9.09495e-13 17ZM3 21.5L2.16795 22.0547L3 23.3028L3.83205 22.0547L3 21.5ZM6 17L6.83205 17.5547L7 17.3028L7 17L6 17ZM1 2C1 1.44772 1.44772 1 2 1L2 -1C0.343146 -1 -1 0.343146 -1 2L1 2ZM1 17L1 2L-1 2L-1 17L1 17ZM3.83205 20.9453L0.83205 16.4453L-0.83205 17.5547L2.16795 22.0547L3.83205 20.9453ZM5.16795 16.4453L2.16795 20.9453L3.83205 22.0547L6.83205 17.5547L5.16795 16.4453ZM5 2L5 17L7 17L7 2L5 2ZM4 1C4.55228 1 5 1.44772 5 2L7 2C7 0.343146 5.65685 -1 4 -1L4 1ZM2 1L4 1L4 -1L2 -1L2 1Z",
+                    d: "M0 17L-1 17L-1 17.3028L-0.83205 17.5547L0 17ZM3 21.5L2.16795 22.0547L3 23.3028L3.83205 22.0547L3 21.5ZM6 17L6.83205 17.5547L7 17.3028L7 17L6 17ZM1 2C1 1.44772 1.44772 1 2 1L2 -1C0.343146 -1 -1 0.343146 -1 2L1 2ZM1 17L1 2L-1 2L-1 17L1 17ZM3.83205 20.9453L0.83205 16.4453L-0.83205 17.5547L2.16795 22.0547L3.83205 20.9453ZM5.16795 16.4453L2.16795 20.9453L3.83205 22.0547L6.83205 17.5547L5.16795 16.4453ZM5 2L5 17L7 17L7 2L5 2ZM4 1C4.55228 1 5 1.44772 5 2L7 2C7 0.343146 5.65685 -1 4 -1L4 1ZM2 1L4 1L4 -1L2 -1L2 1Z",
                     stroke: "rgba(0,0,0,1)",
                     fillRule: "nonzero",
                     strokeWidth: 1,
@@ -477,7 +477,7 @@ export default function Shoppingcart(props) {
                 left="13.08px"
                 transformOrigin="top left"
                 transform="rotate(45deg)"
-                {...getOverrideProps(overrides, "Union4368321144")}
+                {...getOverrideProps(overrides, "Union5661")}
               >
                 <Icon
                   width="6px"
@@ -502,7 +502,7 @@ export default function Shoppingcart(props) {
                   position="absolute"
                   top="0px"
                   left="0px"
-                  {...getOverrideProps(overrides, "Rectangle 44368321145")}
+                  {...getOverrideProps(overrides, "Rectangle 45662")}
                 ></Icon>
                 <Icon
                   width="6px"
@@ -527,7 +527,7 @@ export default function Shoppingcart(props) {
                   position="absolute"
                   top="17px"
                   left="0px"
-                  {...getOverrideProps(overrides, "Rectangle 54368321146")}
+                  {...getOverrideProps(overrides, "Rectangle 55663")}
                 ></Icon>
               </Icon>
               <Icon
@@ -556,7 +556,7 @@ export default function Shoppingcart(props) {
                 left="10.61px"
                 transformOrigin="top left"
                 transform="rotate(45deg)"
-                {...getOverrideProps(overrides, "Vector4368321147")}
+                {...getOverrideProps(overrides, "Vector5664")}
               ></Icon>
             </Icon>
           </View>
@@ -676,7 +676,7 @@ export default function Shoppingcart(props) {
           borderRadius="20px"
           padding="0px 0px 0px 0px"
           backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Input field4368321153")}
+          {...getOverrideProps(overrides, "Input field5670")}
         >
           <Text
             fontFamily="Inter"
@@ -711,7 +711,7 @@ export default function Shoppingcart(props) {
             top="calc(50% - 16px - 0px)"
             right="8px"
             padding="0px 0px 0px 0px"
-            {...getOverrideProps(overrides, "Icon4368321155")}
+            {...getOverrideProps(overrides, "Icon5672")}
           >
             <Icon
               width="16.5px"
@@ -736,7 +736,7 @@ export default function Shoppingcart(props) {
               position="absolute"
               top="7.86px"
               left="8.4px"
-              {...getOverrideProps(overrides, "Union4368321156")}
+              {...getOverrideProps(overrides, "Union5673")}
             >
               <Icon
                 width="6px"
@@ -764,7 +764,7 @@ export default function Shoppingcart(props) {
                 left="13.08px"
                 transformOrigin="top left"
                 transform="rotate(45deg)"
-                {...getOverrideProps(overrides, "Union4368321157")}
+                {...getOverrideProps(overrides, "Union5674")}
               >
                 <Icon
                   width="6px"
@@ -789,7 +789,7 @@ export default function Shoppingcart(props) {
                   position="absolute"
                   top="0px"
                   left="0px"
-                  {...getOverrideProps(overrides, "Rectangle 44368321158")}
+                  {...getOverrideProps(overrides, "Rectangle 45675")}
                 ></Icon>
                 <Icon
                   width="6px"
@@ -814,7 +814,7 @@ export default function Shoppingcart(props) {
                   position="absolute"
                   top="17px"
                   left="0px"
-                  {...getOverrideProps(overrides, "Rectangle 54368321159")}
+                  {...getOverrideProps(overrides, "Rectangle 55676")}
                 ></Icon>
               </Icon>
               <Icon
@@ -843,7 +843,7 @@ export default function Shoppingcart(props) {
                 left="10.61px"
                 transformOrigin="top left"
                 transform="rotate(45deg)"
-                {...getOverrideProps(overrides, "Vector4368321160")}
+                {...getOverrideProps(overrides, "Vector5677")}
               ></Icon>
             </Icon>
           </View>
@@ -1153,7 +1153,7 @@ export default function Shoppingcart(props) {
             top="calc(50% - 16px - 0px)"
             right="16px"
             padding="0px 0px 0px 0px"
-            {...getOverrideProps(overrides, "Icon4368321175")}
+            {...getOverrideProps(overrides, "Icon5692")}
           >
             <Icon
               width="16px"
@@ -1188,7 +1188,7 @@ export default function Shoppingcart(props) {
         justifyContent="unset"
         overflow="hidden"
         position="absolute"
-        top="112px"
+        top="99px"
         left="0px"
         right="0px"
         padding="0px 0px 0px 0px"
@@ -1274,172 +1274,6 @@ export default function Shoppingcart(props) {
           height="100px"
           {...getOverrideProps(overrides, "Frame 1")}
         ></View>
-      </View>
-      <View
-        width="1440px"
-        height="112px"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
-        overflow="hidden"
-        position="absolute"
-        top="0px"
-        left="0px"
-        right="0px"
-        padding="0px 0px 0px 0px"
-        {...getOverrideProps(overrides, "Navigation")}
-      >
-        <Text
-          fontFamily="Newsreader"
-          fontSize="32px"
-          fontWeight="500"
-          color="rgba(66,107,31,1)"
-          lineHeight="32px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="-0.17px"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="41px"
-          left="96px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="World Peas"
-          {...getOverrideProps(overrides, "World Peas")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="45.5px"
-          right="657px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Shop"
-          {...getOverrideProps(overrides, "Shop")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="45.5px"
-          right="532px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Newstand"
-          {...getOverrideProps(overrides, "Newstand")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="45.5px"
-          right="394px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Who we are"
-          {...getOverrideProps(overrides, "Who we are")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="45.5px"
-          right="270px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="My profile"
-          {...getOverrideProps(overrides, "My profile")}
-        ></Text>
-        <View
-          width="126px"
-          height="48px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          overflow="hidden"
-          position="absolute"
-          top="32px"
-          right="96px"
-          borderRadius="4px"
-          padding="0px 0px 0px 0px"
-          backgroundColor="rgba(66,107,31,1)"
-          {...getOverrideProps(overrides, "Cart button")}
-        >
-          <Text
-            fontFamily="Inter"
-            fontSize="16px"
-            fontWeight="600"
-            color="rgba(255,255,255,1)"
-            lineHeight="20.799999237060547px"
-            textAlign="center"
-            display="block"
-            direction="column"
-            justifyContent="unset"
-            width="unset"
-            height="unset"
-            gap="unset"
-            alignItems="unset"
-            position="absolute"
-            top="calc(50% - 10.5px - 0px)"
-            left="calc(50% - 40px - 0px)"
-            padding="0px 0px 0px 0px"
-            whiteSpace="pre-wrap"
-            children="Basket (3)"
-            {...getOverrideProps(overrides, "Basket (3)")}
-          ></Text>
-        </View>
       </View>
     </View>
   );

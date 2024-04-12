@@ -23,7 +23,7 @@ export declare type NavigationOverridesProps = {
     "Who we are"?: PrimitiveOverrideProps<TextProps>;
     "My profile"?: PrimitiveOverrideProps<TextProps>;
     "Cart button"?: PrimitiveOverrideProps<ViewProps>;
-    "Basket (3)"?: PrimitiveOverrideProps<TextProps>;
+    Basket?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
 export declare type NavigationProps = React.PropsWithChildren<Partial<ViewProps> & {
     overrides?: NavigationOverridesProps | undefined | null;

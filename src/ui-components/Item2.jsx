@@ -88,6 +88,45 @@ export default function Item2(props) {
         src={tomato?.image}
         {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
       ></Image>
+      <View
+        width="136px"
+        height="46px"
+        display="block"
+        gap="unset"
+        alignItems="unset"
+        justifyContent="unset"
+        overflow="hidden"
+        position="absolute"
+        top="444px"
+        right="40px"
+        borderRadius="8px"
+        padding="0px 0px 0px 0px"
+        backgroundColor="rgba(66,107,31,1)"
+        {...getOverrideProps(overrides, "Cart button")}
+      >
+        <Text
+          fontFamily="Inter"
+          fontSize="16px"
+          fontWeight="600"
+          color="rgba(255,255,255,1)"
+          lineHeight="20.799999237060547px"
+          textAlign="center"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="unset"
+          height="unset"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="calc(50% - 10.5px - 0px)"
+          left="calc(50% - 42.5px - -0.5px)"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="add to cart"
+          {...getOverrideProps(overrides, "add to cart")}
+        ></Text>
+      </View>
     </View>
   );
 }
