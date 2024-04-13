@@ -4,6 +4,16 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 
+export { default as Aboutus } from "./Aboutus";
+export { default as InventoryCreateForm } from "./InventoryCreateForm";
+export { default as InventoryUpdateForm } from "./InventoryUpdateForm";
+export { default as Item2 } from "./Item2";
+export { default as Navigation } from "./Navigation";
 export { default as NoteCreateForm } from "./NoteCreateForm";
 export { default as NoteUpdateForm } from "./NoteUpdateForm";
+export { default as Pageheading } from "./Pageheading";
+export { default as Productpage } from "./Productpage";
+export { default as Shoppingcart } from "./Shoppingcart";
+export { default as UserCreateForm } from "./UserCreateForm";
+export { default as UserUpdateForm } from "./UserUpdateForm";
 export { default as studioTheme } from "./studioTheme";

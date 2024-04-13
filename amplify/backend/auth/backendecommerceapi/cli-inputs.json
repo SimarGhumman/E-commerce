@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "backendecommerce8c6dfca6_identitypool_8c6dfca6",
+    "identityPoolName": "backendecommerceapi_identitypool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "backen8c6dfca6",
-    "userPoolName": "backendecommerce8c6dfca6_userpool_8c6dfca6",
+    "resourceNameTruncated": "backen27d0870f",
+    "userPoolName": "backendecommerceapi_userpool",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,16 +31,23 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "backen8c6dfca6_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "backen27d0870f_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "8c6dfca6",
-    "resourceName": "backendecommerce8c6dfca6",
+    "sharedId": "27d0870f",
+    "resourceName": "backendecommerceapi",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
     "usernameAttributes": [
       "email"
     ],
-    "userPoolGroupList": [],
+    "userPoolGroups": true,
+    "adminQueries": false,
+    "triggers": {},
+    "hostedUI": false,
+    "userPoolGroupList": [
+      "Admin"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true

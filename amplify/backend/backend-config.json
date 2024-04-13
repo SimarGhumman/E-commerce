@@ -1,12 +1,26 @@
 {
   "api": {
     "backendecommerce": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "backendecommerceapi"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AWS_IAM"
+            },
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authbackendecommerceapi"
+              }
             }
           ],
           "defaultAuthentication": {
@@ -23,7 +37,7 @@
     }
   },
   "auth": {
-    "backendecommerce8c6dfca6": {
+    "backendecommerceapi": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -48,10 +62,77 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "backendecommerceapi"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
+    }
+  },
+  "function": {
+    "backendecommercesignup": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "backendecommerce"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "backendecommerce"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "backendecommerceapi"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_backendecommercesignup_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "backendecommercesignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_backendecommercesignup_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "backendecommercesignup"
+        }
+      ]
     }
   },
   "storage": {
-    "s3afd047b1": {
+    "s3backendecommercestorageimages": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"
