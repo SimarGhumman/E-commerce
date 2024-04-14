@@ -19,12 +19,6 @@ export declare type Variant = {
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PageheadingOverridesProps = {
     Pageheading?: PrimitiveOverrideProps<ViewProps>;
-    "Default chip"?: PrimitiveOverrideProps<ViewProps>;
-    Default?: PrimitiveOverrideProps<TextProps>;
-    "A-Z chip"?: PrimitiveOverrideProps<ViewProps>;
-    "A-Z"?: PrimitiveOverrideProps<TextProps>;
-    "List chip"?: PrimitiveOverrideProps<ViewProps>;
-    "List view"?: PrimitiveOverrideProps<TextProps>;
     "Fresh \u2014 August 21, 2023"?: PrimitiveOverrideProps<TextProps>;
     Produce?: PrimitiveOverrideProps<TextProps>;
     Divider?: PrimitiveOverrideProps<IconProps>;

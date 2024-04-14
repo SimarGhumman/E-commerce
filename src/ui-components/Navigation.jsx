@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import * as React from "react";
+import { Link } from 'react-router-dom';
 import { getOverrideProps } from "./utils";
 import { Text, View } from "@aws-amplify/ui-react";
 export default function Navigation(props) {
@@ -47,28 +48,27 @@ export default function Navigation(props) {
         children="E-commerce"
         {...getOverrideProps(overrides, "E-commerce")}
       ></Text>
-      <Text
-        fontFamily="Inter"
-        fontSize="16px"
-        fontWeight="400"
-        color="rgba(0,0,0,1)"
-        lineHeight="20.799999237060547px"
-        textAlign="center"
-        display="block"
-        direction="column"
-        justifyContent="unset"
-        width="unset"
-        height="unset"
-        gap="unset"
-        alignItems="unset"
-        position="absolute"
-        top="45.5px"
-        right="394px"
-        padding="0px 0px 0px 0px"
-        whiteSpace="pre-wrap"
-        children="Who we are"
-        {...getOverrideProps(overrides, "Who we are")}
-      ></Text>
+      <Link to="/about-us" style={{ position: 'absolute', top: '45.5px', right: '394px' }}>
+    <Text
+      fontFamily="Inter"
+      fontSize="16px"
+      fontWeight="400"
+      color="rgba(0,0,0,1)"
+      lineHeight="20.799999237060547px"
+      textAlign="center"
+      display="block"
+      direction="column"
+      justifyContent="unset"
+      width="unset"
+      height="unset"
+      gap="unset"
+      alignItems="unset"
+      padding="0px 0px 0px 0px"
+      whiteSpace="pre-wrap"
+      children="Who we are"
+      {...getOverrideProps(overrides, "Who we are")}
+    ></Text>
+  </Link>
       <Text
         fontFamily="Inter"
         fontSize="16px"
@@ -123,11 +123,11 @@ export default function Navigation(props) {
           alignItems="unset"
           position="absolute"
           top="calc(50% - 10.5px - 0px)"
-          left="calc(50% - 40px - 0px)"
+          left="calc(50% - 26.5px - -0.5px)"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
-          children="Basket (3)"
-          {...getOverrideProps(overrides, "Basket (3)")}
+          children="Basket "
+          {...getOverrideProps(overrides, "Basket")}
         ></Text>
       </View>
     </View>
