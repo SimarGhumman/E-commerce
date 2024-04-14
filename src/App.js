@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import AboutUsPage from './AboutUs';
+import ProductPage from './Product';
 import "@aws-amplify/ui-react/styles.css";
 import {
   Button,
@@ -17,18 +19,17 @@ import {
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
 import { generateClient } from 'aws-amplify/api';
-import { uploadData, getUrl, remove } from 'aws-amplify/storage';
+import { uploadData, getUrl, remove } from 'aws-amplify/storage'; 
+import Navigation from "./ui-components/Navigation"; 
+ import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from 'react-router-dom';
 import {
-  Navigation 
+  Aboutus 
  } from './ui-components';
- import {
-  Pageheading 
- } from './ui-components';
- import {
-  Item2 
- } from './ui-components';
-
- import Navigation from "./ui-components/Navigation"; 
 
 const client = generateClient();
 
@@ -91,23 +92,16 @@ const App = ({ signOut }) => {
     gap: '20px', // Adjust as needed
     paddingLeft: '40px', // Adjust as needed
   };
-  
-  const itemStyle = {
-    flex: '1 1 calc(50% - 20px)', // Adjust as needed
-    width: '40px', // Adjust width as needed
-    height: 'auto', // Adjust height as needed or keep it auto
-    paddingLeft: '100px', // Adjust as needed
-  };
 
   return (
-    <View style={containerStyle} className="App">
-      <Navigation />
-      <Pageheading />
-      <div style={itemStyle}><Item2 /></div>
-      <div style={itemStyle}><Item2 /></div>
-      <div style={itemStyle}><Item2 /></div>
-      <div style={itemStyle}><Item2 /></div>
-      <Heading level={1}>My Notes App</Heading>
+    <Router>
+      <View style={containerStyle} className="App">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Aboutus />
+              <Heading level={1}>My Notes App</Heading>
       <View as="form" margin="3rem 0" onSubmit={createNote}>
         <Flex direction="row" justifyContent="center">
           <TextField
@@ -164,8 +158,14 @@ const App = ({ signOut }) => {
         ))}
       </View>
       <Button onClick={signOut}>Sign Out</Button>
-    </View>
-  );
+            </>
+          } />
+          <Route path="/about-us" element={<AboutUsPage />} />
+          <Route path="/product" element={<ProductPage />} />
+        </Routes>
+      </View>
+    </Router>
+  );  
 };
 
 export default withAuthenticator(App);
