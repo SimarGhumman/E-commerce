@@ -25,7 +25,7 @@
       "function": {
         "backendecommercesignup": {
           "deploymentBucketName": "amplify-backendecommerce-backend-d2885-deployment",
-          "s3Key": "amplify-builds/backendecommercesignup-304b7155636e63747268-build.zip"
+          "s3Key": "amplify-builds/backendecommercesignup-576d36644850766a4750-build.zip"
         }
       }
     }
