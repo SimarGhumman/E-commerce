@@ -29,5 +29,12 @@
         }
       }
     }
+  },
+  "staging": {
+    "categories": {
+      "auth": {
+        "backendecommerceapi": {}
+      }
+    }
   }
 }
