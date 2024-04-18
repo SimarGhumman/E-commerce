@@ -33,7 +33,7 @@ const CartPage = () => {
     };
 
     const handleProfileClick = () => {
-      navigate('/profile')
+      navigate('/profile');
     };
 
     const [quantities, setQuantities] = useState(Array.from({ length: 12 }, () => 0));
@@ -47,6 +47,11 @@ const CartPage = () => {
           [index]: newValue
       }));
     };
+
+    //TO-DO WRITE TO THE TABLE TO STORE THE PRODUCT AND QUANTITY
+    const handleAddtoCartClick = () => {
+
+    };
     
 
     const prices = [
@@ -54,7 +59,7 @@ const CartPage = () => {
         0.89,   
         1.49,   
         1.88,   
-        3.50,   
+        3.59,   
         3.49,   
         3.99,  
         1.23,  
@@ -103,6 +108,10 @@ const CartPage = () => {
                 <td key={`item-${i}-${j}`}>
                     <Item
                         overrides={{
+                              "add to cart": {
+                                onClick: handleAddtoCartClick
+                              },
+
                               quantity: {
                                 children: (
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
