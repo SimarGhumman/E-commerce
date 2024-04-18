@@ -8,8 +8,8 @@
 import * as React from "react";
 import { getOverrideProps } from "./utils";
 import { Icon, Image, Text, View } from "@aws-amplify/ui-react";
-export default function Item2(props) {
-  const { tomato, overrides, ...rest } = props;
+export default function Itemnobutton(props) {
+  const { overrides, ...rest } = props;
   return (
     <View
       width="395px"
@@ -24,7 +24,7 @@ export default function Item2(props) {
       borderRadius="24px"
       padding="0px 0px 0px 0px"
       backgroundColor="rgba(250,250,245,1)"
-      {...getOverrideProps(overrides, "Item2")}
+      {...getOverrideProps(overrides, "Itemnobutton")}
       {...rest}
     >
       <Text
@@ -43,10 +43,10 @@ export default function Item2(props) {
         alignItems="unset"
         position="absolute"
         bottom="98px"
-        left="37px"
+        left="150px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children={tomato?.name}
+        children="ItemName"
         {...getOverrideProps(overrides, "ItemName")}
       ></Text>
       <Text
@@ -65,10 +65,10 @@ export default function Item2(props) {
         alignItems="unset"
         position="absolute"
         bottom="68px"
-        left="53px"
+        left="156px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children={tomato?.price}
+        children="UnitPrice"
         {...getOverrideProps(overrides, "UnitPrice")}
       ></Text>
       <Image
@@ -85,48 +85,8 @@ export default function Item2(props) {
         right="0px"
         padding="0px 0px 0px 0px"
         objectFit="cover"
-        src={tomato?.image}
         {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
       ></Image>
-      <View
-        width="136px"
-        height="46px"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
-        overflow="hidden"
-        position="absolute"
-        top="470px"
-        right="32px"
-        borderRadius="8px"
-        padding="0px 0px 0px 0px"
-        backgroundColor="rgba(66,107,31,1)"
-        {...getOverrideProps(overrides, "Cart button")}
-      >
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="600"
-          color="rgba(255,255,255,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="calc(50% - 10.5px - 0px)"
-          left="calc(50% - 42.5px - -0.5px)"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="add to cart"
-          {...getOverrideProps(overrides, "add to cart")}
-        ></Text>
-      </View>
       <View
         width="128px"
         height="40px"
@@ -137,7 +97,7 @@ export default function Item2(props) {
         overflow="hidden"
         position="absolute"
         bottom="28px"
-        left="37px"
+        left="140px"
         border="2px SOLID rgba(0,0,0,0.06)"
         borderRadius="20px"
         padding="0px 0px 0px 0px"
@@ -175,7 +135,7 @@ export default function Item2(props) {
           justifyContent="unset"
           position="absolute"
           top="calc(50% - 16px - 0px)"
-          right="8px"
+          right="-11px"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(overrides, "Icon")}
         >
@@ -202,7 +162,7 @@ export default function Item2(props) {
             position="absolute"
             top="7.86px"
             left="8.4px"
-            {...getOverrideProps(overrides, "Union1132782")}
+            {...getOverrideProps(overrides, "Union116281")}
           >
             <Icon
               width="6px"
@@ -230,7 +190,7 @@ export default function Item2(props) {
               left="13.08px"
               transformOrigin="top left"
               transform="rotate(45deg)"
-              {...getOverrideProps(overrides, "Union1132783")}
+              {...getOverrideProps(overrides, "Union116282")}
             >
               <Icon
                 width="6px"
@@ -330,7 +290,7 @@ export default function Item2(props) {
         alignItems="unset"
         position="absolute"
         top="441px"
-        left="37px"
+        left="140px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="$"

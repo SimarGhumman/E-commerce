@@ -17,17 +17,11 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type NavigationOverridesProps = {
-    Navigation?: PrimitiveOverrideProps<ViewProps>;
-    "E-commerce"?: PrimitiveOverrideProps<TextProps>;
-    "My profile"?: PrimitiveOverrideProps<TextProps>;
-    "Cart button"?: PrimitiveOverrideProps<ViewProps>;
-    Basket?: PrimitiveOverrideProps<TextProps>;
-    "Who we are"?: PrimitiveOverrideProps<TextProps>;
-    Button?: PrimitiveOverrideProps<ViewProps>;
-    Shop?: PrimitiveOverrideProps<TextProps>;
+export declare type AddCartbuttonOverridesProps = {
+    AddCartbutton?: PrimitiveOverrideProps<ViewProps>;
+    "add to cart"?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
-export declare type NavigationProps = React.PropsWithChildren<Partial<ViewProps> & {
-    overrides?: NavigationOverridesProps | undefined | null;
+export declare type AddCartbuttonProps = React.PropsWithChildren<Partial<ViewProps> & {
+    overrides?: AddCartbuttonOverridesProps | undefined | null;
 }>;
-export default function Navigation(props: NavigationProps): React.ReactElement;
+export default function AddCartbutton(props: AddCartbuttonProps): React.ReactElement;

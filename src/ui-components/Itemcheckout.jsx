@@ -8,12 +8,12 @@
 import * as React from "react";
 import { getOverrideProps } from "./utils";
 import { Icon, Image, Text, View } from "@aws-amplify/ui-react";
-export default function Item2(props) {
-  const { tomato, overrides, ...rest } = props;
+export default function Itemcheckout(props) {
+  const { overrides, ...rest } = props;
   return (
     <View
-      width="395px"
-      height="538px"
+      width="821px"
+      height="159px"
       display="block"
       gap="unset"
       alignItems="unset"
@@ -24,7 +24,7 @@ export default function Item2(props) {
       borderRadius="24px"
       padding="0px 0px 0px 0px"
       backgroundColor="rgba(250,250,245,1)"
-      {...getOverrideProps(overrides, "Item2")}
+      {...getOverrideProps(overrides, "Itemcheckout")}
       {...rest}
     >
       <Text
@@ -42,12 +42,34 @@ export default function Item2(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        bottom="98px"
-        left="37px"
+        top="24px"
+        left="200px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children={tomato?.name}
-        {...getOverrideProps(overrides, "ItemName")}
+        children="itemName"
+        {...getOverrideProps(overrides, "itemName")}
+      ></Text>
+      <Text
+        fontFamily="Inter"
+        fontSize="20px"
+        fontWeight="600"
+        color="rgba(0,0,0,1)"
+        lineHeight="26px"
+        textAlign="right"
+        display="block"
+        direction="column"
+        justifyContent="unset"
+        width="unset"
+        height="unset"
+        gap="unset"
+        alignItems="unset"
+        position="absolute"
+        top="40px"
+        right="31px"
+        padding="0px 0px 0px 0px"
+        whiteSpace="pre-wrap"
+        children="price"
+        {...getOverrideProps(overrides, "price")}
       ></Text>
       <Text
         fontFamily="Inter"
@@ -64,69 +86,13 @@ export default function Item2(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        bottom="68px"
-        left="53px"
+        top="54px"
+        left="220px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children={tomato?.price}
-        {...getOverrideProps(overrides, "UnitPrice")}
+        children="unitprice"
+        {...getOverrideProps(overrides, "unitprice")}
       ></Text>
-      <Image
-        width="calc(100% - 0px)"
-        height="calc(100% - 148px)"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
-        position="absolute"
-        top="0px"
-        bottom="148px"
-        left="0px"
-        right="0px"
-        padding="0px 0px 0px 0px"
-        objectFit="cover"
-        src={tomato?.image}
-        {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
-      ></Image>
-      <View
-        width="136px"
-        height="46px"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
-        overflow="hidden"
-        position="absolute"
-        top="470px"
-        right="32px"
-        borderRadius="8px"
-        padding="0px 0px 0px 0px"
-        backgroundColor="rgba(66,107,31,1)"
-        {...getOverrideProps(overrides, "Cart button")}
-      >
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="600"
-          color="rgba(255,255,255,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="calc(50% - 10.5px - 0px)"
-          left="calc(50% - 42.5px - -0.5px)"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="add to cart"
-          {...getOverrideProps(overrides, "add to cart")}
-        ></Text>
-      </View>
       <View
         width="128px"
         height="40px"
@@ -136,8 +102,8 @@ export default function Item2(props) {
         justifyContent="unset"
         overflow="hidden"
         position="absolute"
-        bottom="28px"
-        left="37px"
+        bottom="24px"
+        left="184px"
         border="2px SOLID rgba(0,0,0,0.06)"
         borderRadius="20px"
         padding="0px 0px 0px 0px"
@@ -160,11 +126,11 @@ export default function Item2(props) {
           alignItems="unset"
           position="absolute"
           top="calc(50% - 10.5px - 0px)"
-          left="49px"
+          left="25px"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Qty"
-          {...getOverrideProps(overrides, "quantity")}
+          {...getOverrideProps(overrides, "Qty")}
         ></Text>
         <View
           width="32px"
@@ -202,7 +168,7 @@ export default function Item2(props) {
             position="absolute"
             top="7.86px"
             left="8.4px"
-            {...getOverrideProps(overrides, "Union1132782")}
+            {...getOverrideProps(overrides, "Union11628")}
           >
             <Icon
               width="6px"
@@ -230,7 +196,7 @@ export default function Item2(props) {
               left="13.08px"
               transformOrigin="top left"
               transform="rotate(45deg)"
-              {...getOverrideProps(overrides, "Union1132783")}
+              {...getOverrideProps(overrides, "Union11629")}
             >
               <Icon
                 width="6px"
@@ -314,6 +280,21 @@ export default function Item2(props) {
           </Icon>
         </View>
       </View>
+      <Image
+        width="160px"
+        height="calc(100% - -1px)"
+        display="block"
+        gap="unset"
+        alignItems="unset"
+        justifyContent="unset"
+        position="absolute"
+        top="0px"
+        bottom="-1px"
+        left="0px"
+        padding="0px 0px 0px 0px"
+        objectFit="cover"
+        {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
+      ></Image>
       <Text
         fontFamily="Inter"
         fontSize="20px"
@@ -329,8 +310,8 @@ export default function Item2(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="441px"
-        left="37px"
+        top="54px"
+        left="200px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="$"

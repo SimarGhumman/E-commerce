@@ -5,15 +5,22 @@
  **************************************************************************/
 
 export { default as Aboutus } from "./Aboutus";
+export { default as AddCartbutton } from "./AddCartbutton";
+export { default as Checkout } from "./Checkout";
+export { default as CheckoutHeading } from "./CheckoutHeading";
+export { default as Footer } from "./Footer";
 export { default as InventoryCreateForm } from "./InventoryCreateForm";
 export { default as InventoryUpdateForm } from "./InventoryUpdateForm";
 export { default as Item2 } from "./Item2";
+export { default as Itemcheckout } from "./Itemcheckout";
+export { default as Itemnobutton } from "./Itemnobutton";
 export { default as Navigation } from "./Navigation";
 export { default as NoteCreateForm } from "./NoteCreateForm";
 export { default as NoteUpdateForm } from "./NoteUpdateForm";
-export { default as Pageheading } from "./Pageheading";
-export { default as Productpage } from "./Productpage";
-export { default as Shoppingcart } from "./Shoppingcart";
+export { default as Profile } from "./Profile";
+export { default as Shopheading } from "./Shopheading";
+export { default as SuccessPayment } from "./SuccessPayment";
+export { default as Summary } from "./Summary";
 export { default as UserCreateForm } from "./UserCreateForm";
 export { default as UserUpdateForm } from "./UserUpdateForm";
 export { default as studioTheme } from "./studioTheme";

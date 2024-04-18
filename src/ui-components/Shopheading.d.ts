@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { TextProps, ViewProps } from "@aws-amplify/ui-react";
+import { IconProps, TextProps, ViewProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -17,17 +17,13 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type NavigationOverridesProps = {
-    Navigation?: PrimitiveOverrideProps<ViewProps>;
-    "E-commerce"?: PrimitiveOverrideProps<TextProps>;
-    "My profile"?: PrimitiveOverrideProps<TextProps>;
-    "Cart button"?: PrimitiveOverrideProps<ViewProps>;
-    Basket?: PrimitiveOverrideProps<TextProps>;
-    "Who we are"?: PrimitiveOverrideProps<TextProps>;
-    Button?: PrimitiveOverrideProps<ViewProps>;
-    Shop?: PrimitiveOverrideProps<TextProps>;
+export declare type ShopheadingOverridesProps = {
+    Shopheading?: PrimitiveOverrideProps<ViewProps>;
+    "Fresh \u2014 August 21, 2023"?: PrimitiveOverrideProps<TextProps>;
+    Produce?: PrimitiveOverrideProps<TextProps>;
+    Divider?: PrimitiveOverrideProps<IconProps>;
 } & EscapeHatchProps;
-export declare type NavigationProps = React.PropsWithChildren<Partial<ViewProps> & {
-    overrides?: NavigationOverridesProps | undefined | null;
+export declare type ShopheadingProps = React.PropsWithChildren<Partial<ViewProps> & {
+    overrides?: ShopheadingOverridesProps | undefined | null;
 }>;
-export default function Navigation(props: NavigationProps): React.ReactElement;
+export default function Shopheading(props: ShopheadingProps): React.ReactElement;

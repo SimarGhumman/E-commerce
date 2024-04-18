@@ -17,26 +17,22 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type Item2OverridesProps = {
-    Item2?: PrimitiveOverrideProps<ViewProps>;
+export declare type ItemnobuttonOverridesProps = {
+    Itemnobutton?: PrimitiveOverrideProps<ViewProps>;
     ItemName?: PrimitiveOverrideProps<TextProps>;
     UnitPrice?: PrimitiveOverrideProps<TextProps>;
     "ed-o-neil-AvvdZlhDowA-unsplash 1"?: PrimitiveOverrideProps<ImageProps>;
-    "Cart button"?: PrimitiveOverrideProps<ViewProps>;
-    "add to cart"?: PrimitiveOverrideProps<TextProps>;
     "Input field"?: PrimitiveOverrideProps<ViewProps>;
     quantity?: PrimitiveOverrideProps<TextProps>;
     Icon?: PrimitiveOverrideProps<ViewProps>;
-    Union1132782?: PrimitiveOverrideProps<IconProps>;
-    Union1132783?: PrimitiveOverrideProps<IconProps>;
+    Union116281?: PrimitiveOverrideProps<IconProps>;
+    Union116282?: PrimitiveOverrideProps<IconProps>;
     "Rectangle 4"?: PrimitiveOverrideProps<IconProps>;
     "Rectangle 5"?: PrimitiveOverrideProps<IconProps>;
     Vector?: PrimitiveOverrideProps<IconProps>;
     $?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
-export declare type Item2Props = React.PropsWithChildren<Partial<ViewProps> & {
-    tomato?: any;
-} & {
-    overrides?: Item2OverridesProps | undefined | null;
+export declare type ItemnobuttonProps = React.PropsWithChildren<Partial<ViewProps> & {
+    overrides?: ItemnobuttonOverridesProps | undefined | null;
 }>;
-export default function Item2(props: Item2Props): React.ReactElement;
+export default function Itemnobutton(props: ItemnobuttonProps): React.ReactElement;

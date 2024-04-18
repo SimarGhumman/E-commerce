@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { TextProps, ViewProps } from "@aws-amplify/ui-react";
+import { IconProps, TextProps, ViewProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -17,17 +17,19 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type NavigationOverridesProps = {
-    Navigation?: PrimitiveOverrideProps<ViewProps>;
+export declare type FooterOverridesProps = {
+    Footer?: PrimitiveOverrideProps<ViewProps>;
     "E-commerce"?: PrimitiveOverrideProps<TextProps>;
-    "My profile"?: PrimitiveOverrideProps<TextProps>;
-    "Cart button"?: PrimitiveOverrideProps<ViewProps>;
-    Basket?: PrimitiveOverrideProps<TextProps>;
-    "Who we are"?: PrimitiveOverrideProps<TextProps>;
-    Button?: PrimitiveOverrideProps<ViewProps>;
-    Shop?: PrimitiveOverrideProps<TextProps>;
+    "123 A Street, City, State 12345"?: PrimitiveOverrideProps<TextProps>;
+    "\u00A9 2024 ALL RIGHTS RESERVED."?: PrimitiveOverrideProps<TextProps>;
+    "Check us on:"?: PrimitiveOverrideProps<TextProps>;
+    "(408) xxx - xxxx"?: PrimitiveOverrideProps<TextProps>;
+    Vector83989?: PrimitiveOverrideProps<IconProps>;
+    Vector83999?: PrimitiveOverrideProps<IconProps>;
+    Phone?: PrimitiveOverrideProps<ViewProps>;
+    Vector831001?: PrimitiveOverrideProps<IconProps>;
 } & EscapeHatchProps;
-export declare type NavigationProps = React.PropsWithChildren<Partial<ViewProps> & {
-    overrides?: NavigationOverridesProps | undefined | null;
+export declare type FooterProps = React.PropsWithChildren<Partial<ViewProps> & {
+    overrides?: FooterOverridesProps | undefined | null;
 }>;
-export default function Navigation(props: NavigationProps): React.ReactElement;
+export default function Footer(props: FooterProps): React.ReactElement;
