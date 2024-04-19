@@ -5,29 +5,64 @@
  **************************************************************************/
 
 /* eslint-disable */
-import * as React from "react";
+import React, { useEffect, useState } from 'react';
 import { getOverrideProps } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
+import config from '../aws-exports'
 export default function Profile(props) {
 
   const { overrides, ...rest } = props;
   const [username, setUsername] = useState('Loading...');
 
+
   useEffect(() => {
-    const fetchUserData = async () => {
+    const pullData = async () => {
       try {
-        const userId = '79f9496e-10c1-7065-beed-572289b560e9';  // Replace with actual user ID or pass as a prop
-        const userData = await API.graphql(graphqlOperation(getUser, { id: userId }));
-        const username = userData.data.getUser.username;
-        setUsername(username);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        setUsername('User not found');
+        let response = await fetch(config.API.GraphQL.endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-Api-Key': config.API.GraphQL.apiKey
+          },
+          body: JSON.stringify({
+            query: `query MyQuery {
+              getUser(id: "79f9496e-10c1-7065-beed-572289b560e9") {
+                id
+                email
+                username
+              }
+            }`
+          })
+        });
+        const data = await response.json();
+        if (data.errors) {
+          console.error('GraphQL Error:', data.errors);
+        } else {
+          setUsername(data.data.getUser.username);
+        }
+      } catch (e) {
+        console.error('Fetch Error:', e);
       }
     };
-
-    fetchUserData();
+    pullData();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const userId = '79f9496e-10c1-7065-beed-572289b560e9';  // Replace with actual user ID or pass as a prop
+  //       const userData = await API.graphql(graphqlOperation(getUser, { id: userId }));
+  //       const username = userData.data.getUser.username;
+  //       setUsername(username);
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //       setUsername('User not found');
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, []);
 
   return (
     <View
