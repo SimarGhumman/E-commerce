@@ -1,0 +1,40 @@
+{
+  "backend": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-backendecommerce-backend-d2885-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905418097127:role/amplify-backendecommerce-backend-d2885-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905418097127:role/amplify-backendecommerce-backend-d2885-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-backendecommerce-backend-d2885-deployment",
+      "UnauthRoleName": "amplify-backendecommerce-backend-d2885-unauthRole",
+      "StackName": "amplify-backendecommerce-backend-d2885",
+      "StackId": "arn:aws:cloudformation:us-west-1:905418097127:stack/amplify-backendecommerce-backend-d2885/b6918b20-f922-11ee-adc7-06ea94e1a909",
+      "AmplifyAppId": "d23edjlmbpld59"
+    },
+    "categories": {
+      "auth": {
+        "backendecommerceapi": {},
+        "userPoolGroups": {}
+      },
+      "api": {
+        "backendecommerce": {}
+      },
+      "storage": {
+        "s3backendecommercestorageimages": {}
+      },
+      "function": {
+        "backendecommercesignup": {
+          "deploymentBucketName": "amplify-backendecommerce-backend-d2885-deployment",
+          "s3Key": "amplify-builds/backendecommercesignup-776b65632b734e476d30-build.zip"
+        }
+      }
+    }
+  },
+  "staging": {
+    "categories": {
+      "auth": {
+        "backendecommerceapi": {}
+      }
+    }
+  }
+}

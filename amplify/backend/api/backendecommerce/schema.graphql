@@ -1,0 +1,56 @@
+type Inventory @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quantity: Int
+  product: Product @hasOne
+}
+
+type User @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [read]}]) {
+  id: ID!
+  username: String!
+  email: String!
+  password: String
+  shippingAddress: String
+  billingAddress: String
+  shoppingCart: [ShoppingCart] @hasMany(indexName: "byUser", fields: ["id"])
+  order: [Order] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+enum Status {
+  PAYMENT_PENDING
+  PAYMENT_COMPLETE
+  SHIPPED
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  date: AWSDateTime
+  status: Status
+  trackingNumber: ID
+  totalPrice: Float
+  userID: ID! @index(name: "byUser")
+  product: [Product] @hasMany(indexName: "byOrder", fields: ["id"])
+}
+
+type ShoppingCart @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  product: [Product] @hasMany(indexName: "byShoppingCart", fields: ["id"])
+  userID: ID! @index(name: "byUser")
+}
+
+type Product @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  description: String
+  image: String
+  price: Float
+  shoppingcartID: ID! @index(name: "byShoppingCart")
+  orderID: ID! @index(name: "byOrder")
+}
+
+type Note @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+  image: String
+}
+ 

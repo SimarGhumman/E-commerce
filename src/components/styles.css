@@ -1,0 +1,32 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.left-column {
+    flex: 1;
+    padding-right: 20px; 
+}
+
+.right-column {
+    width: 30%; 
+    position: sticky;
+    top: 575px; 
+    right: 0;
+}
+
+.cartcontainer {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .items {
+    width: 70%; 
+    padding: 20px; 
+  }
+  
+  .summary {
+    width: 25%; 
+  }
