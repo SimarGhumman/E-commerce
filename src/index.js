@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Amplify } from 'aws-amplify';
 import config from './aws-exports';
+import { Authenticator } from '@aws-amplify/ui-react';
 
 Amplify.configure(config);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <App />
+        <Authenticator.Provider>
+            <App />
+        </Authenticator.Provider>
     </React.StrictMode>
 );
 

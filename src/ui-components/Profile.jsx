@@ -9,7 +9,26 @@ import * as React from "react";
 import { getOverrideProps } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
 export default function Profile(props) {
+
   const { overrides, ...rest } = props;
+  const [username, setUsername] = useState('Loading...');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = '79f9496e-10c1-7065-beed-572289b560e9';  // Replace with actual user ID or pass as a prop
+        const userData = await API.graphql(graphqlOperation(getUser, { id: userId }));
+        const username = userData.data.getUser.username;
+        setUsername(username);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setUsername('User not found');
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <View
       width="1400px"
@@ -161,7 +180,7 @@ export default function Profile(props) {
             left="150px"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="your name"
+            children={username}
             {...getOverrideProps(overrides, "your name")}
           ></Text>
         </View>
