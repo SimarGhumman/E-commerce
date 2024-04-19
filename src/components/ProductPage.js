@@ -49,8 +49,9 @@ const CartPage = () => {
     };
 
     //TO-DO WRITE TO THE TABLE TO STORE THE PRODUCT AND QUANTITY
-    const handleAddtoCartClick = () => {
-
+    const handleAddtoCartClick = (index) => {
+      console.log("Button clicked for index:", index);
+      // Add your logic here to handle the click event
     };
     
 
@@ -109,7 +110,7 @@ const CartPage = () => {
                     <Item
                         overrides={{
                               "add to cart": {
-                                onClick: handleAddtoCartClick
+                                onClick: () => handleAddtoCartClick(index)
                               },
 
                               quantity: {
