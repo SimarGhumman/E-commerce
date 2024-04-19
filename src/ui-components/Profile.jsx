@@ -8,61 +8,69 @@
 import React, { useEffect, useState } from 'react';
 import { getOverrideProps } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
-import config from '../aws-exports'
+
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/api';
+import * as queries from '../graphql/queries';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+
 export default function Profile(props) {
 
   const { overrides, ...rest } = props;
   const [username, setUsername] = useState('Loading...');
-
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const client = generateClient();
 
   useEffect(() => {
-    const pullData = async () => {
+    //Admin Fetch Users
+    // const fetchTodos = async () => {
+    //   try {
+    //     const allTodos = await client.graphql({
+    //       query: queries.listUsers,
+    //       authMode: 'userPool'
+    //     });
+    //     console.log('All Todos:', allTodos);
+    //   } catch (error) {
+    //     console.error('Error fetching todos:', error);
+    //   }
+    // };
+
+    // fetchTodos();
+
+    // //AWS Cognito Fetch User
+    // const checkUser = async () => {
+    //   try {
+    //     const userData = await fetchAuthSession();
+    //     if (userData) {
+    //       console.log('User data retrieved:', userData);
+    //     } else {
+    //       console.log('No user signed in');
+    //     }
+    //   } catch (error) {
+    //     console.log('Failed to retrieve user:', error);
+    //   }
+    // };
+
+    // checkUser();
+    console.log("This is using Authenticator.Provider", user)
+
+    const fetchUserData = async () => {
       try {
-        let response = await fetch(config.API.GraphQL.endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            'X-Api-Key': config.API.GraphQL.apiKey
-          },
-          body: JSON.stringify({
-            query: `query MyQuery {
-              getUser(id: "79f9496e-10c1-7065-beed-572289b560e9") {
-                id
-                email
-                username
-              }
-            }`
-          })
+        const userData = await client.graphql({
+          query: queries.getUser,
+          variables: { id: user.userId },  // Pass `id` to the query
+          authMode: 'userPool'        // Specify the authentication mode if necessary
         });
-        const data = await response.json();
-        if (data.errors) {
-          console.error('GraphQL Error:', data.errors);
-        } else {
-          setUsername(data.data.getUser.username);
-        }
-      } catch (e) {
-        console.error('Fetch Error:', e);
+        console.log('User Data:', userData);
+        setUsername(userData.data.getUser.username); // Use setUsername to update state
+      } catch (error) {
+        console.error('Error fetching todos:', error);
       }
     };
-    pullData();
+    
+    fetchUserData();
+
   }, []);
-
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const userId = '79f9496e-10c1-7065-beed-572289b560e9';  // Replace with actual user ID or pass as a prop
-  //       const userData = await API.graphql(graphqlOperation(getUser, { id: userId }));
-  //       const username = userData.data.getUser.username;
-  //       setUsername(username);
-  //     } catch (error) {
-  //       console.error('Error fetching user data:', error);
-  //       setUsername('User not found');
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, []);
 
   return (
     <View

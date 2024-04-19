@@ -8,12 +8,12 @@ import {
 import { listNotes } from "../graphql/queries";
 import { generateClient } from 'aws-amplify/api';
 import { getUrl } from 'aws-amplify/storage';
-import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Aboutus from '../ui-components/Aboutus';
 import Navigation from '../ui-components/Navigation';
 import Footer from '../ui-components/Footer';
 import { getCurrentUser } from '@aws-amplify/auth';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 
 const client = generateClient();
@@ -21,7 +21,7 @@ const client = generateClient();
 function HomePage() {
   const [notes, setNotes] = useState([]);
   const [user, setUser] = useState(null);
-  const { signOut } = useAuth();
+  const { signOut } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
 
 
@@ -80,6 +80,8 @@ function HomePage() {
 
   const handleSignOut = async () => {
     await signOut();
+    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
 

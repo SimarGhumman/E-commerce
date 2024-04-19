@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
+import React, { useEffect } from 'react';
+import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
+import { Hub } from 'aws-amplify/utils';  // Ensure correct import
 
 const formFields = {
     signUp: {
@@ -17,30 +18,30 @@ const signUpAttributes = ['birthdate', 'preferred_username'];
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const { user } = useAuthenticator();
+
+    const { signOut } = useAuthenticator();
+
+    useEffect(() => {
+        // Navigate when user is authenticated
+        if (user) {
+            console.log('User is signed in, navigating to home.');
+            navigate('/home', { replace: true });
+        }
+    }, [user, navigate]);
 
     return (
         <Authenticator formFields={formFields} signUpAttributes={signUpAttributes}>
-            {({ signOut, user: authUser }) => {
-                if (authUser && !user) {
-                    setUser(authUser); // Update local user state if authUser is present
-                    navigate('/home', { replace: true });
+            {({ handleSignOut }) => {
+                if (!user) {
+                    return <h1>Welcome! Please sign in.</h1>;
                 }
 
-                if (!authUser) {
-                    // Optionally handle the case where there is no user
-                    return (
-                        <div>
-                            <h1>Welcome! Please sign in.</h1>
-                        </div>
-                    );
-                }
-
-                // Handle the sign-out state
+                // Redirect logic should prevent this from showing if already navigated
                 return (
                     <div>
                         <h1>You are signed in!</h1>
-                        <button onClick={signOut}>Sign out</button>
+                        <button onClick={handleSignOut}>Sign out</button>
                     </div>
                 );
             }}

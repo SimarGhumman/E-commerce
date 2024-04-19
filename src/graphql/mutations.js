@@ -19,11 +19,13 @@ export const createInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -46,11 +48,13 @@ export const updateInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -73,11 +77,13 @@ export const deleteInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -178,6 +184,7 @@ export const createOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -200,6 +207,7 @@ export const updateOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -222,6 +230,7 @@ export const deleteOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -240,6 +249,7 @@ export const createShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -258,6 +268,7 @@ export const updateShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -276,6 +287,7 @@ export const deleteShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -295,6 +307,7 @@ export const createProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -314,6 +327,7 @@ export const updateProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -333,6 +347,7 @@ export const deleteProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
