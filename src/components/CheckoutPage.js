@@ -9,6 +9,8 @@ import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
 import Checkout from '../ui-components/Checkout';
 import Navigation  from '../ui-components/Navigation';
+import Summary  from '../ui-components/Checkouttotal';
+import Header  from '../ui-components/Checkoutheader';
 
 const CartPage = () => {
     const navigate = useNavigate();
@@ -60,14 +62,40 @@ const CartPage = () => {
             }
 
           }} />
+
+          <div class="container">
+
+              <div class="left-column">
+
+                <Checkout overrides={{
+                  Address73192: { //Shipping Address
+                    children: (
+                        <div>
+                            $$
+                        </div>
+                    )
+                  },      
+
+                  Address73307: { //Billing Address
+                    children: (
+                        <div>
+                            $$$
+                        </div>
+                    )
+                  },           
+                }} />
+
+              </div>
+          
+              <div class="summary">
+
+                <Header></Header>
+
+                <Summary></Summary>
+              </div>
+
+          </div>
     
-            <Checkout overrides={{
-
-                "checkout item": {
-                onClick: handleCheckoutClick 
-                }
-
-            }} />
       
             <Button onClick={handleSignOut}>Sign Out</Button>
         </View>

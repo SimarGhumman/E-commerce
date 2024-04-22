@@ -123,11 +123,11 @@ export default function SuccessPayment(props) {
         alignItems="unset"
         position="absolute"
         top="482px"
-        left="237px"
+        left="315px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="$2.664.00"
-        {...getOverrideProps(overrides, "$2.664.007464")}
+        children="total"
+        {...getOverrideProps(overrides, "total7464")}
       ></Text>
       <Text
         fontFamily="Lato"
@@ -170,8 +170,8 @@ export default function SuccessPayment(props) {
         left="calc(50% - 78px - 146px)"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="00007567362"
-        {...getOverrideProps(overrides, "00007567362")}
+        children="refnumber"
+        {...getOverrideProps(overrides, "refnumber")}
       ></Text>
       <Text
         fontFamily="Lato"
@@ -214,8 +214,8 @@ export default function SuccessPayment(props) {
         left="calc(50% - 122px - 190px)"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="09 -04-2023, 02.21 AM"
-        {...getOverrideProps(overrides, "09 -04-2023, 02.21 AM")}
+        children="time"
+        {...getOverrideProps(overrides, "time")}
       ></Text>
       <Text
         fontFamily="Lato"
@@ -388,8 +388,8 @@ export default function SuccessPayment(props) {
         left="calc(50% - 95.5px - 163.5px)"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="$2.664.00"
-        {...getOverrideProps(overrides, "$2.664.007476")}
+        children="total"
+        {...getOverrideProps(overrides, "total7476")}
       ></Text>
       <Icon
         width="81.91px"

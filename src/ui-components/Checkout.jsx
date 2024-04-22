@@ -29,7 +29,7 @@ export default function Checkout(props) {
       <Flex
         padding="0px 0px 0px 0px"
         width="749px"
-        height="257px"
+        height="200px"
         display="block"
         gap="unset"
         alignItems="unset"
@@ -40,7 +40,7 @@ export default function Checkout(props) {
       >
         <View
           width="749px"
-          height="257px"
+          height="200px"
           display="block"
           gap="unset"
           alignItems="unset"
@@ -54,12 +54,12 @@ export default function Checkout(props) {
           {...getOverrideProps(overrides, "Rectangle 973304")}
         ></View>
         <Icon
-          width="426px"
+          width="700px"
           height="55px"
-          viewBox={{ minX: 0, minY: 0, width: 426, height: 55 }}
+          viewBox={{ minX: 0, minY: 0, width: 700, height: 55 }}
           paths={[
             {
-              d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L398.5 0C413.688 0 426 12.3122 426 27.5L426 27.5C426 42.6878 413.688 55 398.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
+              d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L672.5 0C687.688 0 700 12.3122 700 27.5L700 27.5C700 42.6878 687.688 55 672.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
               fill: "rgba(66,107,31,1)",
               fillRule: "nonzero",
             },
@@ -69,7 +69,7 @@ export default function Checkout(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          bottom="109px"
+          bottom="52px"
           left="22px"
           {...getOverrideProps(overrides, "Rectangle 1073305")}
         ></Icon>
@@ -118,146 +118,6 @@ export default function Checkout(props) {
           {...getOverrideProps(overrides, "Address73307")}
         ></Text>
         <Icon
-          width="248px"
-          height="55px"
-          viewBox={{ minX: 0, minY: 0, width: 248, height: 55 }}
-          paths={[
-            {
-              d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L220.5 0C235.688 0 248 12.3122 248 27.5L248 27.5C248 42.6878 235.688 55 220.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
-              fill: "rgba(66,107,31,1)",
-              fillRule: "nonzero",
-            },
-          ]}
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          bottom="109px"
-          left="476px"
-          {...getOverrideProps(overrides, "Rectangle 1173308")}
-        ></Icon>
-        <Text
-          fontFamily="Lato"
-          fontSize="20px"
-          fontWeight="700"
-          color="rgba(255,255,255,1)"
-          lineHeight="24px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="109px"
-          left="515px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Postal Code"
-          {...getOverrideProps(overrides, "Postal Code73309")}
-        ></Text>
-        <View
-          padding="0px 0px 0px 0px"
-          width="702px"
-          height="55px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          top="175px"
-          left="22px"
-          {...getOverrideProps(overrides, "Group 773310")}
-        >
-          <Icon
-            width="337px"
-            height="55px"
-            viewBox={{ minX: 0, minY: 0, width: 337, height: 55 }}
-            paths={[
-              {
-                d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L309.5 0C324.688 0 337 12.3122 337 27.5L337 27.5C337 42.6878 324.688 55 309.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
-                fill: "rgba(66,107,31,1)",
-                fillRule: "nonzero",
-              },
-            ]}
-            display="block"
-            gap="unset"
-            alignItems="unset"
-            justifyContent="unset"
-            position="absolute"
-            bottom="0px"
-            left="0px"
-            {...getOverrideProps(overrides, "Rectangle 973311")}
-          ></Icon>
-          <Text
-            fontFamily="Lato"
-            fontSize="20px"
-            fontWeight="700"
-            color="rgba(255,255,255,1)"
-            lineHeight="24px"
-            textAlign="left"
-            display="block"
-            direction="column"
-            justifyContent="unset"
-            width="unset"
-            height="unset"
-            gap="unset"
-            alignItems="unset"
-            position="absolute"
-            top="16px"
-            left="24px"
-            padding="0px 0px 0px 0px"
-            whiteSpace="pre-wrap"
-            children="City"
-            {...getOverrideProps(overrides, "City73312")}
-          ></Text>
-          <Icon
-            width="337px"
-            height="55px"
-            viewBox={{ minX: 0, minY: 0, width: 337, height: 55 }}
-            paths={[
-              {
-                d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L309.5 0C324.688 0 337 12.3122 337 27.5L337 27.5C337 42.6878 324.688 55 309.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
-                fill: "rgba(66,107,31,1)",
-                fillRule: "nonzero",
-              },
-            ]}
-            display="block"
-            gap="unset"
-            alignItems="unset"
-            justifyContent="unset"
-            position="absolute"
-            bottom="0px"
-            left="365px"
-            {...getOverrideProps(overrides, "Rectangle 1073313")}
-          ></Icon>
-          <Text
-            fontFamily="Lato"
-            fontSize="20px"
-            fontWeight="700"
-            color="rgba(255,255,255,1)"
-            lineHeight="24px"
-            textAlign="left"
-            display="block"
-            direction="column"
-            justifyContent="unset"
-            width="unset"
-            height="unset"
-            gap="unset"
-            alignItems="unset"
-            position="absolute"
-            top="16px"
-            left="396px"
-            padding="0px 0px 0px 0px"
-            whiteSpace="pre-wrap"
-            children="Country"
-            {...getOverrideProps(overrides, "Country73314")}
-          ></Text>
-        </View>
-        <Icon
           width="700px"
           height="0px"
           viewBox={{
@@ -289,7 +149,7 @@ export default function Checkout(props) {
       <Flex
         padding="0px 0px 0px 0px"
         width="749px"
-        height="257px"
+        height="200px"
         display="block"
         gap="unset"
         alignItems="unset"
@@ -300,7 +160,7 @@ export default function Checkout(props) {
       >
         <View
           width="749px"
-          height="257px"
+          height="200px"
           display="block"
           gap="unset"
           alignItems="unset"
@@ -314,12 +174,12 @@ export default function Checkout(props) {
           {...getOverrideProps(overrides, "Rectangle 973189")}
         ></View>
         <Icon
-          width="426px"
+          width="700px"
           height="55px"
-          viewBox={{ minX: 0, minY: 0, width: 426, height: 55 }}
+          viewBox={{ minX: 0, minY: 0, width: 700, height: 55 }}
           paths={[
             {
-              d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L398.5 0C413.688 0 426 12.3122 426 27.5L426 27.5C426 42.6878 413.688 55 398.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
+              d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L672.5 0C687.688 0 700 12.3122 700 27.5L700 27.5C700 42.6878 687.688 55 672.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
               fill: "rgba(66,107,31,1)",
               fillRule: "nonzero",
             },
@@ -329,7 +189,7 @@ export default function Checkout(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          bottom="109px"
+          bottom="52px"
           left="22px"
           {...getOverrideProps(overrides, "Rectangle 1073190")}
         ></Icon>
@@ -377,146 +237,6 @@ export default function Checkout(props) {
           children="Address"
           {...getOverrideProps(overrides, "Address73192")}
         ></Text>
-        <Icon
-          width="248px"
-          height="55px"
-          viewBox={{ minX: 0, minY: 0, width: 248, height: 55 }}
-          paths={[
-            {
-              d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L220.5 0C235.688 0 248 12.3122 248 27.5L248 27.5C248 42.6878 235.688 55 220.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
-              fill: "rgba(66,107,31,1)",
-              fillRule: "nonzero",
-            },
-          ]}
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          bottom="109px"
-          left="476px"
-          {...getOverrideProps(overrides, "Rectangle 1173193")}
-        ></Icon>
-        <Text
-          fontFamily="Lato"
-          fontSize="20px"
-          fontWeight="700"
-          color="rgba(255,255,255,1)"
-          lineHeight="24px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="109px"
-          left="515px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Postal Code"
-          {...getOverrideProps(overrides, "Postal Code73194")}
-        ></Text>
-        <View
-          padding="0px 0px 0px 0px"
-          width="702px"
-          height="55px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          top="175px"
-          left="22px"
-          {...getOverrideProps(overrides, "Group 773195")}
-        >
-          <Icon
-            width="337px"
-            height="55px"
-            viewBox={{ minX: 0, minY: 0, width: 337, height: 55 }}
-            paths={[
-              {
-                d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L309.5 0C324.688 0 337 12.3122 337 27.5L337 27.5C337 42.6878 324.688 55 309.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
-                fill: "rgba(66,107,31,1)",
-                fillRule: "nonzero",
-              },
-            ]}
-            display="block"
-            gap="unset"
-            alignItems="unset"
-            justifyContent="unset"
-            position="absolute"
-            bottom="0px"
-            left="0px"
-            {...getOverrideProps(overrides, "Rectangle 973196")}
-          ></Icon>
-          <Text
-            fontFamily="Lato"
-            fontSize="20px"
-            fontWeight="700"
-            color="rgba(255,255,255,1)"
-            lineHeight="24px"
-            textAlign="left"
-            display="block"
-            direction="column"
-            justifyContent="unset"
-            width="unset"
-            height="unset"
-            gap="unset"
-            alignItems="unset"
-            position="absolute"
-            top="16px"
-            left="24px"
-            padding="0px 0px 0px 0px"
-            whiteSpace="pre-wrap"
-            children="City"
-            {...getOverrideProps(overrides, "City73197")}
-          ></Text>
-          <Icon
-            width="337px"
-            height="55px"
-            viewBox={{ minX: 0, minY: 0, width: 337, height: 55 }}
-            paths={[
-              {
-                d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L309.5 0C324.688 0 337 12.3122 337 27.5L337 27.5C337 42.6878 324.688 55 309.5 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",
-                fill: "rgba(66,107,31,1)",
-                fillRule: "nonzero",
-              },
-            ]}
-            display="block"
-            gap="unset"
-            alignItems="unset"
-            justifyContent="unset"
-            position="absolute"
-            bottom="0px"
-            left="365px"
-            {...getOverrideProps(overrides, "Rectangle 1073198")}
-          ></Icon>
-          <Text
-            fontFamily="Lato"
-            fontSize="20px"
-            fontWeight="700"
-            color="rgba(255,255,255,1)"
-            lineHeight="24px"
-            textAlign="left"
-            display="block"
-            direction="column"
-            justifyContent="unset"
-            width="unset"
-            height="unset"
-            gap="unset"
-            alignItems="unset"
-            position="absolute"
-            top="16px"
-            left="396px"
-            padding="0px 0px 0px 0px"
-            whiteSpace="pre-wrap"
-            children="Country"
-            {...getOverrideProps(overrides, "Country73199")}
-          ></Text>
-        </View>
         <Icon
           width="700px"
           height="0px"
