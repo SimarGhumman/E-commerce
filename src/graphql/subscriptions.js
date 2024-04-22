@@ -4,8 +4,9 @@
 export const onCreateInventory = /* GraphQL */ `
   subscription OnCreateInventory(
     $filter: ModelSubscriptionInventoryFilterInput
+    $username: String
   ) {
-    onCreateInventory(filter: $filter) {
+    onCreateInventory(filter: $filter, username: $username) {
       id
       quantity
       product {
@@ -18,11 +19,13 @@ export const onCreateInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -30,8 +33,9 @@ export const onCreateInventory = /* GraphQL */ `
 export const onUpdateInventory = /* GraphQL */ `
   subscription OnUpdateInventory(
     $filter: ModelSubscriptionInventoryFilterInput
+    $username: String
   ) {
-    onUpdateInventory(filter: $filter) {
+    onUpdateInventory(filter: $filter, username: $username) {
       id
       quantity
       product {
@@ -44,11 +48,13 @@ export const onUpdateInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -56,8 +62,9 @@ export const onUpdateInventory = /* GraphQL */ `
 export const onDeleteInventory = /* GraphQL */ `
   subscription OnDeleteInventory(
     $filter: ModelSubscriptionInventoryFilterInput
+    $username: String
   ) {
-    onDeleteInventory(filter: $filter) {
+    onDeleteInventory(filter: $filter, username: $username) {
       id
       quantity
       product {
@@ -70,11 +77,13 @@ export const onDeleteInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -158,8 +167,11 @@ export const onDeleteUser = /* GraphQL */ `
   }
 `;
 export const onCreateOrder = /* GraphQL */ `
-  subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
-    onCreateOrder(filter: $filter) {
+  subscription OnCreateOrder(
+    $filter: ModelSubscriptionOrderFilterInput
+    $username: String
+  ) {
+    onCreateOrder(filter: $filter, username: $username) {
       id
       date
       status
@@ -172,13 +184,17 @@ export const onCreateOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
 `;
 export const onUpdateOrder = /* GraphQL */ `
-  subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
-    onUpdateOrder(filter: $filter) {
+  subscription OnUpdateOrder(
+    $filter: ModelSubscriptionOrderFilterInput
+    $username: String
+  ) {
+    onUpdateOrder(filter: $filter, username: $username) {
       id
       date
       status
@@ -191,13 +207,17 @@ export const onUpdateOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
 `;
 export const onDeleteOrder = /* GraphQL */ `
-  subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
-    onDeleteOrder(filter: $filter) {
+  subscription OnDeleteOrder(
+    $filter: ModelSubscriptionOrderFilterInput
+    $username: String
+  ) {
+    onDeleteOrder(filter: $filter, username: $username) {
       id
       date
       status
@@ -210,6 +230,7 @@ export const onDeleteOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -217,8 +238,9 @@ export const onDeleteOrder = /* GraphQL */ `
 export const onCreateShoppingCart = /* GraphQL */ `
   subscription OnCreateShoppingCart(
     $filter: ModelSubscriptionShoppingCartFilterInput
+    $username: String
   ) {
-    onCreateShoppingCart(filter: $filter) {
+    onCreateShoppingCart(filter: $filter, username: $username) {
       id
       product {
         nextToken
@@ -227,6 +249,7 @@ export const onCreateShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -234,8 +257,9 @@ export const onCreateShoppingCart = /* GraphQL */ `
 export const onUpdateShoppingCart = /* GraphQL */ `
   subscription OnUpdateShoppingCart(
     $filter: ModelSubscriptionShoppingCartFilterInput
+    $username: String
   ) {
-    onUpdateShoppingCart(filter: $filter) {
+    onUpdateShoppingCart(filter: $filter, username: $username) {
       id
       product {
         nextToken
@@ -244,6 +268,7 @@ export const onUpdateShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -251,8 +276,9 @@ export const onUpdateShoppingCart = /* GraphQL */ `
 export const onDeleteShoppingCart = /* GraphQL */ `
   subscription OnDeleteShoppingCart(
     $filter: ModelSubscriptionShoppingCartFilterInput
+    $username: String
   ) {
-    onDeleteShoppingCart(filter: $filter) {
+    onDeleteShoppingCart(filter: $filter, username: $username) {
       id
       product {
         nextToken
@@ -261,13 +287,17 @@ export const onDeleteShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
 `;
 export const onCreateProduct = /* GraphQL */ `
-  subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
-    onCreateProduct(filter: $filter) {
+  subscription OnCreateProduct(
+    $filter: ModelSubscriptionProductFilterInput
+    $username: String
+  ) {
+    onCreateProduct(filter: $filter, username: $username) {
       id
       name
       description
@@ -277,13 +307,17 @@ export const onCreateProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
 `;
 export const onUpdateProduct = /* GraphQL */ `
-  subscription OnUpdateProduct($filter: ModelSubscriptionProductFilterInput) {
-    onUpdateProduct(filter: $filter) {
+  subscription OnUpdateProduct(
+    $filter: ModelSubscriptionProductFilterInput
+    $username: String
+  ) {
+    onUpdateProduct(filter: $filter, username: $username) {
       id
       name
       description
@@ -293,13 +327,17 @@ export const onUpdateProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
 `;
 export const onDeleteProduct = /* GraphQL */ `
-  subscription OnDeleteProduct($filter: ModelSubscriptionProductFilterInput) {
-    onDeleteProduct(filter: $filter) {
+  subscription OnDeleteProduct(
+    $filter: ModelSubscriptionProductFilterInput
+    $username: String
+  ) {
+    onDeleteProduct(filter: $filter, username: $username) {
       id
       name
       description
@@ -309,6 +347,7 @@ export const onDeleteProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }

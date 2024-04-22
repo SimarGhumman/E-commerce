@@ -4,7 +4,7 @@ import {
     Button,
     View
   } from "@aws-amplify/ui-react";
-import { useAuth } from '../AuthContext';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
 import Checkout from '../ui-components/Checkout';
@@ -14,7 +14,7 @@ import Header  from '../ui-components/Checkoutheader';
 
 const CartPage = () => {
     const navigate = useNavigate();
-    const { signOut } = useAuth();
+    const { user, signOut } = useAuthenticator((context) => [context.user]);
 
     const handleBasketClick = () => {
         navigate('/cart');
@@ -30,6 +30,8 @@ const CartPage = () => {
 
     const handleSignOut = async () => {
         await signOut();
+        localStorage.clear();
+        sessionStorage.clear();
         navigate('/login');
     };
 

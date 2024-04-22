@@ -16,11 +16,13 @@ export const getInventory = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       createdAt
       updatedAt
       inventoryProductId
+      username
       __typename
     }
   }
@@ -38,6 +40,7 @@ export const listInventories = /* GraphQL */ `
         createdAt
         updatedAt
         inventoryProductId
+        username
         __typename
       }
       nextToken
@@ -106,6 +109,7 @@ export const getOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -126,6 +130,7 @@ export const listOrders = /* GraphQL */ `
         userID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
@@ -157,6 +162,7 @@ export const ordersByUserID = /* GraphQL */ `
         userID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
@@ -175,6 +181,7 @@ export const getShoppingCart = /* GraphQL */ `
       userID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -191,6 +198,7 @@ export const listShoppingCarts = /* GraphQL */ `
         userID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
@@ -218,6 +226,7 @@ export const shoppingCartsByUserID = /* GraphQL */ `
         userID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
@@ -237,6 +246,7 @@ export const getProduct = /* GraphQL */ `
       orderID
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -258,6 +268,7 @@ export const listProducts = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
@@ -290,6 +301,7 @@ export const productsByShoppingcartID = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
@@ -322,6 +334,7 @@ export const productsByOrderID = /* GraphQL */ `
         orderID
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken
