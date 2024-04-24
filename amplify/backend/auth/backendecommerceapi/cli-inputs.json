@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "backendecommerceapi_identitypool",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "backen27d0870f",
     "userPoolName": "backendecommerceapi_userpool",
     "autoVerifiedAttributes": [
