@@ -20,7 +20,8 @@
         "backendecommerce": {}
       },
       "storage": {
-        "s3backendecommercestorageimages": {}
+        "s3backendecommercestorageimages": {},
+        "s3backendecommerceimages": {}
       },
       "function": {
         "backendecommercesignup": {

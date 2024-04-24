@@ -352,6 +352,39 @@ export const onDeleteProduct = /* GraphQL */ `
     }
   }
 `;
+export const onCreateImage = /* GraphQL */ `
+  subscription OnCreateImage($filter: ModelSubscriptionImageFilterInput) {
+    onCreateImage(filter: $filter) {
+      id
+      url
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateImage = /* GraphQL */ `
+  subscription OnUpdateImage($filter: ModelSubscriptionImageFilterInput) {
+    onUpdateImage(filter: $filter) {
+      id
+      url
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteImage = /* GraphQL */ `
+  subscription OnDeleteImage($filter: ModelSubscriptionImageFilterInput) {
+    onDeleteImage(filter: $filter) {
+      id
+      url
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onCreateNote = /* GraphQL */ `
   subscription OnCreateNote($filter: ModelSubscriptionNoteFilterInput) {
     onCreateNote(filter: $filter) {

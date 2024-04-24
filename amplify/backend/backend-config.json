@@ -132,7 +132,7 @@
     }
   },
   "storage": {
-    "s3backendecommercestorageimages": {
+    "s3backendecommerceimages": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

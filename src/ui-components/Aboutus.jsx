@@ -5,11 +5,55 @@
  **************************************************************************/
 
 /* eslint-disable */
-import * as React from "react";
+import React, { useState, useEffect } from 'react';
 import { getOverrideProps } from "./utils";
 import { Image, Text, View } from "@aws-amplify/ui-react";
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
 export default function Aboutus(props) {
   const { overrides, ...rest } = props;
+  const [farmUrl, setFarmUrl] = useState('');
+  const [farmerUrl, setFarmerUrl] = useState('');
+
+  // Configuration for the S3 client
+  const s3Configuration = {
+    credentials: {
+      accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+    },
+    region: process.env.REACT_APP_REGION,
+  };
+  // Create an S3 client instance with the configuration
+  const s3 = new S3Client(s3Configuration);
+
+  // Define the command to get an object, specifying the bucket and the key
+  const farm = new GetObjectCommand({
+    Bucket: 'backend-ecommerce-storage-imagesd2885-backend',
+    Key: 'public/farm.webp'
+  });
+
+  const farmer = new GetObjectCommand({
+    Bucket: 'backend-ecommerce-storage-imagesd2885-backend',
+    Key: 'public/farmer.png'
+  });
+
+  // Generate a presigned URL with a specific expiration time
+  async function generatePresignedUrl() {
+    try {
+      const farmUrl = await getSignedUrl(s3, farm, { expiresIn: 900 }); // Expires in 15 minutes (900 seconds)
+      const farmerUrl = await getSignedUrl(s3, farmer, { expiresIn: 900 }); // Expires in 15 minutes (900 seconds)
+      setFarmUrl(farmUrl);
+      setFarmerUrl(farmerUrl);
+    } catch (error) {
+      console.error('Error generating presigned URL: ', error);
+    }
+  }
+
+  // Call the function to generate and log the presigned URL
+  generatePresignedUrl();
+
+
   return (
     <View
       width="1440px"
@@ -141,6 +185,7 @@ export default function Aboutus(props) {
         {...getOverrideProps(overrides, "WHAT WE BELIEVE")}
       ></Text>
       <Image
+        src={farmerUrl}
         width="calc(100% - 936px)"
         height="693px"
         display="block"
@@ -186,6 +231,7 @@ export default function Aboutus(props) {
         )}
       ></Text>
       <Image
+        src={farmUrl}
         width="calc(100% - 660px)"
         height="480px"
         display="block"

@@ -13,6 +13,8 @@ export { default as Checkoutitem } from "./Checkoutitem";
 export { default as Checkouttotal } from "./Checkouttotal";
 export { default as Footer } from "./Footer";
 export { default as HistoryHeading } from "./HistoryHeading";
+export { default as ImageCreateForm } from "./ImageCreateForm";
+export { default as ImageUpdateForm } from "./ImageUpdateForm";
 export { default as InventoryCreateForm } from "./InventoryCreateForm";
 export { default as InventoryUpdateForm } from "./InventoryUpdateForm";
 export { default as Item2 } from "./Item2";
