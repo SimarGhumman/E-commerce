@@ -47,6 +47,11 @@ type Product @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: ow
   orderID: ID! @index(name: "byOrder")
 }
 
+type Image @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  url: AWSURL
+}
+
 type Note @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!

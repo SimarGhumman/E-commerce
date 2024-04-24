@@ -30,7 +30,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "s3backendecommercestorageimages": {
+    "s3backendecommerceimages": {
       "BucketName": "string",
       "Region": "string"
     }

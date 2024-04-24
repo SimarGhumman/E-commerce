@@ -342,6 +342,36 @@ export const productsByOrderID = /* GraphQL */ `
     }
   }
 `;
+export const getImage = /* GraphQL */ `
+  query GetImage($id: ID!) {
+    getImage(id: $id) {
+      id
+      url
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listImages = /* GraphQL */ `
+  query ListImages(
+    $filter: ModelImageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listImages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const getNote = /* GraphQL */ `
   query GetNote($id: ID!) {
     getNote(id: $id) {

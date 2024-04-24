@@ -5,11 +5,70 @@
  **************************************************************************/
 
 /* eslint-disable */
-import * as React from "react";
+import React, { useState, useEffect } from 'react';
 import { getOverrideProps } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/api';
+import * as queries from '../graphql/queries';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+
 export default function Profile(props) {
   const { overrides, ...rest } = props;
+  const [username, setUsername] = useState('Loading...');
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const client = generateClient();
+
+  useEffect(() => {
+    //Admin Fetch Users
+    // const fetchTodos = async () => {
+    //   try {
+    //     const allTodos = await client.graphql({
+    //       query: queries.listUsers,
+    //       authMode: 'userPool'
+    //     });
+    //     console.log('All Todos:', allTodos);
+    //   } catch (error) {
+    //     console.error('Error fetching todos:', error);
+    //   }
+    // };
+
+    // fetchTodos();
+
+    // //AWS Cognito Fetch User
+    // const checkUser = async () => {
+    //   try {
+    //     const userData = await fetchAuthSession();
+    //     if (userData) {
+    //       console.log('User data retrieved:', userData);
+    //     } else {
+    //       console.log('No user signed in');
+    //     }
+    //   } catch (error) {
+    //     console.log('Failed to retrieve user:', error);
+    //   }
+    // };
+
+    // checkUser();
+    console.log("This is using Authenticator.Provider", user)
+
+    const fetchUserData = async () => {
+      try {
+        const userData = await client.graphql({
+          query: queries.getUser,
+          variables: { id: user.userId },  // Pass `id` to the query
+          authMode: 'userPool'        // Specify the authentication mode if necessary
+        });
+        console.log('User Data:', userData);
+        setUsername(userData.data.getUser.username); // Use setUsername to update state
+      } catch (error) {
+        console.error('Error fetching todos:', error);
+      }
+    };
+
+    fetchUserData();
+
+  }, []);
   return (
     <View
       width="1400px"

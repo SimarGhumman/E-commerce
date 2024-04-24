@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3backendecommerceimages",
+  "bucketName": "backend-ecommerce-images",
+  "policyUUID": "56aca661",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ]
+}

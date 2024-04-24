@@ -72,6 +72,8 @@ export declare type ProfileOverridesProps = {
     Text1423?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
 export declare type ProfileProps = React.PropsWithChildren<Partial<ViewProps> & {
+    userName?: String;
+} & {
     overrides?: ProfileOverridesProps | undefined | null;
 }>;
 export default function Profile(props: ProfileProps): React.ReactElement;
