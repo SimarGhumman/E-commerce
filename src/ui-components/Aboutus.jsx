@@ -4,6 +4,7 @@
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
 /* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 import { getOverrideProps } from "./utils";
 import { Image, Text, View } from "@aws-amplify/ui-react";
