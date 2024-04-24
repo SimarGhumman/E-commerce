@@ -3,7 +3,6 @@
  * Please refrain from making any modifications to this file.              *
  * Any changes to this file will be overwritten when running amplify pull. *
  **************************************************************************/
-
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { getOverrideProps } from "./utils";
