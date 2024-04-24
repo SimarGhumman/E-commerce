@@ -12,7 +12,7 @@ export default function Navigation(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="1440px"
+      width="100%"
       height="112px"
       display="block"
       gap="unset"

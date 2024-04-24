@@ -12,7 +12,7 @@ export default function Homepage(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="1440px"
+      width="100%"
       height="2092px"
       display="block"
       gap="unset"
@@ -186,7 +186,7 @@ export default function Homepage(props) {
         )}
       ></Text>
       <View
-        width="1440px"
+        width="100%"
         height="112px"
         display="block"
         gap="unset"

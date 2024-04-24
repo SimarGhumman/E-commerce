@@ -12,7 +12,7 @@ export default function Productpage(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="1440px"
+      width="100%"
       height="1024px"
       display="block"
       gap="unset"
@@ -26,7 +26,7 @@ export default function Productpage(props) {
       {...rest}
     >
       <View
-        width="1440px"
+        width="100%"
         height="149px"
         display="block"
         gap="unset"
@@ -236,7 +236,7 @@ export default function Productpage(props) {
         ></Icon>
       </View>
       <View
-        width="1440px"
+        width="100%"
         height="112px"
         display="block"
         gap="unset"
