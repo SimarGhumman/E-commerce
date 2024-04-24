@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button,
     View
@@ -109,27 +109,27 @@ const CartPage = () => {
       'Cherry': 2
     });
 
-    let totalPrice = 0;
-
-    for (const fruit in fruitCart) {
-      const quantity = fruitCart[fruit];
-      const price = fruitPrices[fruit];
-      
-      totalPrice += quantity * price;
-    }
-
-    const itemsWithQuantity = Object.entries(fruitCart).filter(([fruit, quantity]) => quantity > 0);
   
     const handleQuantityChange = (fruit, newQuantity) => {
-      // Ensure quantity is non-negative
-      const updatedQuantity = newQuantity >= 0 ? newQuantity : 0;
-      // Update the value of fruit in newFruitCart directly
-      newFruitCart[fruit] = updatedQuantity;
+      setNewFruitCart(prevFruitCart => ({
+        ...prevFruitCart,
+        [fruit]: newQuantity >= 0 ? newQuantity : 0 // Ensure quantity is non-negative
+      }));
     };
-    
-    
-    
-    
+
+    let [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+      // Calculate total price based on newFruitCart
+      let totalPrice = 0;
+      for (const fruit in newFruitCart) {
+        totalPrice += newFruitCart[fruit] * fruitPrices[fruit];
+      }
+      setTotalPrice(totalPrice);
+    }, [newFruitCart]);
+  
+
+    const itemsWithQuantity = Object.entries(newFruitCart).filter(([fruit, quantity]) => quantity > 0);    
 
     return (
         <View className="App">
