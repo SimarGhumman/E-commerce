@@ -12,7 +12,7 @@ import Summary  from '../ui-components/Summary';
 import Footer  from '../ui-components/Footer';
 import Signout from '../ui-components/Signout';
 
-const CartPage = () => {
+const ProductPage = () => {
     const navigate = useNavigate();
     const { user, signOut } = useAuthenticator((context) => [context.user]);
 
@@ -240,4 +240,4 @@ const CartPage = () => {
       );
 };
 
-export default CartPage;
+export default ProductPage;

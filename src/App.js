@@ -7,6 +7,7 @@ import CheckoutPage from './components/CheckoutPage';
 import ProducePage from './components/ProductPage';
 import ProfilePage from './components/ProfilePage';
 import SuccessPage from './components/SuccessPage';
+import HistoryPage from './components/HistoryPage';
 import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/cart" element={<ProtectedRoute component={CartPage} />} />
                 <Route path="/checkout" element={<ProtectedRoute component={CheckoutPage} />} />
                 <Route path="/home" element={<ProtectedRoute component={HomePage} />} />
+                <Route path="/history" element={<ProtectedRoute component={HistoryPage} />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/produce" element={<ProtectedRoute component={ProducePage} />} />
                 <Route path="/profile" element={<ProtectedRoute component={ProfilePage} />} />

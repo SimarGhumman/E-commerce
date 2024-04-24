@@ -12,7 +12,7 @@ import Profile from '../ui-components/Profile';
 import Footer  from '../ui-components/Footer';
 import Signout from '../ui-components/Signout';
 
-const CartPage = () => {
+const ProfilePage = () => {
     const navigate = useNavigate();
     const { user, signOut } = useAuthenticator((context) => [context.user]);
 
@@ -62,6 +62,10 @@ const CartPage = () => {
         navigate('/produce')
     };
 
+    const handleHistoryClick = () => {
+        navigate('/history')
+    };
+
     const handleSaveClick = () => {
         // TODO
     };
@@ -77,6 +81,7 @@ const CartPage = () => {
         <View className="App">
     
             <Navigation overrides={{
+
             Basket: {
                 onClick: handleBasketClick
             },
@@ -92,6 +97,10 @@ const CartPage = () => {
             }} />
         
             <Profile overrides = {{
+
+            "order history": {
+                onClick: handleHistoryClick
+            },
 
             "your name": { 
                 children: (
@@ -209,4 +218,4 @@ const CartPage = () => {
       );
 };
 
-export default CartPage;
+export default ProfilePage;

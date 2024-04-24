@@ -970,7 +970,7 @@ export default function Profile(props) {
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Save Changes"
-          {...getOverrideProps(overrides, "Text")}
+          {...getOverrideProps(overrides, "Text77287")}
         ></Text>
       </Flex>
       <Flex
@@ -1010,6 +1010,45 @@ export default function Profile(props) {
           whiteSpace="pre-wrap"
           children="Cancel"
           {...getOverrideProps(overrides, "Cancel")}
+        ></Text>
+      </Flex>
+      <Flex
+        gap="8px"
+        direction="column"
+        width="176px"
+        height="56px"
+        justifyContent="center"
+        alignItems="center"
+        overflow="hidden"
+        position="absolute"
+        top="97px"
+        left="1047px"
+        border="3px SOLID rgba(56,77,108,1)"
+        borderRadius="11px"
+        padding="10px 19px 10px 21px"
+        backgroundColor="rgba(66,107,31,1)"
+        {...getOverrideProps(overrides, "order history")}
+      >
+        <Text
+          fontFamily="Montserrat"
+          fontSize="14px"
+          fontWeight="700"
+          color="rgba(255,255,255,1)"
+          lineHeight="21px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="unset"
+          height="unset"
+          gap="unset"
+          alignItems="unset"
+          shrink="0"
+          position="relative"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="Order History"
+          {...getOverrideProps(overrides, "Text1423")}
         ></Text>
       </Flex>
     </View>
