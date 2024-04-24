@@ -75,7 +75,13 @@ const HistoryPage = () => {
 
           }} />
 
-        <HistoryHeading />
+        <HistoryHeading overrides = {{
+           "Purchased History" :{
+              children :(
+                <div> Purchase History</div>
+              )
+           }
+        }}/>
 
         <div>
             {fruitQuantities.map((item, index) => (
