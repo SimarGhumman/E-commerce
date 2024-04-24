@@ -5,7 +5,7 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getOverrideProps } from "./utils";
 import { Image, Text, View } from "@aws-amplify/ui-react";
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
@@ -19,12 +19,11 @@ export default function Aboutus(props) {
   // Configuration for the S3 client
   const s3Configuration = {
     credentials: {
-      accessKeyId: 'AKIA5FTY7YHTXMUBHDOS',
-      secretAccessKey: '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'
+      accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
     },
-    region: 'us-west-1',
+    region: process.env.REACT_APP_REGION,
   };
-
   // Create an S3 client instance with the configuration
   const s3 = new S3Client(s3Configuration);
 
