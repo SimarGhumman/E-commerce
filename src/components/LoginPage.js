@@ -3,6 +3,7 @@ import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
 import { Hub } from 'aws-amplify/utils';  // Ensure correct import
+import Signout from '../ui-components/Signout';
 
 const formFields = {
     signUp: {

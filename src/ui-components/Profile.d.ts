@@ -41,10 +41,12 @@ export declare type ProfileOverridesProps = {
     "Email & Phone"?: PrimitiveOverrideProps<ViewProps>;
     "Email Address"?: PrimitiveOverrideProps<TextProps>;
     "Email Field"?: PrimitiveOverrideProps<ViewProps>;
+    "eg. alaa.mohamed.gmail.com"?: PrimitiveOverrideProps<TextProps>;
     Mail?: PrimitiveOverrideProps<ViewProps>;
     Vector77226?: PrimitiveOverrideProps<IconProps>;
     "Phone Number"?: PrimitiveOverrideProps<TextProps>;
     "Phone Field"?: PrimitiveOverrideProps<ViewProps>;
+    "eg. 408-123-4567"?: PrimitiveOverrideProps<TextProps>;
     Phone?: PrimitiveOverrideProps<ViewProps>;
     Vector77230?: PrimitiveOverrideProps<IconProps>;
     "Vector 77"?: PrimitiveOverrideProps<IconProps>;
@@ -52,11 +54,13 @@ export declare type ProfileOverridesProps = {
     billingaddress?: PrimitiveOverrideProps<ViewProps>;
     "Billing Address"?: PrimitiveOverrideProps<TextProps>;
     "Location Field"?: PrimitiveOverrideProps<ViewProps>;
+    "eg. 12345 billing st. San Jose, CA, 94233"?: PrimitiveOverrideProps<TextProps>;
     "Location / undefined / Glyph: undefined"?: PrimitiveOverrideProps<ViewProps>;
     Vector77257?: PrimitiveOverrideProps<IconProps>;
     shippingaddress?: PrimitiveOverrideProps<ViewProps>;
     "Shipping Address"?: PrimitiveOverrideProps<TextProps>;
     "Time Zone Field"?: PrimitiveOverrideProps<ViewProps>;
+    "eg. 12345 shipping st. San Jose, CA, 94231"?: PrimitiveOverrideProps<TextProps>;
     "Clock / undefined / Glyph: undefined"?: PrimitiveOverrideProps<ViewProps>;
     Vector77262?: PrimitiveOverrideProps<IconProps>;
     "Vector 78"?: PrimitiveOverrideProps<IconProps>;

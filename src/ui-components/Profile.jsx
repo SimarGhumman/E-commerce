@@ -456,6 +456,29 @@ export default function Profile(props) {
           backgroundColor="rgba(255,255,255,1)"
           {...getOverrideProps(overrides, "Email Field")}
         ></View>
+        <Text
+          fontFamily="Montserrat"
+          fontSize="18px"
+          fontWeight="400"
+          color="rgba(171,177,187,1)"
+          fontStyle="italic"
+          lineHeight="21.941999435424805px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="400px"
+          height="35px"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="60px"
+          left="80px"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="eg. alaa.mohamed.gmail.com"
+          {...getOverrideProps(overrides, "eg. alaa.mohamed.gmail.com")}
+        ></Text>
         <View
           width="32.81px"
           height="35px"
@@ -536,6 +559,29 @@ export default function Profile(props) {
           backgroundColor="rgba(255,255,255,1)"
           {...getOverrideProps(overrides, "Phone Field")}
         ></View>
+        <Text
+          fontFamily="Montserrat"
+          fontSize="18px"
+          fontWeight="400"
+          color="rgba(171,177,187,1)"
+          fontStyle="italic"
+          lineHeight="21.941999435424805px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="400px"
+          height="35px"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="60px"
+          left="694px"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="eg. 408-123-4567"
+          {...getOverrideProps(overrides, "eg. 408-123-4567")}
+        ></Text>
         <View
           width="32.81px"
           height="35px"
@@ -672,6 +718,32 @@ export default function Profile(props) {
           backgroundColor="rgba(255,255,255,1)"
           {...getOverrideProps(overrides, "Location Field")}
         ></View>
+        <Text
+          fontFamily="Montserrat"
+          fontSize="18px"
+          fontWeight="400"
+          color="rgba(171,177,187,1)"
+          fontStyle="italic"
+          lineHeight="21.941999435424805px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="900px"
+          height="35px"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="60px"
+          left="80px"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="eg. 12345 billing st. San Jose, CA, 94233"
+          {...getOverrideProps(
+            overrides,
+            "eg. 12345 billing st. San Jose, CA, 94233"
+          )}
+        ></Text>
         <View
           width="27.69px"
           height="30px"
@@ -681,7 +753,7 @@ export default function Profile(props) {
           justifyContent="unset"
           overflow="hidden"
           position="absolute"
-          top="63.75px"
+          top="60px"
           left="19.62px"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(
@@ -769,6 +841,32 @@ export default function Profile(props) {
           backgroundColor="rgba(255,255,255,1)"
           {...getOverrideProps(overrides, "Time Zone Field")}
         ></View>
+        <Text
+          fontFamily="Montserrat"
+          fontSize="18px"
+          fontWeight="400"
+          color="rgba(171,177,187,1)"
+          fontStyle="italic"
+          lineHeight="21.941999435424805px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="900px"
+          height="35px"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="60px"
+          left="80px"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="eg. 12345 shipping st. San Jose, CA, 94231"
+          {...getOverrideProps(
+            overrides,
+            "eg. 12345 shipping st. San Jose, CA, 94231"
+          )}
+        ></Text>
         <View
           width="27.69px"
           height="30px"
@@ -778,7 +876,7 @@ export default function Profile(props) {
           justifyContent="unset"
           overflow="hidden"
           position="absolute"
-          top="62.5px"
+          top="60px"
           left="23.08px"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(

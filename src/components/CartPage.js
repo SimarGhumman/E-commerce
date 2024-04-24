@@ -1,5 +1,4 @@
-import React from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
+import React, { useState } from 'react';
 import {
     Button,
     View
@@ -12,7 +11,10 @@ import Navigation  from '../ui-components/Navigation';
 import Footer  from '../ui-components/Footer';
 import Item from '../ui-components/Itemcheckout';
 import Summary  from '../ui-components/Summary';
+import Signout from '../ui-components/Signout';
+import UpdateButton from  '../ui-components/Updatecart'
 import './styles.css'; 
+
 
 const CartPage = () => {
     const navigate = useNavigate();
@@ -24,11 +26,28 @@ const CartPage = () => {
 
     const handleCheckoutClick = () => {
       navigate('/checkout');
-  };
+   };
     
     const handleAboutClick = () => {
         navigate('/home');
     };
+
+    const handleUpdateClick = () => {
+      const differences = {};
+
+      for (const fruit in fruitCart) {
+        if (Object.prototype.hasOwnProperty.call(fruitCart, fruit)) {
+          const difference = newFruitCart[fruit] - fruitCart[fruit];
+          if (difference !== 0) {
+            differences[fruit] = difference;
+          }
+        }
+      }
+
+      console.log(differences);
+  };
+
+    
 
     const handleSignOut = async () => {
         await signOut();
@@ -75,6 +94,21 @@ const CartPage = () => {
       'Cherry': 2
     };
 
+    const [newFruitCart, setNewFruitCart] = useState({
+      'Apple': 2,
+      'Banana': 4,
+      'Orange': 3,
+      'Grapes': 2,
+      'Strawberry': 1,
+      'Plum': 6,
+      'Tomato': 5,
+      'Mango': 2,
+      'Kiwi': 4,
+      'Peach': 2,
+      'Pear': 1,
+      'Cherry': 2
+    });
+
     let totalPrice = 0;
 
     for (const fruit in fruitCart) {
@@ -86,6 +120,16 @@ const CartPage = () => {
 
     const itemsWithQuantity = Object.entries(fruitCart).filter(([fruit, quantity]) => quantity > 0);
   
+    const handleQuantityChange = (fruit, newQuantity) => {
+      // Ensure quantity is non-negative
+      const updatedQuantity = newQuantity >= 0 ? newQuantity : 0;
+      // Update the value of fruit in newFruitCart directly
+      newFruitCart[fruit] = updatedQuantity;
+    };
+    
+    
+    
+    
 
     return (
         <View className="App">
@@ -145,7 +189,14 @@ const CartPage = () => {
 
                     Qty : {
                       children : (
-                        <div>{quantity}</div>
+                        <input
+                          id={fruit}
+                          type="number"
+                          min="0"
+                          value={quantity}
+                          onChange={(event) => handleQuantityChange(fruit, parseInt(event.target.value))}
+                          style={{ width: '80px' }}
+                        />
                       )
                     }
 
@@ -153,8 +204,19 @@ const CartPage = () => {
                   />
                 </div>
             ))}
+
+            <UpdateButton 
+              style={{
+                display: 'block',
+                margin: 'auto',
+              }}
+              onClick={handleUpdateClick}
+            >
+              Update
+            </UpdateButton>
+
           </div>
-          <div className="summary">
+        <div className="summary">
           <Summary overrides = {{
 
             "Order Total": { //Total Price
@@ -192,19 +254,21 @@ const CartPage = () => {
               "Continue to payment": { //Name of product
                 onClick: handleCheckoutClick 
               }
-
             }}/>
+
           </div>
+
         </div>
-
-        <Footer />
-
-          
-
       
 
 
-        <Button onClick={handleSignOut}>Sign Out</Button>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Signout onClick={handleSignOut}>
+                  Sign Out
+            </Signout>
+          </div>
+        
+        <Footer />
 
         </View>
       );

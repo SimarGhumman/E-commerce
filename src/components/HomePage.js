@@ -14,6 +14,7 @@ import Navigation from '../ui-components/Navigation';
 import Footer from '../ui-components/Footer';
 import { getCurrentUser } from '@aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import Signout from '../ui-components/Signout';
 
 
 const client = generateClient();
@@ -113,7 +114,11 @@ function HomePage() {
         }
       }} />
 
-      <Button onClick={handleSignOut}>Sign Out</Button>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Signout onClick={handleSignOut}>
+                Sign Out
+            </Signout>
+        </div>
 
 
       <Footer />

@@ -10,6 +10,7 @@ import Item  from '../ui-components/Item2';
 import Navigation  from '../ui-components/Navigation';
 import Summary  from '../ui-components/Summary';
 import Footer  from '../ui-components/Footer';
+import Signout from '../ui-components/Signout';
 
 const CartPage = () => {
     const navigate = useNavigate();
@@ -117,11 +118,16 @@ const CartPage = () => {
 
                               quantity: {
                                 children: (
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <input type="number" value={quantities[index]} onChange={(event) => handleQuantityChange(index, event)} style={{ fontSize: '12px', width: '50px', border: 'none' }} />
-                                    </div>
+                                  <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                    <input 
+                                      type="number" 
+                                      value={quantities[index]} 
+                                      onChange={(event) => handleQuantityChange(index, event)} 
+                                      style={{ fontSize: '12px', width: '50px', border: 'none' }} 
+                                    />
+                                  </div>
                                 )
-                            },
+                              },
                           
                             UnitPrice: {  //Price
                               children: (
@@ -222,7 +228,11 @@ const CartPage = () => {
           </div>
 
             
-         <Button onClick={handleSignOut}>Sign Out</Button>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <Signout onClick={handleSignOut}>
+                    Sign Out
+                </Signout>
+          </div>
 
          <Footer />
 
