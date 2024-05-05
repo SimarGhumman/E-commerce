@@ -434,7 +434,7 @@ export default function ShoppingCartUpdateForm(props) {
           productToUnLink.forEach((original) => {
             if (!canUnlinkProduct) {
               throw Error(
-                `Product ${original.id} cannot be unlinked from ShoppingCart because shoppingcartID is a required field.`
+                `Product ${original.id} cannot be unlinked from ShoppingCart because shoppingCartID is a required field.`
               );
             }
             promises.push(
@@ -443,7 +443,7 @@ export default function ShoppingCartUpdateForm(props) {
                 variables: {
                   input: {
                     id: original.id,
-                    shoppingcartID: null,
+                    shoppingCartID: null,
                   },
                 },
               })
@@ -456,7 +456,7 @@ export default function ShoppingCartUpdateForm(props) {
                 variables: {
                   input: {
                     id: original.id,
-                    shoppingcartID: shoppingCartRecord.id,
+                    shoppingCartID: shoppingCartRecord.id,
                   },
                 },
               })

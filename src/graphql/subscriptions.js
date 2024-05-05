@@ -1,93 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateInventory = /* GraphQL */ `
-  subscription OnCreateInventory(
-    $filter: ModelSubscriptionInventoryFilterInput
-    $username: String
-  ) {
-    onCreateInventory(filter: $filter, username: $username) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
-export const onUpdateInventory = /* GraphQL */ `
-  subscription OnUpdateInventory(
-    $filter: ModelSubscriptionInventoryFilterInput
-    $username: String
-  ) {
-    onUpdateInventory(filter: $filter, username: $username) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
-export const onDeleteInventory = /* GraphQL */ `
-  subscription OnDeleteInventory(
-    $filter: ModelSubscriptionInventoryFilterInput
-    $username: String
-  ) {
-    onDeleteInventory(filter: $filter, username: $username) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser(
     $filter: ModelSubscriptionUserFilterInput
@@ -301,12 +214,19 @@ export const onCreateProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }
@@ -321,12 +241,19 @@ export const onUpdateProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }
@@ -341,12 +268,19 @@ export const onDeleteProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }

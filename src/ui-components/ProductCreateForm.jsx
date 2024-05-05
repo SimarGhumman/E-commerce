@@ -21,7 +21,7 @@ import {
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { listOrders, listShoppingCarts } from "../graphql/queries";
+import { listImages, listOrders, listShoppingCarts } from "../graphql/queries";
 import { createProduct } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
@@ -193,9 +193,9 @@ export default function ProductCreateForm(props) {
   const initialValues = {
     name: "",
     description: "",
-    image: "",
+    image: undefined,
     price: "",
-    shoppingcartID: undefined,
+    shoppingCartID: undefined,
     orderID: undefined,
   };
   const [name, setName] = React.useState(initialValues.name);
@@ -203,14 +203,16 @@ export default function ProductCreateForm(props) {
     initialValues.description
   );
   const [image, setImage] = React.useState(initialValues.image);
+  const [imageLoading, setImageLoading] = React.useState(false);
+  const [imageRecords, setImageRecords] = React.useState([]);
   const [price, setPrice] = React.useState(initialValues.price);
-  const [shoppingcartID, setShoppingcartID] = React.useState(
-    initialValues.shoppingcartID
+  const [shoppingCartID, setShoppingCartID] = React.useState(
+    initialValues.shoppingCartID
   );
-  const [shoppingcartIDLoading, setShoppingcartIDLoading] =
+  const [shoppingCartIDLoading, setShoppingCartIDLoading] =
     React.useState(false);
-  const [shoppingcartIDRecords, setShoppingcartIDRecords] = React.useState([]);
-  const [selectedShoppingcartIDRecords, setSelectedShoppingcartIDRecords] =
+  const [shoppingCartIDRecords, setShoppingCartIDRecords] = React.useState([]);
+  const [selectedShoppingCartIDRecords, setSelectedShoppingCartIDRecords] =
     React.useState([]);
   const [orderID, setOrderID] = React.useState(initialValues.orderID);
   const [orderIDLoading, setOrderIDLoading] = React.useState(false);
@@ -224,29 +226,44 @@ export default function ProductCreateForm(props) {
     setName(initialValues.name);
     setDescription(initialValues.description);
     setImage(initialValues.image);
+    setCurrentImageValue(undefined);
+    setCurrentImageDisplayValue("");
     setPrice(initialValues.price);
-    setShoppingcartID(initialValues.shoppingcartID);
-    setCurrentShoppingcartIDValue(undefined);
-    setCurrentShoppingcartIDDisplayValue("");
+    setShoppingCartID(initialValues.shoppingCartID);
+    setCurrentShoppingCartIDValue(undefined);
+    setCurrentShoppingCartIDDisplayValue("");
     setOrderID(initialValues.orderID);
     setCurrentOrderIDValue(undefined);
     setCurrentOrderIDDisplayValue("");
     setErrors({});
   };
+  const [currentImageDisplayValue, setCurrentImageDisplayValue] =
+    React.useState("");
+  const [currentImageValue, setCurrentImageValue] = React.useState(undefined);
+  const imageRef = React.createRef();
   const [
-    currentShoppingcartIDDisplayValue,
-    setCurrentShoppingcartIDDisplayValue,
+    currentShoppingCartIDDisplayValue,
+    setCurrentShoppingCartIDDisplayValue,
   ] = React.useState("");
-  const [currentShoppingcartIDValue, setCurrentShoppingcartIDValue] =
+  const [currentShoppingCartIDValue, setCurrentShoppingCartIDValue] =
     React.useState(undefined);
-  const shoppingcartIDRef = React.createRef();
+  const shoppingCartIDRef = React.createRef();
   const [currentOrderIDDisplayValue, setCurrentOrderIDDisplayValue] =
     React.useState("");
   const [currentOrderIDValue, setCurrentOrderIDValue] =
     React.useState(undefined);
   const orderIDRef = React.createRef();
+  const getIDValue = {
+    image: (r) => JSON.stringify({ id: r?.id }),
+  };
+  const imageIdSet = new Set(
+    Array.isArray(image)
+      ? image.map((r) => getIDValue.image?.(r))
+      : getIDValue.image?.(image)
+  );
   const getDisplayValue = {
-    shoppingcartID: (r) => r?.id,
+    image: (r) => `${r?.url ? r?.url + " - " : ""}${r?.id}`,
+    shoppingCartID: (r) => r?.id,
     orderID: (r) => `${r?.status ? r?.status + " - " : ""}${r?.id}`,
   };
   const validations = {
@@ -254,7 +271,7 @@ export default function ProductCreateForm(props) {
     description: [],
     image: [],
     price: [],
-    shoppingcartID: [{ type: "Required" }],
+    shoppingCartID: [{ type: "Required" }],
     orderID: [{ type: "Required" }],
   };
   const runValidationTasks = async (
@@ -274,8 +291,37 @@ export default function ProductCreateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
-  const fetchShoppingcartIDRecords = async (value) => {
-    setShoppingcartIDLoading(true);
+  const fetchImageRecords = async (value) => {
+    setImageLoading(true);
+    const newOptions = [];
+    let newNext = "";
+    while (newOptions.length < autocompleteLength && newNext != null) {
+      const variables = {
+        limit: autocompleteLength * 5,
+        filter: {
+          or: [{ url: { contains: value } }, { id: { contains: value } }],
+        },
+      };
+      if (newNext) {
+        variables["nextToken"] = newNext;
+      }
+      const result = (
+        await client.graphql({
+          query: listImages.replaceAll("__typename", ""),
+          variables,
+        })
+      )?.data?.listImages?.items;
+      var loaded = result.filter(
+        (item) => !imageIdSet.has(getIDValue.image?.(item))
+      );
+      newOptions.push(...loaded);
+      newNext = result.nextToken;
+    }
+    setImageRecords(newOptions.slice(0, autocompleteLength));
+    setImageLoading(false);
+  };
+  const fetchShoppingCartIDRecords = async (value) => {
+    setShoppingCartIDLoading(true);
     const newOptions = [];
     let newNext = "";
     while (newOptions.length < autocompleteLength && newNext != null) {
@@ -292,12 +338,12 @@ export default function ProductCreateForm(props) {
           variables,
         })
       )?.data?.listShoppingCarts?.items;
-      var loaded = result.filter((item) => shoppingcartID !== item.id);
+      var loaded = result.filter((item) => shoppingCartID !== item.id);
       newOptions.push(...loaded);
       newNext = result.nextToken;
     }
-    setShoppingcartIDRecords(newOptions.slice(0, autocompleteLength));
-    setShoppingcartIDLoading(false);
+    setShoppingCartIDRecords(newOptions.slice(0, autocompleteLength));
+    setShoppingCartIDLoading(false);
   };
   const fetchOrderIDRecords = async (value) => {
     setOrderIDLoading(true);
@@ -327,7 +373,8 @@ export default function ProductCreateForm(props) {
     setOrderIDLoading(false);
   };
   React.useEffect(() => {
-    fetchShoppingcartIDRecords("");
+    fetchImageRecords("");
+    fetchShoppingCartIDRecords("");
     fetchOrderIDRecords("");
   }, []);
   return (
@@ -343,7 +390,7 @@ export default function ProductCreateForm(props) {
           description,
           image,
           price,
-          shoppingcartID,
+          shoppingCartID,
           orderID,
         };
         const validationResponses = await Promise.all(
@@ -351,13 +398,21 @@ export default function ProductCreateForm(props) {
             if (Array.isArray(modelFields[fieldName])) {
               promises.push(
                 ...modelFields[fieldName].map((item) =>
-                  runValidationTasks(fieldName, item)
+                  runValidationTasks(
+                    fieldName,
+                    item,
+                    getDisplayValue[fieldName]
+                  )
                 )
               );
               return promises;
             }
             promises.push(
-              runValidationTasks(fieldName, modelFields[fieldName])
+              runValidationTasks(
+                fieldName,
+                modelFields[fieldName],
+                getDisplayValue[fieldName]
+              )
             );
             return promises;
           }, [])
@@ -374,11 +429,19 @@ export default function ProductCreateForm(props) {
               modelFields[key] = null;
             }
           });
+          const modelFieldsToSave = {
+            name: modelFields.name,
+            description: modelFields.description,
+            productImageId: modelFields?.image?.id,
+            price: modelFields.price,
+            shoppingCartID: modelFields.shoppingCartID,
+            orderID: modelFields.orderID,
+          };
           await client.graphql({
             query: createProduct.replaceAll("__typename", ""),
             variables: {
               input: {
-                ...modelFields,
+                ...modelFieldsToSave,
               },
             },
           });
@@ -411,7 +474,7 @@ export default function ProductCreateForm(props) {
               description,
               image,
               price,
-              shoppingcartID,
+              shoppingCartID,
               orderID,
             };
             const result = onChange(modelFields);
@@ -440,7 +503,7 @@ export default function ProductCreateForm(props) {
               description: value,
               image,
               price,
-              shoppingcartID,
+              shoppingCartID,
               orderID,
             };
             const result = onChange(modelFields);
@@ -456,35 +519,88 @@ export default function ProductCreateForm(props) {
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
       ></TextField>
-      <TextField
-        label="Image"
-        isRequired={false}
-        isReadOnly={false}
-        value={image}
-        onChange={(e) => {
-          let { value } = e.target;
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
           if (onChange) {
             const modelFields = {
               name,
               description,
               image: value,
               price,
-              shoppingcartID,
+              shoppingCartID,
               orderID,
             };
             const result = onChange(modelFields);
             value = result?.image ?? value;
           }
-          if (errors.image?.hasError) {
-            runValidationTasks("image", value);
-          }
           setImage(value);
+          setCurrentImageValue(undefined);
+          setCurrentImageDisplayValue("");
         }}
-        onBlur={() => runValidationTasks("image", image)}
-        errorMessage={errors.image?.errorMessage}
-        hasError={errors.image?.hasError}
-        {...getOverrideProps(overrides, "image")}
-      ></TextField>
+        currentFieldValue={currentImageValue}
+        label={"Image"}
+        items={image ? [image] : []}
+        hasError={errors?.image?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("image", currentImageValue)
+        }
+        errorMessage={errors?.image?.errorMessage}
+        getBadgeText={getDisplayValue.image}
+        setFieldValue={(model) => {
+          setCurrentImageDisplayValue(
+            model ? getDisplayValue.image(model) : ""
+          );
+          setCurrentImageValue(model);
+        }}
+        inputFieldRef={imageRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Image"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search Image"
+          value={currentImageDisplayValue}
+          options={imageRecords
+            .filter((r) => !imageIdSet.has(getIDValue.image?.(r)))
+            .map((r) => ({
+              id: getIDValue.image?.(r),
+              label: getDisplayValue.image?.(r),
+            }))}
+          isLoading={imageLoading}
+          onSelect={({ id, label }) => {
+            setCurrentImageValue(
+              imageRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentImageDisplayValue(label);
+            runValidationTasks("image", label);
+          }}
+          onClear={() => {
+            setCurrentImageDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            fetchImageRecords(value);
+            if (errors.image?.hasError) {
+              runValidationTasks("image", value);
+            }
+            setCurrentImageDisplayValue(value);
+            setCurrentImageValue(undefined);
+          }}
+          onBlur={() => runValidationTasks("image", currentImageDisplayValue)}
+          errorMessage={errors.image?.errorMessage}
+          hasError={errors.image?.hasError}
+          ref={imageRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "image")}
+        ></Autocomplete>
+      </ArrayField>
       <TextField
         label="Price"
         isRequired={false}
@@ -502,7 +618,7 @@ export default function ProductCreateForm(props) {
               description,
               image,
               price: value,
-              shoppingcartID,
+              shoppingCartID,
               orderID,
             };
             const result = onChange(modelFields);
@@ -528,92 +644,92 @@ export default function ProductCreateForm(props) {
               description,
               image,
               price,
-              shoppingcartID: value,
+              shoppingCartID: value,
               orderID,
             };
             const result = onChange(modelFields);
-            value = result?.shoppingcartID ?? value;
+            value = result?.shoppingCartID ?? value;
           }
-          setShoppingcartID(value);
-          setCurrentShoppingcartIDValue(undefined);
+          setShoppingCartID(value);
+          setCurrentShoppingCartIDValue(undefined);
         }}
-        currentFieldValue={currentShoppingcartIDValue}
-        label={"Shoppingcart id"}
-        items={shoppingcartID ? [shoppingcartID] : []}
-        hasError={errors?.shoppingcartID?.hasError}
+        currentFieldValue={currentShoppingCartIDValue}
+        label={"Shopping cart id"}
+        items={shoppingCartID ? [shoppingCartID] : []}
+        hasError={errors?.shoppingCartID?.hasError}
         runValidationTasks={async () =>
-          await runValidationTasks("shoppingcartID", currentShoppingcartIDValue)
+          await runValidationTasks("shoppingCartID", currentShoppingCartIDValue)
         }
-        errorMessage={errors?.shoppingcartID?.errorMessage}
+        errorMessage={errors?.shoppingCartID?.errorMessage}
         getBadgeText={(value) =>
           value
-            ? getDisplayValue.shoppingcartID(
-                shoppingcartIDRecords.find((r) => r.id === value) ??
-                  selectedShoppingcartIDRecords.find((r) => r.id === value)
+            ? getDisplayValue.shoppingCartID(
+                shoppingCartIDRecords.find((r) => r.id === value) ??
+                  selectedShoppingCartIDRecords.find((r) => r.id === value)
               )
             : ""
         }
         setFieldValue={(value) => {
-          setCurrentShoppingcartIDDisplayValue(
+          setCurrentShoppingCartIDDisplayValue(
             value
-              ? getDisplayValue.shoppingcartID(
-                  shoppingcartIDRecords.find((r) => r.id === value) ??
-                    selectedShoppingcartIDRecords.find((r) => r.id === value)
+              ? getDisplayValue.shoppingCartID(
+                  shoppingCartIDRecords.find((r) => r.id === value) ??
+                    selectedShoppingCartIDRecords.find((r) => r.id === value)
                 )
               : ""
           );
-          setCurrentShoppingcartIDValue(value);
-          const selectedRecord = shoppingcartIDRecords.find(
+          setCurrentShoppingCartIDValue(value);
+          const selectedRecord = shoppingCartIDRecords.find(
             (r) => r.id === value
           );
           if (selectedRecord) {
-            setSelectedShoppingcartIDRecords([selectedRecord]);
+            setSelectedShoppingCartIDRecords([selectedRecord]);
           }
         }}
-        inputFieldRef={shoppingcartIDRef}
+        inputFieldRef={shoppingCartIDRef}
         defaultFieldValue={""}
       >
         <Autocomplete
-          label="Shoppingcart id"
+          label="Shopping cart id"
           isRequired={true}
           isReadOnly={false}
           placeholder="Search ShoppingCart"
-          value={currentShoppingcartIDDisplayValue}
-          options={shoppingcartIDRecords
+          value={currentShoppingCartIDDisplayValue}
+          options={shoppingCartIDRecords
             .filter(
               (r, i, arr) =>
                 arr.findIndex((member) => member?.id === r?.id) === i
             )
             .map((r) => ({
               id: r?.id,
-              label: getDisplayValue.shoppingcartID?.(r),
+              label: getDisplayValue.shoppingCartID?.(r),
             }))}
-          isLoading={shoppingcartIDLoading}
+          isLoading={shoppingCartIDLoading}
           onSelect={({ id, label }) => {
-            setCurrentShoppingcartIDValue(id);
-            setCurrentShoppingcartIDDisplayValue(label);
-            runValidationTasks("shoppingcartID", label);
+            setCurrentShoppingCartIDValue(id);
+            setCurrentShoppingCartIDDisplayValue(label);
+            runValidationTasks("shoppingCartID", label);
           }}
           onClear={() => {
-            setCurrentShoppingcartIDDisplayValue("");
+            setCurrentShoppingCartIDDisplayValue("");
           }}
           onChange={(e) => {
             let { value } = e.target;
-            fetchShoppingcartIDRecords(value);
-            if (errors.shoppingcartID?.hasError) {
-              runValidationTasks("shoppingcartID", value);
+            fetchShoppingCartIDRecords(value);
+            if (errors.shoppingCartID?.hasError) {
+              runValidationTasks("shoppingCartID", value);
             }
-            setCurrentShoppingcartIDDisplayValue(value);
-            setCurrentShoppingcartIDValue(undefined);
+            setCurrentShoppingCartIDDisplayValue(value);
+            setCurrentShoppingCartIDValue(undefined);
           }}
           onBlur={() =>
-            runValidationTasks("shoppingcartID", currentShoppingcartIDValue)
+            runValidationTasks("shoppingCartID", currentShoppingCartIDValue)
           }
-          errorMessage={errors.shoppingcartID?.errorMessage}
-          hasError={errors.shoppingcartID?.hasError}
-          ref={shoppingcartIDRef}
+          errorMessage={errors.shoppingCartID?.errorMessage}
+          hasError={errors.shoppingCartID?.hasError}
+          ref={shoppingCartIDRef}
           labelHidden={true}
-          {...getOverrideProps(overrides, "shoppingcartID")}
+          {...getOverrideProps(overrides, "shoppingCartID")}
         ></Autocomplete>
       </ArrayField>
       <ArrayField
@@ -626,7 +742,7 @@ export default function ProductCreateForm(props) {
               description,
               image,
               price,
-              shoppingcartID,
+              shoppingCartID,
               orderID: value,
             };
             const result = onChange(modelFields);

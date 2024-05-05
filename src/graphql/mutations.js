@@ -1,93 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createInventory = /* GraphQL */ `
-  mutation CreateInventory(
-    $input: CreateInventoryInput!
-    $condition: ModelInventoryConditionInput
-  ) {
-    createInventory(input: $input, condition: $condition) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
-export const updateInventory = /* GraphQL */ `
-  mutation UpdateInventory(
-    $input: UpdateInventoryInput!
-    $condition: ModelInventoryConditionInput
-  ) {
-    updateInventory(input: $input, condition: $condition) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
-export const deleteInventory = /* GraphQL */ `
-  mutation DeleteInventory(
-    $input: DeleteInventoryInput!
-    $condition: ModelInventoryConditionInput
-  ) {
-    deleteInventory(input: $input, condition: $condition) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -301,12 +214,19 @@ export const createProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }
@@ -321,12 +241,19 @@ export const updateProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }
@@ -341,12 +268,19 @@ export const deleteProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }

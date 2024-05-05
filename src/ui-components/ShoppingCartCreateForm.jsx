@@ -383,7 +383,7 @@ export default function ShoppingCartCreateForm(props) {
                   variables: {
                     input: {
                       id: original.id,
-                      shoppingcartID: shoppingCart.id,
+                      shoppingCartID: shoppingCart.id,
                     },
                   },
                 })

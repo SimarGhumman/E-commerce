@@ -84,8 +84,8 @@ export declare type ProfileOverridesProps = {
 export declare type ProfileProps = React.PropsWithChildren<Partial<ViewProps> & {
     note?: any;
     user?: any;
-    birthday?: any;
     image?: any;
+    birthday?: any;
 } & {
     overrides?: ProfileOverridesProps | undefined | null;
 }>;

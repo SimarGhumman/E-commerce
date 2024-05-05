@@ -9,7 +9,7 @@ import * as React from "react";
 import { getOverrideProps, useNavigateAction } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
 export default function Profile(props) {
-  const { note, user, birthday, image, overrides, ...rest } = props;
+  const { note, user, image, birthday, overrides, ...rest } = props;
   const cancelButtonOnClick = useNavigateAction({ type: "reload" });
   return (
     <View

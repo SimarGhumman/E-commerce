@@ -1,53 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getInventory = /* GraphQL */ `
-  query GetInventory($id: ID!) {
-    getInventory(id: $id) {
-      id
-      quantity
-      product {
-        id
-        name
-        description
-        image
-        price
-        shoppingcartID
-        orderID
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      createdAt
-      updatedAt
-      inventoryProductId
-      username
-      __typename
-    }
-  }
-`;
-export const listInventories = /* GraphQL */ `
-  query ListInventories(
-    $filter: ModelInventoryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listInventories(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        quantity
-        createdAt
-        updatedAt
-        inventoryProductId
-        username
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -240,12 +193,19 @@ export const getProduct = /* GraphQL */ `
       id
       name
       description
-      image
+      image {
+        id
+        url
+        createdAt
+        updatedAt
+        __typename
+      }
       price
-      shoppingcartID
+      shoppingCartID
       orderID
       createdAt
       updatedAt
+      productImageId
       username
       __typename
     }
@@ -262,12 +222,12 @@ export const listProducts = /* GraphQL */ `
         id
         name
         description
-        image
         price
-        shoppingcartID
+        shoppingCartID
         orderID
         createdAt
         updatedAt
+        productImageId
         username
         __typename
       }
@@ -276,16 +236,16 @@ export const listProducts = /* GraphQL */ `
     }
   }
 `;
-export const productsByShoppingcartID = /* GraphQL */ `
-  query ProductsByShoppingcartID(
-    $shoppingcartID: ID!
+export const productsByShoppingCartID = /* GraphQL */ `
+  query ProductsByShoppingCartID(
+    $shoppingCartID: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelProductFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    productsByShoppingcartID(
-      shoppingcartID: $shoppingcartID
+    productsByShoppingCartID(
+      shoppingCartID: $shoppingCartID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -295,12 +255,12 @@ export const productsByShoppingcartID = /* GraphQL */ `
         id
         name
         description
-        image
         price
-        shoppingcartID
+        shoppingCartID
         orderID
         createdAt
         updatedAt
+        productImageId
         username
         __typename
       }
@@ -328,12 +288,12 @@ export const productsByOrderID = /* GraphQL */ `
         id
         name
         description
-        image
         price
-        shoppingcartID
+        shoppingCartID
         orderID
         createdAt
         updatedAt
+        productImageId
         username
         __typename
       }

@@ -140,7 +140,7 @@ export default function Aboutus(props) {
         {...getOverrideProps(overrides, "WHAT WE BELIEVE")}
       ></Text>
       <Image
-        width="20%"
+        width="calc(100% - 936px)"
         height="693px"
         display="block"
         gap="unset"
@@ -185,7 +185,7 @@ export default function Aboutus(props) {
         )}
       ></Text>
       <Image
-        width="50%"
+        width="calc(100% - 660px)"
         height="480px"
         display="block"
         gap="unset"
