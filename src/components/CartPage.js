@@ -166,7 +166,7 @@ const CartPage = () => {
         <div className="cartcontainer">
           <div className="items">
             {itemsWithQuantity.map(([fruit, quantity]) => (
-                <div style={{ paddingBottom: '10px' }}>
+                <div style={{ paddingBottom: '10px',paddingLeft: '50px' }}>
                   <Item overrides ={{
 
                     itemName : {
