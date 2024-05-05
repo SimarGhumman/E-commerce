@@ -64,6 +64,10 @@ const CartPage = () => {
       navigate('/produce')
     };
 
+    const handleSearchClick = () => {
+      navigate('/search')
+    };
+
     const fruitPrices = {
       'Apple': 2.99,
       'Banana': 0.89,
@@ -149,7 +153,11 @@ const CartPage = () => {
 
             Shop: {
               onClick: handleShopClick
-            }
+            },
+
+            Search116156 :{
+              onClick: handleSearchClick
+            } ,
 
           }} />
 
