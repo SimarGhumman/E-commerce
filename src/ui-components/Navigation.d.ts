@@ -22,6 +22,8 @@ export declare type NavigationOverridesProps = {
     "E-commerce"?: PrimitiveOverrideProps<TextProps>;
     "Who we are"?: PrimitiveOverrideProps<TextProps>;
     "My profile"?: PrimitiveOverrideProps<TextProps>;
+    Search116156?: PrimitiveOverrideProps<FlexProps>;
+    Search116157?: PrimitiveOverrideProps<TextProps>;
     Button?: PrimitiveOverrideProps<FlexProps>;
     Shop?: PrimitiveOverrideProps<TextProps>;
     "Cart button"?: PrimitiveOverrideProps<FlexProps>;

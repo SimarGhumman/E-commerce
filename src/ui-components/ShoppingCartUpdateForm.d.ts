@@ -22,18 +22,18 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ShoppingCartUpdateFormInputValues = {
-    product?: any[];
-    userID?: string;
+    user?: any;
+    products?: any[];
 };
 export declare type ShoppingCartUpdateFormValidationValues = {
-    product?: ValidationFunction<any>;
-    userID?: ValidationFunction<string>;
+    user?: ValidationFunction<any>;
+    products?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ShoppingCartUpdateFormOverridesProps = {
     ShoppingCartUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    product?: PrimitiveOverrideProps<AutocompleteProps>;
-    userID?: PrimitiveOverrideProps<AutocompleteProps>;
+    user?: PrimitiveOverrideProps<AutocompleteProps>;
+    products?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type ShoppingCartUpdateFormProps = React.PropsWithChildren<{
     overrides?: ShoppingCartUpdateFormOverridesProps | undefined | null;

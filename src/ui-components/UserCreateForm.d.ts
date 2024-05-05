@@ -27,8 +27,8 @@ export declare type UserCreateFormInputValues = {
     password?: string;
     shippingAddress?: string;
     billingAddress?: string;
-    shoppingCart?: any[];
-    order?: any[];
+    shoppingCart?: any;
+    orders?: any[];
 };
 export declare type UserCreateFormValidationValues = {
     username?: ValidationFunction<string>;
@@ -37,7 +37,7 @@ export declare type UserCreateFormValidationValues = {
     shippingAddress?: ValidationFunction<string>;
     billingAddress?: ValidationFunction<string>;
     shoppingCart?: ValidationFunction<any>;
-    order?: ValidationFunction<any>;
+    orders?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserCreateFormOverridesProps = {
@@ -48,7 +48,7 @@ export declare type UserCreateFormOverridesProps = {
     shippingAddress?: PrimitiveOverrideProps<TextFieldProps>;
     billingAddress?: PrimitiveOverrideProps<TextFieldProps>;
     shoppingCart?: PrimitiveOverrideProps<AutocompleteProps>;
-    order?: PrimitiveOverrideProps<AutocompleteProps>;
+    orders?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type UserCreateFormProps = React.PropsWithChildren<{
     overrides?: UserCreateFormOverridesProps | undefined | null;

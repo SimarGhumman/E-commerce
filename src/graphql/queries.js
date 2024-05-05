@@ -11,15 +11,88 @@ export const getUser = /* GraphQL */ `
       shippingAddress
       billingAddress
       shoppingCart {
-        nextToken
+        id
+        userID
+        user {
+          id
+          username
+          email
+          password
+          shippingAddress
+          billingAddress
+          shoppingCart {
+            id
+            userID
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          orders {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          userShoppingCartId
+          __typename
+        }
+        products {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        username
         __typename
       }
-      order {
+      orders {
+        items {
+          id
+          userID
+          user {
+            id
+            username
+            email
+            password
+            shippingAddress
+            billingAddress
+            createdAt
+            updatedAt
+            userShoppingCartId
+            __typename
+          }
+          products {
+            nextToken
+            __typename
+          }
+          date
+          status
+          totalPrice
+          createdAt
+          updatedAt
+          userOrdersId
+          username
+          __typename
+        }
         nextToken
         __typename
       }
       createdAt
       updatedAt
+      userShoppingCartId
       __typename
     }
   }
@@ -38,8 +111,49 @@ export const listUsers = /* GraphQL */ `
         password
         shippingAddress
         billingAddress
+        shoppingCart {
+          id
+          userID
+          user {
+            id
+            username
+            email
+            password
+            shippingAddress
+            billingAddress
+            createdAt
+            updatedAt
+            userShoppingCartId
+            __typename
+          }
+          products {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
+        orders {
+          items {
+            id
+            userID
+            date
+            status
+            totalPrice
+            createdAt
+            updatedAt
+            userOrdersId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
+        userShoppingCartId
         __typename
       }
       nextToken
@@ -51,17 +165,92 @@ export const getOrder = /* GraphQL */ `
   query GetOrder($id: ID!) {
     getOrder(id: $id) {
       id
-      date
-      status
-      trackingNumber
-      totalPrice
       userID
-      product {
+      user {
+        id
+        username
+        email
+        password
+        shippingAddress
+        billingAddress
+        shoppingCart {
+          id
+          userID
+          user {
+            id
+            username
+            email
+            password
+            shippingAddress
+            billingAddress
+            createdAt
+            updatedAt
+            userShoppingCartId
+            __typename
+          }
+          products {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
+        orders {
+          items {
+            id
+            userID
+            date
+            status
+            totalPrice
+            createdAt
+            updatedAt
+            userOrdersId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userShoppingCartId
+        __typename
+      }
+      products {
+        items {
+          id
+          productID
+          product {
+            id
+            name
+            description
+            price
+            createdAt
+            updatedAt
+            productImageId
+            username
+            __typename
+          }
+          quantity
+          createdAt
+          updatedAt
+          orderProductsId
+          shoppingCartProductsId
+          productQuantitiesId
+          username
+          __typename
+        }
         nextToken
         __typename
       }
+      date
+      status
+      totalPrice
       createdAt
       updatedAt
+      userOrdersId
       username
       __typename
     }
@@ -76,13 +265,53 @@ export const listOrders = /* GraphQL */ `
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        userID
+        user {
+          id
+          username
+          email
+          password
+          shippingAddress
+          billingAddress
+          shoppingCart {
+            id
+            userID
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          orders {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          userShoppingCartId
+          __typename
+        }
+        products {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         date
         status
-        trackingNumber
         totalPrice
-        userID
         createdAt
         updatedAt
+        userOrdersId
         username
         __typename
       }
@@ -91,16 +320,18 @@ export const listOrders = /* GraphQL */ `
     }
   }
 `;
-export const ordersByUserID = /* GraphQL */ `
-  query OrdersByUserID(
+export const ordersByUserIDAndId = /* GraphQL */ `
+  query OrdersByUserIDAndId(
     $userID: ID!
+    $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelOrderFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    ordersByUserID(
+    ordersByUserIDAndId(
       userID: $userID
+      id: $id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -108,13 +339,53 @@ export const ordersByUserID = /* GraphQL */ `
     ) {
       items {
         id
+        userID
+        user {
+          id
+          username
+          email
+          password
+          shippingAddress
+          billingAddress
+          shoppingCart {
+            id
+            userID
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          orders {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          userShoppingCartId
+          __typename
+        }
+        products {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         date
         status
-        trackingNumber
         totalPrice
-        userID
         createdAt
         updatedAt
+        userOrdersId
         username
         __typename
       }
@@ -127,11 +398,86 @@ export const getShoppingCart = /* GraphQL */ `
   query GetShoppingCart($id: ID!) {
     getShoppingCart(id: $id) {
       id
-      product {
+      userID
+      user {
+        id
+        username
+        email
+        password
+        shippingAddress
+        billingAddress
+        shoppingCart {
+          id
+          userID
+          user {
+            id
+            username
+            email
+            password
+            shippingAddress
+            billingAddress
+            createdAt
+            updatedAt
+            userShoppingCartId
+            __typename
+          }
+          products {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
+        orders {
+          items {
+            id
+            userID
+            date
+            status
+            totalPrice
+            createdAt
+            updatedAt
+            userOrdersId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userShoppingCartId
+        __typename
+      }
+      products {
+        items {
+          id
+          productID
+          product {
+            id
+            name
+            description
+            price
+            createdAt
+            updatedAt
+            productImageId
+            username
+            __typename
+          }
+          quantity
+          createdAt
+          updatedAt
+          orderProductsId
+          shoppingCartProductsId
+          productQuantitiesId
+          username
+          __typename
+        }
         nextToken
         __typename
       }
-      userID
       createdAt
       updatedAt
       username
@@ -149,6 +495,46 @@ export const listShoppingCarts = /* GraphQL */ `
       items {
         id
         userID
+        user {
+          id
+          username
+          email
+          password
+          shippingAddress
+          billingAddress
+          shoppingCart {
+            id
+            userID
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          orders {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          userShoppingCartId
+          __typename
+        }
+        products {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         username
@@ -159,16 +545,18 @@ export const listShoppingCarts = /* GraphQL */ `
     }
   }
 `;
-export const shoppingCartsByUserID = /* GraphQL */ `
-  query ShoppingCartsByUserID(
+export const shoppingCartsByUserIDAndId = /* GraphQL */ `
+  query ShoppingCartsByUserIDAndId(
     $userID: ID!
+    $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelShoppingCartFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    shoppingCartsByUserID(
+    shoppingCartsByUserIDAndId(
       userID: $userID
+      id: $id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -177,6 +565,46 @@ export const shoppingCartsByUserID = /* GraphQL */ `
       items {
         id
         userID
+        user {
+          id
+          username
+          email
+          password
+          shippingAddress
+          billingAddress
+          shoppingCart {
+            id
+            userID
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          orders {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          userShoppingCartId
+          __typename
+        }
+        products {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         username
@@ -196,13 +624,40 @@ export const getProduct = /* GraphQL */ `
       image {
         id
         url
+        description
         createdAt
         updatedAt
+        username
         __typename
       }
       price
-      shoppingCartID
-      orderID
+      quantities {
+        items {
+          id
+          productID
+          product {
+            id
+            name
+            description
+            price
+            createdAt
+            updatedAt
+            productImageId
+            username
+            __typename
+          }
+          quantity
+          createdAt
+          updatedAt
+          orderProductsId
+          shoppingCartProductsId
+          productQuantitiesId
+          username
+          __typename
+        }
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       productImageId
@@ -222,9 +677,32 @@ export const listProducts = /* GraphQL */ `
         id
         name
         description
+        image {
+          id
+          url
+          description
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
         price
-        shoppingCartID
-        orderID
+        quantities {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         productImageId
@@ -236,64 +714,102 @@ export const listProducts = /* GraphQL */ `
     }
   }
 `;
-export const productsByShoppingCartID = /* GraphQL */ `
-  query ProductsByShoppingCartID(
-    $shoppingCartID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelProductFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    productsByShoppingCartID(
-      shoppingCartID: $shoppingCartID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
+export const getProductQuantity = /* GraphQL */ `
+  query GetProductQuantity($id: ID!) {
+    getProductQuantity(id: $id) {
+      id
+      productID
+      product {
         id
         name
         description
+        image {
+          id
+          url
+          description
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
         price
-        shoppingCartID
-        orderID
+        quantities {
+          items {
+            id
+            productID
+            quantity
+            createdAt
+            updatedAt
+            orderProductsId
+            shoppingCartProductsId
+            productQuantitiesId
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         productImageId
         username
         __typename
       }
-      nextToken
+      quantity
+      createdAt
+      updatedAt
+      orderProductsId
+      shoppingCartProductsId
+      productQuantitiesId
+      username
       __typename
     }
   }
 `;
-export const productsByOrderID = /* GraphQL */ `
-  query ProductsByOrderID(
-    $orderID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelProductFilterInput
+export const listProductQuantities = /* GraphQL */ `
+  query ListProductQuantities(
+    $filter: ModelProductQuantityFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    productsByOrderID(
-      orderID: $orderID
-      sortDirection: $sortDirection
+    listProductQuantities(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
     ) {
       items {
         id
-        name
-        description
-        price
-        shoppingCartID
-        orderID
+        productID
+        product {
+          id
+          name
+          description
+          image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          price
+          quantities {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          productImageId
+          username
+          __typename
+        }
+        quantity
         createdAt
         updatedAt
-        productImageId
+        orderProductsId
+        shoppingCartProductsId
+        productQuantitiesId
         username
         __typename
       }
@@ -307,8 +823,10 @@ export const getImage = /* GraphQL */ `
     getImage(id: $id) {
       id
       url
+      description
       createdAt
       updatedAt
+      username
       __typename
     }
   }
@@ -323,8 +841,10 @@ export const listImages = /* GraphQL */ `
       items {
         id
         url
+        description
         createdAt
         updatedAt
+        username
         __typename
       }
       nextToken

@@ -12,7 +12,7 @@ export default function Navigation(props) {
   const { overrides, ...rest } = props;
   return (
     <Flex
-      gap="163px"
+      gap="113px"
       direction="row"
       width="1400px"
       height="unset"
@@ -20,7 +20,7 @@ export default function Navigation(props) {
       alignItems="flex-start"
       overflow="hidden"
       position="relative"
-      padding="32px 70px 32px 70px"
+      padding="32px 22px 32px 22px"
       {...getOverrideProps(overrides, "Navigation")}
       {...rest}
     >
@@ -88,6 +88,43 @@ export default function Navigation(props) {
         children="My profile"
         {...getOverrideProps(overrides, "My profile")}
       ></Text>
+      <Flex
+        gap="10px"
+        direction="row"
+        width="unset"
+        height="unset"
+        justifyContent="center"
+        alignItems="center"
+        overflow="hidden"
+        shrink="0"
+        position="relative"
+        borderRadius="8px"
+        padding="9px 39px 9px 39px"
+        backgroundColor="rgba(66,107,31,1)"
+        {...getOverrideProps(overrides, "Search116156")}
+      >
+        <Text
+          fontFamily="Inter"
+          fontSize="16px"
+          fontWeight="600"
+          color="rgba(255,255,255,1)"
+          lineHeight="20.799999237060547px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="unset"
+          height="unset"
+          gap="unset"
+          alignItems="unset"
+          shrink="0"
+          position="relative"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="Search"
+          {...getOverrideProps(overrides, "Search116157")}
+        ></Text>
+      </Flex>
       <Flex
         gap="10px"
         direction="row"

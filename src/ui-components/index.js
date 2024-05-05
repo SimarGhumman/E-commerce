@@ -27,6 +27,8 @@ export { default as NoteUpdateForm } from "./NoteUpdateForm";
 export { default as OrderCreateForm } from "./OrderCreateForm";
 export { default as OrderUpdateForm } from "./OrderUpdateForm";
 export { default as ProductCreateForm } from "./ProductCreateForm";
+export { default as ProductQuantityCreateForm } from "./ProductQuantityCreateForm";
+export { default as ProductQuantityUpdateForm } from "./ProductQuantityUpdateForm";
 export { default as ProductUpdateForm } from "./ProductUpdateForm";
 export { default as Profile } from "./Profile";
 export { default as Search } from "./Search";

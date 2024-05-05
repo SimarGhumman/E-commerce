@@ -22,8 +22,8 @@ import {
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { listProducts, listUsers } from "../graphql/queries";
-import { createOrder, updateProduct } from "../graphql/mutations";
+import { listProductQuantities, listUsers } from "../graphql/queries";
+import { createOrder, updateProductQuantity } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
   items = [],
@@ -192,69 +192,86 @@ export default function OrderCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
+    user: undefined,
+    products: [],
     date: "",
     status: "",
-    trackingNumber: "",
     totalPrice: "",
-    userID: undefined,
-    product: [],
+    userOrdersId: undefined,
   };
+  const [user, setUser] = React.useState(initialValues.user);
+  const [userLoading, setUserLoading] = React.useState(false);
+  const [userRecords, setUserRecords] = React.useState([]);
+  const [products, setProducts] = React.useState(initialValues.products);
+  const [productsLoading, setProductsLoading] = React.useState(false);
+  const [productsRecords, setProductsRecords] = React.useState([]);
   const [date, setDate] = React.useState(initialValues.date);
   const [status, setStatus] = React.useState(initialValues.status);
-  const [trackingNumber, setTrackingNumber] = React.useState(
-    initialValues.trackingNumber
-  );
   const [totalPrice, setTotalPrice] = React.useState(initialValues.totalPrice);
-  const [userID, setUserID] = React.useState(initialValues.userID);
-  const [userIDLoading, setUserIDLoading] = React.useState(false);
-  const [userIDRecords, setUserIDRecords] = React.useState([]);
-  const [selectedUserIDRecords, setSelectedUserIDRecords] = React.useState([]);
-  const [product, setProduct] = React.useState(initialValues.product);
-  const [productLoading, setProductLoading] = React.useState(false);
-  const [productRecords, setProductRecords] = React.useState([]);
+  const [userOrdersId, setUserOrdersId] = React.useState(
+    initialValues.userOrdersId
+  );
+  const [userOrdersIdLoading, setUserOrdersIdLoading] = React.useState(false);
+  const [userOrdersIdRecords, setUserOrdersIdRecords] = React.useState([]);
+  const [selectedUserOrdersIdRecords, setSelectedUserOrdersIdRecords] =
+    React.useState([]);
   const autocompleteLength = 10;
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
+    setUser(initialValues.user);
+    setCurrentUserValue(undefined);
+    setCurrentUserDisplayValue("");
+    setProducts(initialValues.products);
+    setCurrentProductsValue(undefined);
+    setCurrentProductsDisplayValue("");
     setDate(initialValues.date);
     setStatus(initialValues.status);
-    setTrackingNumber(initialValues.trackingNumber);
     setTotalPrice(initialValues.totalPrice);
-    setUserID(initialValues.userID);
-    setCurrentUserIDValue(undefined);
-    setCurrentUserIDDisplayValue("");
-    setProduct(initialValues.product);
-    setCurrentProductValue(undefined);
-    setCurrentProductDisplayValue("");
+    setUserOrdersId(initialValues.userOrdersId);
+    setCurrentUserOrdersIdValue(undefined);
+    setCurrentUserOrdersIdDisplayValue("");
     setErrors({});
   };
-  const [currentUserIDDisplayValue, setCurrentUserIDDisplayValue] =
+  const [currentUserDisplayValue, setCurrentUserDisplayValue] =
     React.useState("");
-  const [currentUserIDValue, setCurrentUserIDValue] = React.useState(undefined);
-  const userIDRef = React.createRef();
-  const [currentProductDisplayValue, setCurrentProductDisplayValue] =
+  const [currentUserValue, setCurrentUserValue] = React.useState(undefined);
+  const userRef = React.createRef();
+  const [currentProductsDisplayValue, setCurrentProductsDisplayValue] =
     React.useState("");
-  const [currentProductValue, setCurrentProductValue] =
+  const [currentProductsValue, setCurrentProductsValue] =
     React.useState(undefined);
-  const productRef = React.createRef();
+  const productsRef = React.createRef();
+  const [currentUserOrdersIdDisplayValue, setCurrentUserOrdersIdDisplayValue] =
+    React.useState("");
+  const [currentUserOrdersIdValue, setCurrentUserOrdersIdValue] =
+    React.useState(undefined);
+  const userOrdersIdRef = React.createRef();
   const getIDValue = {
-    product: (r) => JSON.stringify({ id: r?.id }),
+    user: (r) => JSON.stringify({ id: r?.id }),
+    products: (r) => JSON.stringify({ id: r?.id }),
   };
-  const productIdSet = new Set(
-    Array.isArray(product)
-      ? product.map((r) => getIDValue.product?.(r))
-      : getIDValue.product?.(product)
+  const userIdSet = new Set(
+    Array.isArray(user)
+      ? user.map((r) => getIDValue.user?.(r))
+      : getIDValue.user?.(user)
+  );
+  const productsIdSet = new Set(
+    Array.isArray(products)
+      ? products.map((r) => getIDValue.products?.(r))
+      : getIDValue.products?.(products)
   );
   const getDisplayValue = {
-    userID: (r) => `${r?.username ? r?.username + " - " : ""}${r?.id}`,
-    product: (r) => `${r?.name ? r?.name + " - " : ""}${r?.id}`,
+    user: (r) => `${r?.username ? r?.username + " - " : ""}${r?.id}`,
+    products: (r) => `${r?.quantity ? r?.quantity + " - " : ""}${r?.id}`,
+    userOrdersId: (r) => `${r?.username ? r?.username + " - " : ""}${r?.id}`,
   };
   const validations = {
-    date: [],
-    status: [],
-    trackingNumber: [],
-    totalPrice: [],
-    userID: [{ type: "Required" }],
-    product: [],
+    user: [],
+    products: [],
+    date: [{ type: "Required" }],
+    status: [{ type: "Required" }],
+    totalPrice: [{ type: "Required" }],
+    userOrdersId: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -290,8 +307,8 @@ export default function OrderCreateForm(props) {
     }, {});
     return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
   };
-  const fetchUserIDRecords = async (value) => {
-    setUserIDLoading(true);
+  const fetchUserRecords = async (value) => {
+    setUserLoading(true);
     const newOptions = [];
     let newNext = "";
     while (newOptions.length < autocompleteLength && newNext != null) {
@@ -310,22 +327,24 @@ export default function OrderCreateForm(props) {
           variables,
         })
       )?.data?.listUsers?.items;
-      var loaded = result.filter((item) => userID !== item.id);
+      var loaded = result.filter(
+        (item) => !userIdSet.has(getIDValue.user?.(item))
+      );
       newOptions.push(...loaded);
       newNext = result.nextToken;
     }
-    setUserIDRecords(newOptions.slice(0, autocompleteLength));
-    setUserIDLoading(false);
+    setUserRecords(newOptions.slice(0, autocompleteLength));
+    setUserLoading(false);
   };
-  const fetchProductRecords = async (value) => {
-    setProductLoading(true);
+  const fetchProductsRecords = async (value) => {
+    setProductsLoading(true);
     const newOptions = [];
     let newNext = "";
     while (newOptions.length < autocompleteLength && newNext != null) {
       const variables = {
         limit: autocompleteLength * 5,
         filter: {
-          or: [{ name: { contains: value } }, { id: { contains: value } }],
+          or: [{ quantity: { contains: value } }, { id: { contains: value } }],
         },
       };
       if (newNext) {
@@ -333,22 +352,50 @@ export default function OrderCreateForm(props) {
       }
       const result = (
         await client.graphql({
-          query: listProducts.replaceAll("__typename", ""),
+          query: listProductQuantities.replaceAll("__typename", ""),
           variables,
         })
-      )?.data?.listProducts?.items;
+      )?.data?.listProductQuantities?.items;
       var loaded = result.filter(
-        (item) => !productIdSet.has(getIDValue.product?.(item))
+        (item) => !productsIdSet.has(getIDValue.products?.(item))
       );
       newOptions.push(...loaded);
       newNext = result.nextToken;
     }
-    setProductRecords(newOptions.slice(0, autocompleteLength));
-    setProductLoading(false);
+    setProductsRecords(newOptions.slice(0, autocompleteLength));
+    setProductsLoading(false);
+  };
+  const fetchUserOrdersIdRecords = async (value) => {
+    setUserOrdersIdLoading(true);
+    const newOptions = [];
+    let newNext = "";
+    while (newOptions.length < autocompleteLength && newNext != null) {
+      const variables = {
+        limit: autocompleteLength * 5,
+        filter: {
+          or: [{ username: { contains: value } }, { id: { contains: value } }],
+        },
+      };
+      if (newNext) {
+        variables["nextToken"] = newNext;
+      }
+      const result = (
+        await client.graphql({
+          query: listUsers.replaceAll("__typename", ""),
+          variables,
+        })
+      )?.data?.listUsers?.items;
+      var loaded = result.filter((item) => userOrdersId !== item.id);
+      newOptions.push(...loaded);
+      newNext = result.nextToken;
+    }
+    setUserOrdersIdRecords(newOptions.slice(0, autocompleteLength));
+    setUserOrdersIdLoading(false);
   };
   React.useEffect(() => {
-    fetchUserIDRecords("");
-    fetchProductRecords("");
+    fetchUserRecords("");
+    fetchProductsRecords("");
+    fetchUserOrdersIdRecords("");
   }, []);
   return (
     <Grid
@@ -359,12 +406,12 @@ export default function OrderCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
+          user,
+          products,
           date,
           status,
-          trackingNumber,
           totalPrice,
-          userID,
-          product,
+          userOrdersId,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -403,11 +450,11 @@ export default function OrderCreateForm(props) {
             }
           });
           const modelFieldsToSave = {
+            userID: modelFields?.user?.id,
             date: modelFields.date,
             status: modelFields.status,
-            trackingNumber: modelFields.trackingNumber,
             totalPrice: modelFields.totalPrice,
-            userID: modelFields.userID,
+            userOrdersId: modelFields.userOrdersId,
           };
           const order = (
             await client.graphql({
@@ -421,14 +468,14 @@ export default function OrderCreateForm(props) {
           )?.data?.createOrder;
           const promises = [];
           promises.push(
-            ...product.reduce((promises, original) => {
+            ...products.reduce((promises, original) => {
               promises.push(
                 client.graphql({
-                  query: updateProduct.replaceAll("__typename", ""),
+                  query: updateProductQuantity.replaceAll("__typename", ""),
                   variables: {
                     input: {
                       id: original.id,
-                      orderID: order.id,
+                      orderProductsId: order.id,
                     },
                   },
                 })
@@ -453,9 +500,172 @@ export default function OrderCreateForm(props) {
       {...getOverrideProps(overrides, "OrderCreateForm")}
       {...rest}
     >
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              user: value,
+              products,
+              date,
+              status,
+              totalPrice,
+              userOrdersId,
+            };
+            const result = onChange(modelFields);
+            value = result?.user ?? value;
+          }
+          setUser(value);
+          setCurrentUserValue(undefined);
+          setCurrentUserDisplayValue("");
+        }}
+        currentFieldValue={currentUserValue}
+        label={"User"}
+        items={user ? [user] : []}
+        hasError={errors?.user?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("user", currentUserValue)
+        }
+        errorMessage={errors?.user?.errorMessage}
+        getBadgeText={getDisplayValue.user}
+        setFieldValue={(model) => {
+          setCurrentUserDisplayValue(model ? getDisplayValue.user(model) : "");
+          setCurrentUserValue(model);
+        }}
+        inputFieldRef={userRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="User"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search User"
+          value={currentUserDisplayValue}
+          options={userRecords
+            .filter((r) => !userIdSet.has(getIDValue.user?.(r)))
+            .map((r) => ({
+              id: getIDValue.user?.(r),
+              label: getDisplayValue.user?.(r),
+            }))}
+          isLoading={userLoading}
+          onSelect={({ id, label }) => {
+            setCurrentUserValue(
+              userRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentUserDisplayValue(label);
+            runValidationTasks("user", label);
+          }}
+          onClear={() => {
+            setCurrentUserDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            fetchUserRecords(value);
+            if (errors.user?.hasError) {
+              runValidationTasks("user", value);
+            }
+            setCurrentUserDisplayValue(value);
+            setCurrentUserValue(undefined);
+          }}
+          onBlur={() => runValidationTasks("user", currentUserDisplayValue)}
+          errorMessage={errors.user?.errorMessage}
+          hasError={errors.user?.hasError}
+          ref={userRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "user")}
+        ></Autocomplete>
+      </ArrayField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              user,
+              products: values,
+              date,
+              status,
+              totalPrice,
+              userOrdersId,
+            };
+            const result = onChange(modelFields);
+            values = result?.products ?? values;
+          }
+          setProducts(values);
+          setCurrentProductsValue(undefined);
+          setCurrentProductsDisplayValue("");
+        }}
+        currentFieldValue={currentProductsValue}
+        label={"Products"}
+        items={products}
+        hasError={errors?.products?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("products", currentProductsValue)
+        }
+        errorMessage={errors?.products?.errorMessage}
+        getBadgeText={getDisplayValue.products}
+        setFieldValue={(model) => {
+          setCurrentProductsDisplayValue(
+            model ? getDisplayValue.products(model) : ""
+          );
+          setCurrentProductsValue(model);
+        }}
+        inputFieldRef={productsRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Products"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search ProductQuantity"
+          value={currentProductsDisplayValue}
+          options={productsRecords
+            .filter((r) => !productsIdSet.has(getIDValue.products?.(r)))
+            .map((r) => ({
+              id: getIDValue.products?.(r),
+              label: getDisplayValue.products?.(r),
+            }))}
+          isLoading={productsLoading}
+          onSelect={({ id, label }) => {
+            setCurrentProductsValue(
+              productsRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentProductsDisplayValue(label);
+            runValidationTasks("products", label);
+          }}
+          onClear={() => {
+            setCurrentProductsDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            fetchProductsRecords(value);
+            if (errors.products?.hasError) {
+              runValidationTasks("products", value);
+            }
+            setCurrentProductsDisplayValue(value);
+            setCurrentProductsValue(undefined);
+          }}
+          onBlur={() =>
+            runValidationTasks("products", currentProductsDisplayValue)
+          }
+          errorMessage={errors.products?.errorMessage}
+          hasError={errors.products?.hasError}
+          ref={productsRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "products")}
+        ></Autocomplete>
+      </ArrayField>
       <TextField
         label="Date"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="datetime-local"
         value={date && convertToLocal(new Date(date))}
@@ -464,12 +674,12 @@ export default function OrderCreateForm(props) {
             e.target.value === "" ? "" : new Date(e.target.value).toISOString();
           if (onChange) {
             const modelFields = {
+              user,
+              products,
               date: value,
               status,
-              trackingNumber,
               totalPrice,
-              userID,
-              product,
+              userOrdersId,
             };
             const result = onChange(modelFields);
             value = result?.date ?? value;
@@ -493,12 +703,12 @@ export default function OrderCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              user,
+              products,
               date,
               status: value,
-              trackingNumber,
               totalPrice,
-              userID,
-              product,
+              userOrdersId,
             };
             const result = onChange(modelFields);
             value = result?.status ?? value;
@@ -530,37 +740,8 @@ export default function OrderCreateForm(props) {
         ></option>
       </SelectField>
       <TextField
-        label="Tracking number"
-        isRequired={false}
-        isReadOnly={false}
-        value={trackingNumber}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              date,
-              status,
-              trackingNumber: value,
-              totalPrice,
-              userID,
-              product,
-            };
-            const result = onChange(modelFields);
-            value = result?.trackingNumber ?? value;
-          }
-          if (errors.trackingNumber?.hasError) {
-            runValidationTasks("trackingNumber", value);
-          }
-          setTrackingNumber(value);
-        }}
-        onBlur={() => runValidationTasks("trackingNumber", trackingNumber)}
-        errorMessage={errors.trackingNumber?.errorMessage}
-        hasError={errors.trackingNumber?.hasError}
-        {...getOverrideProps(overrides, "trackingNumber")}
-      ></TextField>
-      <TextField
         label="Total price"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="number"
         step="any"
@@ -571,12 +752,12 @@ export default function OrderCreateForm(props) {
             : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
+              user,
+              products,
               date,
               status,
-              trackingNumber,
               totalPrice: value,
-              userID,
-              product,
+              userOrdersId,
             };
             const result = onChange(modelFields);
             value = result?.totalPrice ?? value;
@@ -597,175 +778,96 @@ export default function OrderCreateForm(props) {
           let value = items[0];
           if (onChange) {
             const modelFields = {
+              user,
+              products,
               date,
               status,
-              trackingNumber,
               totalPrice,
-              userID: value,
-              product,
+              userOrdersId: value,
             };
             const result = onChange(modelFields);
-            value = result?.userID ?? value;
+            value = result?.userOrdersId ?? value;
           }
-          setUserID(value);
-          setCurrentUserIDValue(undefined);
+          setUserOrdersId(value);
+          setCurrentUserOrdersIdValue(undefined);
         }}
-        currentFieldValue={currentUserIDValue}
-        label={"User id"}
-        items={userID ? [userID] : []}
-        hasError={errors?.userID?.hasError}
+        currentFieldValue={currentUserOrdersIdValue}
+        label={"User orders id"}
+        items={userOrdersId ? [userOrdersId] : []}
+        hasError={errors?.userOrdersId?.hasError}
         runValidationTasks={async () =>
-          await runValidationTasks("userID", currentUserIDValue)
+          await runValidationTasks("userOrdersId", currentUserOrdersIdValue)
         }
-        errorMessage={errors?.userID?.errorMessage}
+        errorMessage={errors?.userOrdersId?.errorMessage}
         getBadgeText={(value) =>
           value
-            ? getDisplayValue.userID(
-                userIDRecords.find((r) => r.id === value) ??
-                  selectedUserIDRecords.find((r) => r.id === value)
+            ? getDisplayValue.userOrdersId(
+                userOrdersIdRecords.find((r) => r.id === value) ??
+                  selectedUserOrdersIdRecords.find((r) => r.id === value)
               )
             : ""
         }
         setFieldValue={(value) => {
-          setCurrentUserIDDisplayValue(
+          setCurrentUserOrdersIdDisplayValue(
             value
-              ? getDisplayValue.userID(
-                  userIDRecords.find((r) => r.id === value) ??
-                    selectedUserIDRecords.find((r) => r.id === value)
+              ? getDisplayValue.userOrdersId(
+                  userOrdersIdRecords.find((r) => r.id === value) ??
+                    selectedUserOrdersIdRecords.find((r) => r.id === value)
                 )
               : ""
           );
-          setCurrentUserIDValue(value);
-          const selectedRecord = userIDRecords.find((r) => r.id === value);
+          setCurrentUserOrdersIdValue(value);
+          const selectedRecord = userOrdersIdRecords.find(
+            (r) => r.id === value
+          );
           if (selectedRecord) {
-            setSelectedUserIDRecords([selectedRecord]);
+            setSelectedUserOrdersIdRecords([selectedRecord]);
           }
         }}
-        inputFieldRef={userIDRef}
+        inputFieldRef={userOrdersIdRef}
         defaultFieldValue={""}
       >
         <Autocomplete
-          label="User id"
-          isRequired={true}
+          label="User orders id"
+          isRequired={false}
           isReadOnly={false}
           placeholder="Search User"
-          value={currentUserIDDisplayValue}
-          options={userIDRecords
+          value={currentUserOrdersIdDisplayValue}
+          options={userOrdersIdRecords
             .filter(
               (r, i, arr) =>
                 arr.findIndex((member) => member?.id === r?.id) === i
             )
             .map((r) => ({
               id: r?.id,
-              label: getDisplayValue.userID?.(r),
+              label: getDisplayValue.userOrdersId?.(r),
             }))}
-          isLoading={userIDLoading}
+          isLoading={userOrdersIdLoading}
           onSelect={({ id, label }) => {
-            setCurrentUserIDValue(id);
-            setCurrentUserIDDisplayValue(label);
-            runValidationTasks("userID", label);
+            setCurrentUserOrdersIdValue(id);
+            setCurrentUserOrdersIdDisplayValue(label);
+            runValidationTasks("userOrdersId", label);
           }}
           onClear={() => {
-            setCurrentUserIDDisplayValue("");
+            setCurrentUserOrdersIdDisplayValue("");
           }}
           onChange={(e) => {
             let { value } = e.target;
-            fetchUserIDRecords(value);
-            if (errors.userID?.hasError) {
-              runValidationTasks("userID", value);
+            fetchUserOrdersIdRecords(value);
+            if (errors.userOrdersId?.hasError) {
+              runValidationTasks("userOrdersId", value);
             }
-            setCurrentUserIDDisplayValue(value);
-            setCurrentUserIDValue(undefined);
-          }}
-          onBlur={() => runValidationTasks("userID", currentUserIDValue)}
-          errorMessage={errors.userID?.errorMessage}
-          hasError={errors.userID?.hasError}
-          ref={userIDRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "userID")}
-        ></Autocomplete>
-      </ArrayField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              date,
-              status,
-              trackingNumber,
-              totalPrice,
-              userID,
-              product: values,
-            };
-            const result = onChange(modelFields);
-            values = result?.product ?? values;
-          }
-          setProduct(values);
-          setCurrentProductValue(undefined);
-          setCurrentProductDisplayValue("");
-        }}
-        currentFieldValue={currentProductValue}
-        label={"Product"}
-        items={product}
-        hasError={errors?.product?.hasError}
-        runValidationTasks={async () =>
-          await runValidationTasks("product", currentProductValue)
-        }
-        errorMessage={errors?.product?.errorMessage}
-        getBadgeText={getDisplayValue.product}
-        setFieldValue={(model) => {
-          setCurrentProductDisplayValue(
-            model ? getDisplayValue.product(model) : ""
-          );
-          setCurrentProductValue(model);
-        }}
-        inputFieldRef={productRef}
-        defaultFieldValue={""}
-      >
-        <Autocomplete
-          label="Product"
-          isRequired={false}
-          isReadOnly={false}
-          placeholder="Search Product"
-          value={currentProductDisplayValue}
-          options={productRecords
-            .filter((r) => !productIdSet.has(getIDValue.product?.(r)))
-            .map((r) => ({
-              id: getIDValue.product?.(r),
-              label: getDisplayValue.product?.(r),
-            }))}
-          isLoading={productLoading}
-          onSelect={({ id, label }) => {
-            setCurrentProductValue(
-              productRecords.find((r) =>
-                Object.entries(JSON.parse(id)).every(
-                  ([key, value]) => r[key] === value
-                )
-              )
-            );
-            setCurrentProductDisplayValue(label);
-            runValidationTasks("product", label);
-          }}
-          onClear={() => {
-            setCurrentProductDisplayValue("");
-          }}
-          onChange={(e) => {
-            let { value } = e.target;
-            fetchProductRecords(value);
-            if (errors.product?.hasError) {
-              runValidationTasks("product", value);
-            }
-            setCurrentProductDisplayValue(value);
-            setCurrentProductValue(undefined);
+            setCurrentUserOrdersIdDisplayValue(value);
+            setCurrentUserOrdersIdValue(undefined);
           }}
           onBlur={() =>
-            runValidationTasks("product", currentProductDisplayValue)
+            runValidationTasks("userOrdersId", currentUserOrdersIdValue)
           }
-          errorMessage={errors.product?.errorMessage}
-          hasError={errors.product?.hasError}
-          ref={productRef}
+          errorMessage={errors.userOrdersId?.errorMessage}
+          hasError={errors.userOrdersId?.hasError}
+          ref={userOrdersIdRef}
           labelHidden={true}
-          {...getOverrideProps(overrides, "product")}
+          {...getOverrideProps(overrides, "userOrdersId")}
         ></Autocomplete>
       </ArrayField>
       <Flex

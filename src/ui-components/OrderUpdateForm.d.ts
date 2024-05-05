@@ -22,30 +22,30 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type OrderUpdateFormInputValues = {
+    user?: any;
+    products?: any[];
     date?: string;
     status?: string;
-    trackingNumber?: string;
     totalPrice?: number;
-    userID?: string;
-    product?: any[];
+    userOrdersId?: string;
 };
 export declare type OrderUpdateFormValidationValues = {
+    user?: ValidationFunction<any>;
+    products?: ValidationFunction<any>;
     date?: ValidationFunction<string>;
     status?: ValidationFunction<string>;
-    trackingNumber?: ValidationFunction<string>;
     totalPrice?: ValidationFunction<number>;
-    userID?: ValidationFunction<string>;
-    product?: ValidationFunction<any>;
+    userOrdersId?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type OrderUpdateFormOverridesProps = {
     OrderUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    user?: PrimitiveOverrideProps<AutocompleteProps>;
+    products?: PrimitiveOverrideProps<AutocompleteProps>;
     date?: PrimitiveOverrideProps<TextFieldProps>;
     status?: PrimitiveOverrideProps<SelectFieldProps>;
-    trackingNumber?: PrimitiveOverrideProps<TextFieldProps>;
     totalPrice?: PrimitiveOverrideProps<TextFieldProps>;
-    userID?: PrimitiveOverrideProps<AutocompleteProps>;
-    product?: PrimitiveOverrideProps<AutocompleteProps>;
+    userOrdersId?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type OrderUpdateFormProps = React.PropsWithChildren<{
     overrides?: OrderUpdateFormOverridesProps | undefined | null;

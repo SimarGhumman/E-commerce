@@ -21,8 +21,8 @@ import {
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { listImages, listOrders, listShoppingCarts } from "../graphql/queries";
-import { createProduct } from "../graphql/mutations";
+import { listImages, listProductQuantities } from "../graphql/queries";
+import { createProduct, updateProductQuantity } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
   items = [],
@@ -195,8 +195,7 @@ export default function ProductCreateForm(props) {
     description: "",
     image: undefined,
     price: "",
-    shoppingCartID: undefined,
-    orderID: undefined,
+    quantities: [],
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
@@ -206,20 +205,9 @@ export default function ProductCreateForm(props) {
   const [imageLoading, setImageLoading] = React.useState(false);
   const [imageRecords, setImageRecords] = React.useState([]);
   const [price, setPrice] = React.useState(initialValues.price);
-  const [shoppingCartID, setShoppingCartID] = React.useState(
-    initialValues.shoppingCartID
-  );
-  const [shoppingCartIDLoading, setShoppingCartIDLoading] =
-    React.useState(false);
-  const [shoppingCartIDRecords, setShoppingCartIDRecords] = React.useState([]);
-  const [selectedShoppingCartIDRecords, setSelectedShoppingCartIDRecords] =
-    React.useState([]);
-  const [orderID, setOrderID] = React.useState(initialValues.orderID);
-  const [orderIDLoading, setOrderIDLoading] = React.useState(false);
-  const [orderIDRecords, setOrderIDRecords] = React.useState([]);
-  const [selectedOrderIDRecords, setSelectedOrderIDRecords] = React.useState(
-    []
-  );
+  const [quantities, setQuantities] = React.useState(initialValues.quantities);
+  const [quantitiesLoading, setQuantitiesLoading] = React.useState(false);
+  const [quantitiesRecords, setQuantitiesRecords] = React.useState([]);
   const autocompleteLength = 10;
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -229,50 +217,44 @@ export default function ProductCreateForm(props) {
     setCurrentImageValue(undefined);
     setCurrentImageDisplayValue("");
     setPrice(initialValues.price);
-    setShoppingCartID(initialValues.shoppingCartID);
-    setCurrentShoppingCartIDValue(undefined);
-    setCurrentShoppingCartIDDisplayValue("");
-    setOrderID(initialValues.orderID);
-    setCurrentOrderIDValue(undefined);
-    setCurrentOrderIDDisplayValue("");
+    setQuantities(initialValues.quantities);
+    setCurrentQuantitiesValue(undefined);
+    setCurrentQuantitiesDisplayValue("");
     setErrors({});
   };
   const [currentImageDisplayValue, setCurrentImageDisplayValue] =
     React.useState("");
   const [currentImageValue, setCurrentImageValue] = React.useState(undefined);
   const imageRef = React.createRef();
-  const [
-    currentShoppingCartIDDisplayValue,
-    setCurrentShoppingCartIDDisplayValue,
-  ] = React.useState("");
-  const [currentShoppingCartIDValue, setCurrentShoppingCartIDValue] =
-    React.useState(undefined);
-  const shoppingCartIDRef = React.createRef();
-  const [currentOrderIDDisplayValue, setCurrentOrderIDDisplayValue] =
+  const [currentQuantitiesDisplayValue, setCurrentQuantitiesDisplayValue] =
     React.useState("");
-  const [currentOrderIDValue, setCurrentOrderIDValue] =
+  const [currentQuantitiesValue, setCurrentQuantitiesValue] =
     React.useState(undefined);
-  const orderIDRef = React.createRef();
+  const quantitiesRef = React.createRef();
   const getIDValue = {
     image: (r) => JSON.stringify({ id: r?.id }),
+    quantities: (r) => JSON.stringify({ id: r?.id }),
   };
   const imageIdSet = new Set(
     Array.isArray(image)
       ? image.map((r) => getIDValue.image?.(r))
       : getIDValue.image?.(image)
   );
+  const quantitiesIdSet = new Set(
+    Array.isArray(quantities)
+      ? quantities.map((r) => getIDValue.quantities?.(r))
+      : getIDValue.quantities?.(quantities)
+  );
   const getDisplayValue = {
     image: (r) => `${r?.url ? r?.url + " - " : ""}${r?.id}`,
-    shoppingCartID: (r) => r?.id,
-    orderID: (r) => `${r?.status ? r?.status + " - " : ""}${r?.id}`,
+    quantities: (r) => `${r?.quantity ? r?.quantity + " - " : ""}${r?.id}`,
   };
   const validations = {
-    name: [],
+    name: [{ type: "Required" }],
     description: [],
     image: [],
-    price: [],
-    shoppingCartID: [{ type: "Required" }],
-    orderID: [{ type: "Required" }],
+    price: [{ type: "Required" }],
+    quantities: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -320,40 +302,15 @@ export default function ProductCreateForm(props) {
     setImageRecords(newOptions.slice(0, autocompleteLength));
     setImageLoading(false);
   };
-  const fetchShoppingCartIDRecords = async (value) => {
-    setShoppingCartIDLoading(true);
-    const newOptions = [];
-    let newNext = "";
-    while (newOptions.length < autocompleteLength && newNext != null) {
-      const variables = {
-        limit: autocompleteLength * 5,
-        filter: { or: [{ id: { contains: value } }] },
-      };
-      if (newNext) {
-        variables["nextToken"] = newNext;
-      }
-      const result = (
-        await client.graphql({
-          query: listShoppingCarts.replaceAll("__typename", ""),
-          variables,
-        })
-      )?.data?.listShoppingCarts?.items;
-      var loaded = result.filter((item) => shoppingCartID !== item.id);
-      newOptions.push(...loaded);
-      newNext = result.nextToken;
-    }
-    setShoppingCartIDRecords(newOptions.slice(0, autocompleteLength));
-    setShoppingCartIDLoading(false);
-  };
-  const fetchOrderIDRecords = async (value) => {
-    setOrderIDLoading(true);
+  const fetchQuantitiesRecords = async (value) => {
+    setQuantitiesLoading(true);
     const newOptions = [];
     let newNext = "";
     while (newOptions.length < autocompleteLength && newNext != null) {
       const variables = {
         limit: autocompleteLength * 5,
         filter: {
-          or: [{ status: { contains: value } }, { id: { contains: value } }],
+          or: [{ quantity: { contains: value } }, { id: { contains: value } }],
         },
       };
       if (newNext) {
@@ -361,21 +318,22 @@ export default function ProductCreateForm(props) {
       }
       const result = (
         await client.graphql({
-          query: listOrders.replaceAll("__typename", ""),
+          query: listProductQuantities.replaceAll("__typename", ""),
           variables,
         })
-      )?.data?.listOrders?.items;
-      var loaded = result.filter((item) => orderID !== item.id);
+      )?.data?.listProductQuantities?.items;
+      var loaded = result.filter(
+        (item) => !quantitiesIdSet.has(getIDValue.quantities?.(item))
+      );
       newOptions.push(...loaded);
       newNext = result.nextToken;
     }
-    setOrderIDRecords(newOptions.slice(0, autocompleteLength));
-    setOrderIDLoading(false);
+    setQuantitiesRecords(newOptions.slice(0, autocompleteLength));
+    setQuantitiesLoading(false);
   };
   React.useEffect(() => {
     fetchImageRecords("");
-    fetchShoppingCartIDRecords("");
-    fetchOrderIDRecords("");
+    fetchQuantitiesRecords("");
   }, []);
   return (
     <Grid
@@ -390,8 +348,7 @@ export default function ProductCreateForm(props) {
           description,
           image,
           price,
-          shoppingCartID,
-          orderID,
+          quantities,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -434,17 +391,35 @@ export default function ProductCreateForm(props) {
             description: modelFields.description,
             productImageId: modelFields?.image?.id,
             price: modelFields.price,
-            shoppingCartID: modelFields.shoppingCartID,
-            orderID: modelFields.orderID,
           };
-          await client.graphql({
-            query: createProduct.replaceAll("__typename", ""),
-            variables: {
-              input: {
-                ...modelFieldsToSave,
+          const product = (
+            await client.graphql({
+              query: createProduct.replaceAll("__typename", ""),
+              variables: {
+                input: {
+                  ...modelFieldsToSave,
+                },
               },
-            },
-          });
+            })
+          )?.data?.createProduct;
+          const promises = [];
+          promises.push(
+            ...quantities.reduce((promises, original) => {
+              promises.push(
+                client.graphql({
+                  query: updateProductQuantity.replaceAll("__typename", ""),
+                  variables: {
+                    input: {
+                      id: original.id,
+                      productQuantitiesId: product.id,
+                    },
+                  },
+                })
+              );
+              return promises;
+            }, [])
+          );
+          await Promise.all(promises);
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -463,7 +438,7 @@ export default function ProductCreateForm(props) {
     >
       <TextField
         label="Name"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={name}
         onChange={(e) => {
@@ -474,8 +449,7 @@ export default function ProductCreateForm(props) {
               description,
               image,
               price,
-              shoppingCartID,
-              orderID,
+              quantities,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -503,8 +477,7 @@ export default function ProductCreateForm(props) {
               description: value,
               image,
               price,
-              shoppingCartID,
-              orderID,
+              quantities,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -529,8 +502,7 @@ export default function ProductCreateForm(props) {
               description,
               image: value,
               price,
-              shoppingCartID,
-              orderID,
+              quantities,
             };
             const result = onChange(modelFields);
             value = result?.image ?? value;
@@ -603,7 +575,7 @@ export default function ProductCreateForm(props) {
       </ArrayField>
       <TextField
         label="Price"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="number"
         step="any"
@@ -618,8 +590,7 @@ export default function ProductCreateForm(props) {
               description,
               image,
               price: value,
-              shoppingCartID,
-              orderID,
+              quantities,
             };
             const result = onChange(modelFields);
             value = result?.price ?? value;
@@ -635,195 +606,83 @@ export default function ProductCreateForm(props) {
         {...getOverrideProps(overrides, "price")}
       ></TextField>
       <ArrayField
-        lengthLimit={1}
         onChange={async (items) => {
-          let value = items[0];
+          let values = items;
           if (onChange) {
             const modelFields = {
               name,
               description,
               image,
               price,
-              shoppingCartID: value,
-              orderID,
+              quantities: values,
             };
             const result = onChange(modelFields);
-            value = result?.shoppingCartID ?? value;
+            values = result?.quantities ?? values;
           }
-          setShoppingCartID(value);
-          setCurrentShoppingCartIDValue(undefined);
+          setQuantities(values);
+          setCurrentQuantitiesValue(undefined);
+          setCurrentQuantitiesDisplayValue("");
         }}
-        currentFieldValue={currentShoppingCartIDValue}
-        label={"Shopping cart id"}
-        items={shoppingCartID ? [shoppingCartID] : []}
-        hasError={errors?.shoppingCartID?.hasError}
+        currentFieldValue={currentQuantitiesValue}
+        label={"Quantities"}
+        items={quantities}
+        hasError={errors?.quantities?.hasError}
         runValidationTasks={async () =>
-          await runValidationTasks("shoppingCartID", currentShoppingCartIDValue)
+          await runValidationTasks("quantities", currentQuantitiesValue)
         }
-        errorMessage={errors?.shoppingCartID?.errorMessage}
-        getBadgeText={(value) =>
-          value
-            ? getDisplayValue.shoppingCartID(
-                shoppingCartIDRecords.find((r) => r.id === value) ??
-                  selectedShoppingCartIDRecords.find((r) => r.id === value)
-              )
-            : ""
-        }
-        setFieldValue={(value) => {
-          setCurrentShoppingCartIDDisplayValue(
-            value
-              ? getDisplayValue.shoppingCartID(
-                  shoppingCartIDRecords.find((r) => r.id === value) ??
-                    selectedShoppingCartIDRecords.find((r) => r.id === value)
-                )
-              : ""
+        errorMessage={errors?.quantities?.errorMessage}
+        getBadgeText={getDisplayValue.quantities}
+        setFieldValue={(model) => {
+          setCurrentQuantitiesDisplayValue(
+            model ? getDisplayValue.quantities(model) : ""
           );
-          setCurrentShoppingCartIDValue(value);
-          const selectedRecord = shoppingCartIDRecords.find(
-            (r) => r.id === value
-          );
-          if (selectedRecord) {
-            setSelectedShoppingCartIDRecords([selectedRecord]);
-          }
+          setCurrentQuantitiesValue(model);
         }}
-        inputFieldRef={shoppingCartIDRef}
+        inputFieldRef={quantitiesRef}
         defaultFieldValue={""}
       >
         <Autocomplete
-          label="Shopping cart id"
-          isRequired={true}
+          label="Quantities"
+          isRequired={false}
           isReadOnly={false}
-          placeholder="Search ShoppingCart"
-          value={currentShoppingCartIDDisplayValue}
-          options={shoppingCartIDRecords
-            .filter(
-              (r, i, arr) =>
-                arr.findIndex((member) => member?.id === r?.id) === i
-            )
-            .map((r) => ({
-              id: r?.id,
-              label: getDisplayValue.shoppingCartID?.(r),
-            }))}
-          isLoading={shoppingCartIDLoading}
+          placeholder="Search ProductQuantity"
+          value={currentQuantitiesDisplayValue}
+          options={quantitiesRecords.map((r) => ({
+            id: getIDValue.quantities?.(r),
+            label: getDisplayValue.quantities?.(r),
+          }))}
+          isLoading={quantitiesLoading}
           onSelect={({ id, label }) => {
-            setCurrentShoppingCartIDValue(id);
-            setCurrentShoppingCartIDDisplayValue(label);
-            runValidationTasks("shoppingCartID", label);
+            setCurrentQuantitiesValue(
+              quantitiesRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentQuantitiesDisplayValue(label);
+            runValidationTasks("quantities", label);
           }}
           onClear={() => {
-            setCurrentShoppingCartIDDisplayValue("");
+            setCurrentQuantitiesDisplayValue("");
           }}
           onChange={(e) => {
             let { value } = e.target;
-            fetchShoppingCartIDRecords(value);
-            if (errors.shoppingCartID?.hasError) {
-              runValidationTasks("shoppingCartID", value);
+            fetchQuantitiesRecords(value);
+            if (errors.quantities?.hasError) {
+              runValidationTasks("quantities", value);
             }
-            setCurrentShoppingCartIDDisplayValue(value);
-            setCurrentShoppingCartIDValue(undefined);
+            setCurrentQuantitiesDisplayValue(value);
+            setCurrentQuantitiesValue(undefined);
           }}
           onBlur={() =>
-            runValidationTasks("shoppingCartID", currentShoppingCartIDValue)
+            runValidationTasks("quantities", currentQuantitiesDisplayValue)
           }
-          errorMessage={errors.shoppingCartID?.errorMessage}
-          hasError={errors.shoppingCartID?.hasError}
-          ref={shoppingCartIDRef}
+          errorMessage={errors.quantities?.errorMessage}
+          hasError={errors.quantities?.hasError}
+          ref={quantitiesRef}
           labelHidden={true}
-          {...getOverrideProps(overrides, "shoppingCartID")}
-        ></Autocomplete>
-      </ArrayField>
-      <ArrayField
-        lengthLimit={1}
-        onChange={async (items) => {
-          let value = items[0];
-          if (onChange) {
-            const modelFields = {
-              name,
-              description,
-              image,
-              price,
-              shoppingCartID,
-              orderID: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.orderID ?? value;
-          }
-          setOrderID(value);
-          setCurrentOrderIDValue(undefined);
-        }}
-        currentFieldValue={currentOrderIDValue}
-        label={"Order id"}
-        items={orderID ? [orderID] : []}
-        hasError={errors?.orderID?.hasError}
-        runValidationTasks={async () =>
-          await runValidationTasks("orderID", currentOrderIDValue)
-        }
-        errorMessage={errors?.orderID?.errorMessage}
-        getBadgeText={(value) =>
-          value
-            ? getDisplayValue.orderID(
-                orderIDRecords.find((r) => r.id === value) ??
-                  selectedOrderIDRecords.find((r) => r.id === value)
-              )
-            : ""
-        }
-        setFieldValue={(value) => {
-          setCurrentOrderIDDisplayValue(
-            value
-              ? getDisplayValue.orderID(
-                  orderIDRecords.find((r) => r.id === value) ??
-                    selectedOrderIDRecords.find((r) => r.id === value)
-                )
-              : ""
-          );
-          setCurrentOrderIDValue(value);
-          const selectedRecord = orderIDRecords.find((r) => r.id === value);
-          if (selectedRecord) {
-            setSelectedOrderIDRecords([selectedRecord]);
-          }
-        }}
-        inputFieldRef={orderIDRef}
-        defaultFieldValue={""}
-      >
-        <Autocomplete
-          label="Order id"
-          isRequired={true}
-          isReadOnly={false}
-          placeholder="Search Order"
-          value={currentOrderIDDisplayValue}
-          options={orderIDRecords
-            .filter(
-              (r, i, arr) =>
-                arr.findIndex((member) => member?.id === r?.id) === i
-            )
-            .map((r) => ({
-              id: r?.id,
-              label: getDisplayValue.orderID?.(r),
-            }))}
-          isLoading={orderIDLoading}
-          onSelect={({ id, label }) => {
-            setCurrentOrderIDValue(id);
-            setCurrentOrderIDDisplayValue(label);
-            runValidationTasks("orderID", label);
-          }}
-          onClear={() => {
-            setCurrentOrderIDDisplayValue("");
-          }}
-          onChange={(e) => {
-            let { value } = e.target;
-            fetchOrderIDRecords(value);
-            if (errors.orderID?.hasError) {
-              runValidationTasks("orderID", value);
-            }
-            setCurrentOrderIDDisplayValue(value);
-            setCurrentOrderIDValue(undefined);
-          }}
-          onBlur={() => runValidationTasks("orderID", currentOrderIDValue)}
-          errorMessage={errors.orderID?.errorMessage}
-          hasError={errors.orderID?.hasError}
-          ref={orderIDRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "orderID")}
+          {...getOverrideProps(overrides, "quantities")}
         ></Autocomplete>
       </ArrayField>
       <Flex
