@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { AutocompleteProps, GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -22,30 +22,24 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type OrderCreateFormInputValues = {
-    user?: any;
-    products?: any[];
     date?: string;
-    status?: string;
     totalPrice?: number;
-    userOrdersId?: string;
+    userID?: string;
+    OrderItems?: any[];
 };
 export declare type OrderCreateFormValidationValues = {
-    user?: ValidationFunction<any>;
-    products?: ValidationFunction<any>;
     date?: ValidationFunction<string>;
-    status?: ValidationFunction<string>;
     totalPrice?: ValidationFunction<number>;
-    userOrdersId?: ValidationFunction<string>;
+    userID?: ValidationFunction<string>;
+    OrderItems?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type OrderCreateFormOverridesProps = {
     OrderCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    user?: PrimitiveOverrideProps<AutocompleteProps>;
-    products?: PrimitiveOverrideProps<AutocompleteProps>;
     date?: PrimitiveOverrideProps<TextFieldProps>;
-    status?: PrimitiveOverrideProps<SelectFieldProps>;
     totalPrice?: PrimitiveOverrideProps<TextFieldProps>;
-    userOrdersId?: PrimitiveOverrideProps<AutocompleteProps>;
+    userID?: PrimitiveOverrideProps<AutocompleteProps>;
+    OrderItems?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type OrderCreateFormProps = React.PropsWithChildren<{
     overrides?: OrderCreateFormOverridesProps | undefined | null;

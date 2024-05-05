@@ -58,7 +58,7 @@ export default function ImageUpdateForm(props) {
   }, [idProp, imageModelProp]);
   React.useEffect(resetStateValues, [imageRecord]);
   const validations = {
-    url: [{ type: "Required" }, { type: "URL" }],
+    url: [{ type: "URL" }],
     description: [],
   };
   const runValidationTasks = async (
@@ -87,7 +87,7 @@ export default function ImageUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          url,
+          url: url ?? null,
           description: description ?? null,
         };
         const validationResponses = await Promise.all(
@@ -142,7 +142,7 @@ export default function ImageUpdateForm(props) {
     >
       <TextField
         label="Url"
-        isRequired={true}
+        isRequired={false}
         isReadOnly={false}
         value={url}
         onChange={(e) => {

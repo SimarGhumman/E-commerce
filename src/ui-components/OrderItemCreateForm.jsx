@@ -21,8 +21,8 @@ import {
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { getProduct, listImages } from "../graphql/queries";
-import { updateProduct } from "../graphql/mutations";
+import { listOrders } from "../graphql/queries";
+import { createOrderItem } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
   items = [],
@@ -179,10 +179,9 @@ function ArrayField({
     </React.Fragment>
   );
 }
-export default function ProductUpdateForm(props) {
+export default function OrderItemCreateForm(props) {
   const {
-    id: idProp,
-    product: productModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -193,70 +192,43 @@ export default function ProductUpdateForm(props) {
   } = props;
   const initialValues = {
     name: "",
-    description: "",
-    Image: undefined,
     price: "",
+    quantity: "",
+    orderID: undefined,
   };
   const [name, setName] = React.useState(initialValues.name);
-  const [description, setDescription] = React.useState(
-    initialValues.description
-  );
-  const [Image, setImage] = React.useState(initialValues.Image);
-  const [ImageLoading, setImageLoading] = React.useState(false);
-  const [imageRecords, setImageRecords] = React.useState([]);
   const [price, setPrice] = React.useState(initialValues.price);
+  const [quantity, setQuantity] = React.useState(initialValues.quantity);
+  const [orderID, setOrderID] = React.useState(initialValues.orderID);
+  const [orderIDLoading, setOrderIDLoading] = React.useState(false);
+  const [orderIDRecords, setOrderIDRecords] = React.useState([]);
+  const [selectedOrderIDRecords, setSelectedOrderIDRecords] = React.useState(
+    []
+  );
   const autocompleteLength = 10;
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = productRecord
-      ? { ...initialValues, ...productRecord, Image }
-      : initialValues;
-    setName(cleanValues.name);
-    setDescription(cleanValues.description);
-    setImage(cleanValues.Image);
-    setCurrentImageValue(undefined);
-    setCurrentImageDisplayValue("");
-    setPrice(cleanValues.price);
+    setName(initialValues.name);
+    setPrice(initialValues.price);
+    setQuantity(initialValues.quantity);
+    setOrderID(initialValues.orderID);
+    setCurrentOrderIDValue(undefined);
+    setCurrentOrderIDDisplayValue("");
     setErrors({});
   };
-  const [productRecord, setProductRecord] = React.useState(productModelProp);
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? (
-            await client.graphql({
-              query: getProduct.replaceAll("__typename", ""),
-              variables: { id: idProp },
-            })
-          )?.data?.getProduct
-        : productModelProp;
-      const ImageRecord = record ? await record.Image : undefined;
-      setImage(ImageRecord);
-      setProductRecord(record);
-    };
-    queryData();
-  }, [idProp, productModelProp]);
-  React.useEffect(resetStateValues, [productRecord, Image]);
-  const [currentImageDisplayValue, setCurrentImageDisplayValue] =
+  const [currentOrderIDDisplayValue, setCurrentOrderIDDisplayValue] =
     React.useState("");
-  const [currentImageValue, setCurrentImageValue] = React.useState(undefined);
-  const ImageRef = React.createRef();
-  const getIDValue = {
-    Image: (r) => JSON.stringify({ id: r?.id }),
-  };
-  const ImageIdSet = new Set(
-    Array.isArray(Image)
-      ? Image.map((r) => getIDValue.Image?.(r))
-      : getIDValue.Image?.(Image)
-  );
+  const [currentOrderIDValue, setCurrentOrderIDValue] =
+    React.useState(undefined);
+  const orderIDRef = React.createRef();
   const getDisplayValue = {
-    Image: (r) => `${r?.url ? r?.url + " - " : ""}${r?.id}`,
+    orderID: (r) => `${r?.totalPrice ? r?.totalPrice + " - " : ""}${r?.id}`,
   };
   const validations = {
     name: [],
-    description: [],
-    Image: [],
     price: [],
+    quantity: [],
+    orderID: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -275,15 +247,18 @@ export default function ProductUpdateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
-  const fetchImageRecords = async (value) => {
-    setImageLoading(true);
+  const fetchOrderIDRecords = async (value) => {
+    setOrderIDLoading(true);
     const newOptions = [];
     let newNext = "";
     while (newOptions.length < autocompleteLength && newNext != null) {
       const variables = {
         limit: autocompleteLength * 5,
         filter: {
-          or: [{ url: { contains: value } }, { id: { contains: value } }],
+          or: [
+            { totalPrice: { contains: value } },
+            { id: { contains: value } },
+          ],
         },
       };
       if (newNext) {
@@ -291,21 +266,19 @@ export default function ProductUpdateForm(props) {
       }
       const result = (
         await client.graphql({
-          query: listImages.replaceAll("__typename", ""),
+          query: listOrders.replaceAll("__typename", ""),
           variables,
         })
-      )?.data?.listImages?.items;
-      var loaded = result.filter(
-        (item) => !ImageIdSet.has(getIDValue.Image?.(item))
-      );
+      )?.data?.listOrders?.items;
+      var loaded = result.filter((item) => orderID !== item.id);
       newOptions.push(...loaded);
       newNext = result.nextToken;
     }
-    setImageRecords(newOptions.slice(0, autocompleteLength));
-    setImageLoading(false);
+    setOrderIDRecords(newOptions.slice(0, autocompleteLength));
+    setOrderIDLoading(false);
   };
   React.useEffect(() => {
-    fetchImageRecords("");
+    fetchOrderIDRecords("");
   }, []);
   return (
     <Grid
@@ -316,31 +289,23 @@ export default function ProductUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name: name ?? null,
-          description: description ?? null,
-          Image: Image ?? null,
-          price: price ?? null,
+          name,
+          price,
+          quantity,
+          orderID,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
             if (Array.isArray(modelFields[fieldName])) {
               promises.push(
                 ...modelFields[fieldName].map((item) =>
-                  runValidationTasks(
-                    fieldName,
-                    item,
-                    getDisplayValue[fieldName]
-                  )
+                  runValidationTasks(fieldName, item)
                 )
               );
               return promises;
             }
             promises.push(
-              runValidationTasks(
-                fieldName,
-                modelFields[fieldName],
-                getDisplayValue[fieldName]
-              )
+              runValidationTasks(fieldName, modelFields[fieldName])
             );
             return promises;
           }, [])
@@ -357,23 +322,19 @@ export default function ProductUpdateForm(props) {
               modelFields[key] = null;
             }
           });
-          const modelFieldsToSave = {
-            name: modelFields.name ?? null,
-            description: modelFields.description ?? null,
-            productImageId: modelFields?.Image?.id ?? null,
-            price: modelFields.price ?? null,
-          };
           await client.graphql({
-            query: updateProduct.replaceAll("__typename", ""),
+            query: createOrderItem.replaceAll("__typename", ""),
             variables: {
               input: {
-                id: productRecord.id,
-                ...modelFieldsToSave,
+                ...modelFields,
               },
             },
           });
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -382,7 +343,7 @@ export default function ProductUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "ProductUpdateForm")}
+      {...getOverrideProps(overrides, "OrderItemCreateForm")}
       {...rest}
     >
       <TextField
@@ -395,9 +356,9 @@ export default function ProductUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               name: value,
-              description,
-              Image,
               price,
+              quantity,
+              orderID,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -413,114 +374,6 @@ export default function ProductUpdateForm(props) {
         {...getOverrideProps(overrides, "name")}
       ></TextField>
       <TextField
-        label="Description"
-        isRequired={false}
-        isReadOnly={false}
-        value={description}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              description: value,
-              Image,
-              price,
-            };
-            const result = onChange(modelFields);
-            value = result?.description ?? value;
-          }
-          if (errors.description?.hasError) {
-            runValidationTasks("description", value);
-          }
-          setDescription(value);
-        }}
-        onBlur={() => runValidationTasks("description", description)}
-        errorMessage={errors.description?.errorMessage}
-        hasError={errors.description?.hasError}
-        {...getOverrideProps(overrides, "description")}
-      ></TextField>
-      <ArrayField
-        lengthLimit={1}
-        onChange={async (items) => {
-          let value = items[0];
-          if (onChange) {
-            const modelFields = {
-              name,
-              description,
-              Image: value,
-              price,
-            };
-            const result = onChange(modelFields);
-            value = result?.Image ?? value;
-          }
-          setImage(value);
-          setCurrentImageValue(undefined);
-          setCurrentImageDisplayValue("");
-        }}
-        currentFieldValue={currentImageValue}
-        label={"Image"}
-        items={Image ? [Image] : []}
-        hasError={errors?.Image?.hasError}
-        runValidationTasks={async () =>
-          await runValidationTasks("Image", currentImageValue)
-        }
-        errorMessage={errors?.Image?.errorMessage}
-        getBadgeText={getDisplayValue.Image}
-        setFieldValue={(model) => {
-          setCurrentImageDisplayValue(
-            model ? getDisplayValue.Image(model) : ""
-          );
-          setCurrentImageValue(model);
-        }}
-        inputFieldRef={ImageRef}
-        defaultFieldValue={""}
-      >
-        <Autocomplete
-          label="Image"
-          isRequired={false}
-          isReadOnly={false}
-          placeholder="Search Image"
-          value={currentImageDisplayValue}
-          options={imageRecords
-            .filter((r) => !ImageIdSet.has(getIDValue.Image?.(r)))
-            .map((r) => ({
-              id: getIDValue.Image?.(r),
-              label: getDisplayValue.Image?.(r),
-            }))}
-          isLoading={ImageLoading}
-          onSelect={({ id, label }) => {
-            setCurrentImageValue(
-              imageRecords.find((r) =>
-                Object.entries(JSON.parse(id)).every(
-                  ([key, value]) => r[key] === value
-                )
-              )
-            );
-            setCurrentImageDisplayValue(label);
-            runValidationTasks("Image", label);
-          }}
-          onClear={() => {
-            setCurrentImageDisplayValue("");
-          }}
-          defaultValue={Image}
-          onChange={(e) => {
-            let { value } = e.target;
-            fetchImageRecords(value);
-            if (errors.Image?.hasError) {
-              runValidationTasks("Image", value);
-            }
-            setCurrentImageDisplayValue(value);
-            setCurrentImageValue(undefined);
-          }}
-          onBlur={() => runValidationTasks("Image", currentImageDisplayValue)}
-          errorMessage={errors.Image?.errorMessage}
-          hasError={errors.Image?.hasError}
-          ref={ImageRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "Image")}
-        ></Autocomplete>
-      </ArrayField>
-      <TextField
         label="Price"
         isRequired={false}
         isReadOnly={false}
@@ -534,9 +387,9 @@ export default function ProductUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
-              description,
-              Image,
               price: value,
+              quantity,
+              orderID,
             };
             const result = onChange(modelFields);
             value = result?.price ?? value;
@@ -551,19 +404,141 @@ export default function ProductUpdateForm(props) {
         hasError={errors.price?.hasError}
         {...getOverrideProps(overrides, "price")}
       ></TextField>
+      <TextField
+        label="Quantity"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={quantity}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              price,
+              quantity: value,
+              orderID,
+            };
+            const result = onChange(modelFields);
+            value = result?.quantity ?? value;
+          }
+          if (errors.quantity?.hasError) {
+            runValidationTasks("quantity", value);
+          }
+          setQuantity(value);
+        }}
+        onBlur={() => runValidationTasks("quantity", quantity)}
+        errorMessage={errors.quantity?.errorMessage}
+        hasError={errors.quantity?.hasError}
+        {...getOverrideProps(overrides, "quantity")}
+      ></TextField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              name,
+              price,
+              quantity,
+              orderID: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.orderID ?? value;
+          }
+          setOrderID(value);
+          setCurrentOrderIDValue(undefined);
+        }}
+        currentFieldValue={currentOrderIDValue}
+        label={"Order id"}
+        items={orderID ? [orderID] : []}
+        hasError={errors?.orderID?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("orderID", currentOrderIDValue)
+        }
+        errorMessage={errors?.orderID?.errorMessage}
+        getBadgeText={(value) =>
+          value
+            ? getDisplayValue.orderID(
+                orderIDRecords.find((r) => r.id === value) ??
+                  selectedOrderIDRecords.find((r) => r.id === value)
+              )
+            : ""
+        }
+        setFieldValue={(value) => {
+          setCurrentOrderIDDisplayValue(
+            value
+              ? getDisplayValue.orderID(
+                  orderIDRecords.find((r) => r.id === value) ??
+                    selectedOrderIDRecords.find((r) => r.id === value)
+                )
+              : ""
+          );
+          setCurrentOrderIDValue(value);
+          const selectedRecord = orderIDRecords.find((r) => r.id === value);
+          if (selectedRecord) {
+            setSelectedOrderIDRecords([selectedRecord]);
+          }
+        }}
+        inputFieldRef={orderIDRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Order id"
+          isRequired={true}
+          isReadOnly={false}
+          placeholder="Search Order"
+          value={currentOrderIDDisplayValue}
+          options={orderIDRecords
+            .filter(
+              (r, i, arr) =>
+                arr.findIndex((member) => member?.id === r?.id) === i
+            )
+            .map((r) => ({
+              id: r?.id,
+              label: getDisplayValue.orderID?.(r),
+            }))}
+          isLoading={orderIDLoading}
+          onSelect={({ id, label }) => {
+            setCurrentOrderIDValue(id);
+            setCurrentOrderIDDisplayValue(label);
+            runValidationTasks("orderID", label);
+          }}
+          onClear={() => {
+            setCurrentOrderIDDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            fetchOrderIDRecords(value);
+            if (errors.orderID?.hasError) {
+              runValidationTasks("orderID", value);
+            }
+            setCurrentOrderIDDisplayValue(value);
+            setCurrentOrderIDValue(undefined);
+          }}
+          onBlur={() => runValidationTasks("orderID", currentOrderIDValue)}
+          errorMessage={errors.orderID?.errorMessage}
+          hasError={errors.orderID?.hasError}
+          ref={orderIDRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "orderID")}
+        ></Autocomplete>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || productModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -573,10 +548,7 @@ export default function ProductUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || productModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>
