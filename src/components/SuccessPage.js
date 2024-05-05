@@ -55,7 +55,7 @@ const CartPage = () => {
     return (
         <View className="App">
     
-          <Navigation overrides={{
+          <Navigation  style={{ width: '100%' }} overrides={{
                 Basket: {
                 onClick: handleBasketClick
                 },
@@ -74,7 +74,7 @@ const CartPage = () => {
 
           }} />
     
-            <Success overrides={{
+            <Success  style={{ width: '100%' }} overrides={{
                 "Back To Merchants": {
                 onClick: handleProduceClick
                 },

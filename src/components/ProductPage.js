@@ -1,95 +1,107 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
-    Button,
-    View
-  } from "@aws-amplify/ui-react";
+  Button,
+  View
+} from "@aws-amplify/ui-react";
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
-import Item  from '../ui-components/Item2';
-import Navigation  from '../ui-components/Navigation';
-import Summary  from '../ui-components/Summary';
-import Footer  from '../ui-components/Footer';
+import Item from '../ui-components/Item2';
+import Navigation from '../ui-components/Navigation';
+import Summary from '../ui-components/Summary';
+import Footer from '../ui-components/Footer';
 import Signout from '../ui-components/Signout';
+import * as queries from '../graphql/queries';
+import { generateClient } from 'aws-amplify/api';
 
 const ProductPage = () => {
-    const navigate = useNavigate();
-    const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const navigate = useNavigate();
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const client = generateClient();
 
-    const handleBasketClick = () => {
-        navigate('/cart');
+  const [products, setProducts] = useState([]);
+  const [quantities, setQuantities] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [orderTotal, setOrderTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productData = await client.graphql({
+          query: queries.listProducts,
+          authMode: 'userPool'
+        });
+        setProducts(productData.data.listProducts.items);
+        setQuantities(new Array(productData.data.listProducts.items.length).fill(0));
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
     };
+
+    fetchProducts();
+  }, []);
+
+  const handleBasketClick = () => {
+    navigate('/cart');
+  };
 
     const handleCheckoutClick = () => {
       navigate('/checkout');
-    };
+  };
     
     const handleAboutClick = () => {
         navigate('/home');
     };
 
-    const handleSearchClick = () => {
-      navigate('/search');
-    };
+  const handleSignOut = async () => {
+    await signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
+  };
 
-    const handleSignOut = async () => {
-        await signOut();
-        localStorage.clear();
-        sessionStorage.clear();
-        navigate('/login');
-    };
-
-    const handleProfileClick = () => {
-      navigate('/profile');
-    };
-
-    const [quantities, setQuantities] = useState(Array.from({ length: 12 }, () => 0));
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
 
 
-    const handleQuantityChange = (index, event) => {
-      const value = parseInt(event.target.value);
-      const newValue = value >= 0 ? value : 0;
-      setQuantities(prevQuantities => ({
-          ...prevQuantities,
-          [index]: newValue
-      }));
-    };
+  const handleAddtoCartClick = (index) => {
+    const productID = products[index].id;  // Assuming each product has a unique ID
+    const quantity = quantities[index];   // Get the quantity for the clicked product
+    console.log("Button clicked for product ID:", productID, "with quantity:", quantity);
+    // Here you would typically dispatch this data to your store or backend API
+  };
 
-    //TO-DO WRITE TO THE TABLE TO STORE THE PRODUCT AND QUANTITY
-    const handleAddtoCartClick = (index) => {
-      console.log("Button clicked for index:", index);
-      // Add your logic here to handle the click event
-    };
-    
 
-    const prices = [
-        2.99,   
-        0.89,   
-        1.49,   
-        1.88,   
-        3.59,   
-        3.49,   
-        3.99,  
-        1.23,  
-        0.79,  
-        1.49,  
-        1.99,  
-        1.59   
-    ];
+  const prices = [
+    2.99,
+    0.89,
+    1.49,
+    1.88,
+    3.59,
+    3.49,
+    3.99,
+    1.23,
+    0.79,
+    1.49,
+    1.99,
+    1.59
+  ];
 
-    const fruits = [
-      'Apple',
-      'Banana',
-      'Orange',
-      'Grapes',
-      'Strawberry',
-      'Plum',
-      'Tomato',
-      'Mango',
-      'Kiwi',
-      'Peach',
-      'Pear',
-      'Cherry'
+  const fruits = [
+    'Apple',
+    'Banana',
+    'Orange',
+    'Grapes',
+    'Strawberry',
+    'Plum',
+    'Tomato',
+    'Mango',
+    'Kiwi',
+    'Peach',
+    'Pear',
+    'Cherry'
   ];
 
   
@@ -107,13 +119,13 @@ const ProductPage = () => {
   
 
     const tableRows = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 4; i++) {
         const tableCells = [];
-        for (let j = 0; j < 2; j++) {
-            const index = i * 2 + j;
+        for (let j = 0; j < 3; j++) {
+            const index = i * 3 + j;
 
             tableCells.push(
-                <td key={`item-${i}-${j}`} style={{ padding: '50px' }}>
+                <td key={`item-${i}-${j}`}>
                     <Item
                         overrides={{
                               "add to cart": {
@@ -148,6 +160,8 @@ const ProductPage = () => {
                                   </div>
                               )
                             }
+                  
+
 
 
                         }}
@@ -157,6 +171,9 @@ const ProductPage = () => {
         }
         tableRows.push(<tr key={`row-${i}`}>{tableCells}</tr>);
     }
+    return rows;
+  }, [products, quantities, handleAddtoCartClick]);
+
 
     return (
         <View className="App">
@@ -172,11 +189,7 @@ const ProductPage = () => {
 
             "My profile": {
               onClick: handleProfileClick 
-            },
-
-            Search116156 :{
-              onClick: handleSearchClick
-            },
+            }
 
           }} />
 

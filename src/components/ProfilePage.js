@@ -1,59 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
 import {
     Button,
     View
-  } from "@aws-amplify/ui-react";
+} from "@aws-amplify/ui-react";
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
-import Navigation  from '../ui-components/Navigation';
+import Navigation from '../ui-components/Navigation';
 import Profile from '../ui-components/Profile';
-import Footer  from '../ui-components/Footer';
+import Footer from '../ui-components/Footer';
 import Signout from '../ui-components/Signout';
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { fetchUserAttributes } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/api';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
     const { user, signOut } = useAuthenticator((context) => [context.user]);
 
-    let fName = 'First'
-    let lName = 'Last'
-    let userName = 'FirstLast123'
-    let email = 'FirstLast@gmail.com'
-    let phoneNumber = '408-408-4040'
-    let billingAdd = '1234 First Ave'
-    let shippingAdd = '1234 Last Ave'
+    const [username, setUsername] = useState('');
+    const [birthday, setBirthday] = useState('');
+    const [email, setEmail] = useState('');
+    const [billing, setBilling] = useState('');
+    const [shipping, setShipping] = useState('');
 
-    const [tempFName, setFirstName] = useState('');
-    const [tempLName, setLastName] = useState('');
-    const [tempBillAdd, setBilling] = useState('');
-    const [tempShippAdd, setShipping] = useState('');
-    const [tempPhone, setPhone] = useState('');
 
-    const handleFirstNameChange = (event) => {
-        setFirstName(event.target.value);
-      };
+    const client = generateClient();
 
-    const handleLastNameChange = (event) => {
-        setLastName(event.target.value);
+    useEffect(() => {
+        //Admin Fetch Users
+        // const fetchTodos = async () => {
+        //   try {
+        //     const allTodos = await client.graphql({
+        //       query: queries.listUsers,
+        //       authMode: 'userPool'
+        //     });
+        //     console.log('All Todos:', allTodos);
+        //   } catch (error) {
+        //     console.error('Error fetching todos:', error);
+        //   }
+        // };
+
+        // fetchTodos();
+
+        //AWS Cognito Fetch User
+        const checkUser = async () => {
+            try {
+                const userData = await fetchAuthSession();
+                if (userData) {
+                    console.log('User data retrieved:', userData);
+                } else {
+                    console.log('No user signed in');
+                }
+            } catch (error) {
+                console.log('Failed to retrieve user:', error);
+            }
+        };
+        checkUser();
+
+        async function handleFetchUserAttributes() {
+            try {
+                const userAttributes = await fetchUserAttributes();
+                console.log(userAttributes);
+                setBirthday(userAttributes.birthdate);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        // checkUser();
+        console.log("This is using Authenticator.Provider", user)
+        handleFetchUserAttributes();
+
+        const fetchUserData = async () => {
+            try {
+                const userData = await client.graphql({
+                    query: queries.getUser,
+                    variables: { id: user.userId },  // Pass `id` to the query
+                    authMode: 'userPool'        // Specify the authentication mode if necessary
+                });
+                console.log('User Data:', userData);
+                setUsername(userData.data.getUser.username); // Use setUsername to update state
+                setEmail(userData.data.getUser.email)
+                setBilling(userData.data.getUser.billingAddress)
+                setShipping(userData.data.getUser.shippingAddress)
+
+            } catch (error) {
+                console.error('Error fetching todos:', error);
+            }
+        };
+
+        fetchUserData();
+
+    }, []);
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
     };
 
     const handleShippingChange = (event) => {
         setShipping(event.target.value);
     };
 
-    const handleBillingeChange = (event) => {
+    const handleBillingChange = (event) => {
         setBilling(event.target.value);
     };
 
-    const handlePhoneChange = (event) => {
-        setPhone(event.target.value);
+    const handleBirthdayChange = (event) => {
+        setBirthday(event.target.value);
     };
-      
+
     const handleBasketClick = () => {
         navigate('/cart');
     };
-    
+
     const handleAboutClick = () => {
         navigate('/home');
     };
@@ -66,8 +129,28 @@ const ProfilePage = () => {
         navigate('/history')
     };
 
-    const handleSaveClick = () => {
-        // TODO
+    const handleSaveClick = async () => {
+        try {
+            const updateDetails = {
+                id: user.userId,
+                email: email,
+                billingAddress: billing,
+                shippingAddress: shipping
+            };
+
+            const updatedUser = await client.graphql(
+                {
+                    query: mutations.updateUser,
+                    variables: { input: updateDetails },
+                    authMode: 'userPool'
+                });
+
+            console.log('Update successful', updatedUser);
+            alert('Profile updated successfully!');
+        } catch (error) {
+            console.error('Error updating user:', error);
+            alert('Failed to update profile. Please try again.');
+        }
     };
 
     const handleSearchClick = () => {
@@ -83,147 +166,114 @@ const ProfilePage = () => {
 
     return (
         <View className="App">
-    
-            <Navigation overrides={{
 
-            Basket: {
-                onClick: handleBasketClick
-            },
-        
-            "Who we are": {
-                onClick: handleAboutClick 
-            },
+            <Navigation  style={{ width: '100%' }} overrides={{
 
-            Shop : {
-                onClick: handleShopClick
-            },
+                Basket: {
+                    onClick: handleBasketClick
+                },
 
-            Search116156 :{
-                onClick: handleSearchClick
-            },
+                "Who we are": {
+                    onClick: handleAboutClick
+                },
+
+                Shop: {
+                    onClick: handleShopClick
+                }
 
             }} />
-        
-            <Profile overrides = {{
 
-            "order history": {
-                onClick: handleHistoryClick
-            },
+            <Profile style={{ width: '100%' }} overrides={{
 
-            "your name": { 
-                children: (
-                    <div>
-                        {fName} {lName}
-                    </div>
-                )},  
+                "order history": {
+                    onClick: handleHistoryClick
+                },
 
-            "eg. alaa.mohamed.gmail.com": { 
-                children: (
-                    <div>
-                        {email}
-                     </div>
-                )}, 
+                "your name": {
+                    children: (
+                        <div>
+                            {username}
+                        </div>
+                    )
+                },
 
-                "eg. 408-123-4567": { 
-                children: (
-                    <div>
-                    <div>
-                        <input
-                         className="input-field" 
-                          type="text"
-                          placeholder= {phoneNumber}
-                          value={tempPhone}
-                          style={{ width: '100%'}}
-                          onChange={handlePhoneChange}
-                        />
-                    </div>
-                    </div>
-            )},
+                "eg. alaa.mohamed.gmail.com": {
+                    children: (
+                        <div>
+                            <input
+                                className="input-field"
+                                type="text"
+                                value={email}
+                                style={{ width: '100%' }}
+                                onChange={handleEmailChange}
+                            />
+                        </div>
+                    )
+                },
 
-            "eg. 12345 billing st. San Jose, CA, 94233": { 
-                children: (
-                    <div>
-                        <input
-                         className="input-field" 
-                          type="text"
-                          placeholder= {billingAdd}
-                          value={tempBillAdd}
-                          style={{ width: '100%'}}
-                          onChange={handleBillingeChange}
-                        />
-                    </div>
-            )},
+                "eg. 12345 billing st. San Jose, CA, 94233": {
+                    children: (
+                        <div>
+                            <input
+                                className="input-field"
+                                type="text"
+                                value={billing}
+                                style={{ width: '100%' }}
+                                onChange={handleBillingChange}
+                            />
+                        </div>
+                    )
+                },
 
-            "eg. 12345 shipping st. San Jose, CA, 94231": { 
-                children: (
-                    <div>
-                        <input
-                         className="input-field" 
-                          type="text"
-                          placeholder= {shippingAdd}
-                          value={tempShippAdd}
-                          style={{ width: '100%'}}
-                          onChange={handleShippingChange}
-                        />
-                    </div>
-            )},
+                "eg. 12345 shipping st. San Jose, CA, 94231": {
+                    children: (
+                        <div>
+                            <input
+                                className="input-field"
+                                type="text"
+                                value={shipping}
+                                style={{ width: '100%' }}
+                                onChange={handleShippingChange}
+                            />
+                        </div>
+                    )
+                },
 
-            "eg. Alaa": {  //First
-                children: (
-                    <div>
-                        <input
-                         className="input-field" 
-                          type="text"
-                          placeholder= {fName}
-                          value={tempFName}
-                          style={{ width: '450%'}}
-                          onChange={handleFirstNameChange}
-                        />
-                    </div>
-            )},
+                "Cancel Button": {
+                    onClick: handleAboutClick
+                },
 
-            "eg. Mohamed": {  //Last
-                children: (
-                    <div>
-                        <input
-                         className="input-field" 
-                          type="text"
-                          placeholder= {lName}
-                          value={tempLName}
-                          style={{ width: '350%'}}
-                          onChange={handleLastNameChange}
-                        />
-                    </div>
-            )},
+                "Save Button": {
+                    onClick: handleSaveClick
+                },
 
-            "eg. alaa.mohamed": {  //Username
-                children: (
-                    <div>
-                        {userName}
-                    </div>
-            )},           
-            
-            "Cancel Button":{
-                onClick: handleAboutClick
-            },
-
-            "Save Button":{
-                onClick: handleSaveClick
-            }
+                "eg. 12/31/2000": {
+                    children: (
+                        <div>
+                            <input
+                                className="input-field"
+                                type="text"
+                                value={birthday}
+                                style={{ width: '100%' }}
+                                onChange={handleBirthdayChange}
+                            />
+                        </div>
+                    )
+                }
 
             }} />
-        
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '20px' }}>
-            <Signout onClick={handleSignOut}>
-                Sign Out
-            </Signout>
-        </div>
+
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '20px' }}>
+                <Signout onClick={handleSignOut}>
+                    Sign Out
+                </Signout>
+            </div>
 
 
-            <Footer />
+            <Footer style={{ width: '100%' }}/>
 
         </View>
-      );
+    );
 };
 
 export default ProfilePage;

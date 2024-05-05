@@ -60,7 +60,7 @@ const HistoryPage = () => {
     return (
         <View className="App">
     
-          <Navigation overrides={{
+          <Navigation  style={{ width: '100%' }} overrides={{
             Basket: {
               onClick: handleBasketClick
             },
@@ -83,7 +83,7 @@ const HistoryPage = () => {
 
           }} />
 
-        <HistoryHeading overrides = {{
+        <HistoryHeading  style={{ width: '100%' }} overrides = {{
            "Purchased History" :{
               children :(
                 <div> Purchase History</div>
@@ -93,7 +93,7 @@ const HistoryPage = () => {
 
         <div>
             {fruitQuantities.map((item, index) => (
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: '20px', paddingLeft: '50px'}}>
                     <Item style={{ padding: '10px', marginBottom: '10px' }} overrides={{
                         itemName: { 
                             children: (
