@@ -8,91 +8,53 @@ export const getUser = /* GraphQL */ `
       username
       email
       password
-      shippingAddress
-      billingAddress
-      shoppingCart {
-        id
-        userID
-        user {
-          id
-          username
-          email
-          password
-          shippingAddress
-          billingAddress
-          shoppingCart {
-            id
-            userID
-            createdAt
-            updatedAt
-            username
-            __typename
-          }
-          orders {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          userShoppingCartId
-          __typename
-        }
-        products {
-          items {
-            id
-            productID
-            quantity
-            createdAt
-            updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        username
-        __typename
-      }
-      orders {
+      CartItems {
         items {
           id
-          userID
-          user {
+          Product {
             id
-            username
-            email
-            password
-            shippingAddress
-            billingAddress
+            name
+            description
+            price
             createdAt
             updatedAt
-            userShoppingCartId
+            productImageId
+            username
             __typename
           }
-          products {
-            nextToken
-            __typename
-          }
-          date
-          status
-          totalPrice
+          quantity
+          userID
           createdAt
           updatedAt
-          userOrdersId
+          cartItemProductId
           username
           __typename
         }
         nextToken
         __typename
       }
+      Orders {
+        items {
+          id
+          date
+          totalPrice
+          userID
+          OrderItems {
+            nextToken
+            __typename
+          }
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      shippingAddress
+      billingAddress
       createdAt
       updatedAt
-      userShoppingCartId
       __typename
     }
   }
@@ -109,51 +71,38 @@ export const listUsers = /* GraphQL */ `
         username
         email
         password
-        shippingAddress
-        billingAddress
-        shoppingCart {
-          id
-          userID
-          user {
-            id
-            username
-            email
-            password
-            shippingAddress
-            billingAddress
-            createdAt
-            updatedAt
-            userShoppingCartId
-            __typename
-          }
-          products {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          username
-          __typename
-        }
-        orders {
+        CartItems {
           items {
             id
+            quantity
             userID
-            date
-            status
-            totalPrice
             createdAt
             updatedAt
-            userOrdersId
+            cartItemProductId
             username
             __typename
           }
           nextToken
           __typename
         }
+        Orders {
+          items {
+            id
+            date
+            totalPrice
+            userID
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        shippingAddress
+        billingAddress
         createdAt
         updatedAt
-        userShoppingCartId
         __typename
       }
       nextToken
@@ -165,92 +114,26 @@ export const getOrder = /* GraphQL */ `
   query GetOrder($id: ID!) {
     getOrder(id: $id) {
       id
+      date
+      totalPrice
       userID
-      user {
-        id
-        username
-        email
-        password
-        shippingAddress
-        billingAddress
-        shoppingCart {
-          id
-          userID
-          user {
-            id
-            username
-            email
-            password
-            shippingAddress
-            billingAddress
-            createdAt
-            updatedAt
-            userShoppingCartId
-            __typename
-          }
-          products {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          username
-          __typename
-        }
-        orders {
-          items {
-            id
-            userID
-            date
-            status
-            totalPrice
-            createdAt
-            updatedAt
-            userOrdersId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        userShoppingCartId
-        __typename
-      }
-      products {
+      OrderItems {
         items {
           id
-          productID
-          product {
-            id
-            name
-            description
-            price
-            createdAt
-            updatedAt
-            productImageId
-            username
-            __typename
-          }
+          name
+          price
           quantity
+          orderID
           createdAt
           updatedAt
-          orderProductsId
-          shoppingCartProductsId
-          productQuantitiesId
           username
           __typename
         }
         nextToken
         __typename
       }
-      date
-      status
-      totalPrice
       createdAt
       updatedAt
-      userOrdersId
       username
       __typename
     }
@@ -265,53 +148,26 @@ export const listOrders = /* GraphQL */ `
     listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        date
+        totalPrice
         userID
-        user {
-          id
-          username
-          email
-          password
-          shippingAddress
-          billingAddress
-          shoppingCart {
-            id
-            userID
-            createdAt
-            updatedAt
-            username
-            __typename
-          }
-          orders {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          userShoppingCartId
-          __typename
-        }
-        products {
+        OrderItems {
           items {
             id
-            productID
+            name
+            price
             quantity
+            orderID
             createdAt
             updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
             username
             __typename
           }
           nextToken
           __typename
         }
-        date
-        status
-        totalPrice
         createdAt
         updatedAt
-        userOrdersId
         username
         __typename
       }
@@ -320,18 +176,16 @@ export const listOrders = /* GraphQL */ `
     }
   }
 `;
-export const ordersByUserIDAndId = /* GraphQL */ `
-  query OrdersByUserIDAndId(
+export const ordersByUserID = /* GraphQL */ `
+  query OrdersByUserID(
     $userID: ID!
-    $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelOrderFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    ordersByUserIDAndId(
+    ordersByUserID(
       userID: $userID
-      id: $id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -339,53 +193,26 @@ export const ordersByUserIDAndId = /* GraphQL */ `
     ) {
       items {
         id
+        date
+        totalPrice
         userID
-        user {
-          id
-          username
-          email
-          password
-          shippingAddress
-          billingAddress
-          shoppingCart {
-            id
-            userID
-            createdAt
-            updatedAt
-            username
-            __typename
-          }
-          orders {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          userShoppingCartId
-          __typename
-        }
-        products {
+        OrderItems {
           items {
             id
-            productID
+            name
+            price
             quantity
+            orderID
             createdAt
             updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
             username
             __typename
           }
           nextToken
           __typename
         }
-        date
-        status
-        totalPrice
         createdAt
         updatedAt
-        userOrdersId
         username
         __typename
       }
@@ -394,90 +221,14 @@ export const ordersByUserIDAndId = /* GraphQL */ `
     }
   }
 `;
-export const getShoppingCart = /* GraphQL */ `
-  query GetShoppingCart($id: ID!) {
-    getShoppingCart(id: $id) {
+export const getOrderItem = /* GraphQL */ `
+  query GetOrderItem($id: ID!) {
+    getOrderItem(id: $id) {
       id
-      userID
-      user {
-        id
-        username
-        email
-        password
-        shippingAddress
-        billingAddress
-        shoppingCart {
-          id
-          userID
-          user {
-            id
-            username
-            email
-            password
-            shippingAddress
-            billingAddress
-            createdAt
-            updatedAt
-            userShoppingCartId
-            __typename
-          }
-          products {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          username
-          __typename
-        }
-        orders {
-          items {
-            id
-            userID
-            date
-            status
-            totalPrice
-            createdAt
-            updatedAt
-            userOrdersId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        userShoppingCartId
-        __typename
-      }
-      products {
-        items {
-          id
-          productID
-          product {
-            id
-            name
-            description
-            price
-            createdAt
-            updatedAt
-            productImageId
-            username
-            __typename
-          }
-          quantity
-          createdAt
-          updatedAt
-          orderProductsId
-          shoppingCartProductsId
-          productQuantitiesId
-          username
-          __typename
-        }
-        nextToken
-        __typename
-      }
+      name
+      price
+      quantity
+      orderID
       createdAt
       updatedAt
       username
@@ -485,56 +236,19 @@ export const getShoppingCart = /* GraphQL */ `
     }
   }
 `;
-export const listShoppingCarts = /* GraphQL */ `
-  query ListShoppingCarts(
-    $filter: ModelShoppingCartFilterInput
+export const listOrderItems = /* GraphQL */ `
+  query ListOrderItems(
+    $filter: ModelOrderItemFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listShoppingCarts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listOrderItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userID
-        user {
-          id
-          username
-          email
-          password
-          shippingAddress
-          billingAddress
-          shoppingCart {
-            id
-            userID
-            createdAt
-            updatedAt
-            username
-            __typename
-          }
-          orders {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          userShoppingCartId
-          __typename
-        }
-        products {
-          items {
-            id
-            productID
-            quantity
-            createdAt
-            updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
+        name
+        price
+        quantity
+        orderID
         createdAt
         updatedAt
         username
@@ -545,18 +259,16 @@ export const listShoppingCarts = /* GraphQL */ `
     }
   }
 `;
-export const shoppingCartsByUserIDAndId = /* GraphQL */ `
-  query ShoppingCartsByUserIDAndId(
-    $userID: ID!
-    $id: ModelIDKeyConditionInput
+export const orderItemsByOrderID = /* GraphQL */ `
+  query OrderItemsByOrderID(
+    $orderID: ID!
     $sortDirection: ModelSortDirection
-    $filter: ModelShoppingCartFilterInput
+    $filter: ModelOrderItemFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    shoppingCartsByUserIDAndId(
-      userID: $userID
-      id: $id
+    orderItemsByOrderID(
+      orderID: $orderID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -564,49 +276,138 @@ export const shoppingCartsByUserIDAndId = /* GraphQL */ `
     ) {
       items {
         id
-        userID
-        user {
-          id
-          username
-          email
-          password
-          shippingAddress
-          billingAddress
-          shoppingCart {
-            id
-            userID
-            createdAt
-            updatedAt
-            username
-            __typename
-          }
-          orders {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          userShoppingCartId
-          __typename
-        }
-        products {
-          items {
-            id
-            productID
-            quantity
-            createdAt
-            updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
+        name
+        price
+        quantity
+        orderID
         createdAt
         updatedAt
+        username
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getCartItem = /* GraphQL */ `
+  query GetCartItem($id: ID!) {
+    getCartItem(id: $id) {
+      id
+      Product {
+        id
+        name
+        description
+        Image {
+          id
+          url
+          description
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
+        price
+        createdAt
+        updatedAt
+        productImageId
+        username
+        __typename
+      }
+      quantity
+      userID
+      createdAt
+      updatedAt
+      cartItemProductId
+      username
+      __typename
+    }
+  }
+`;
+export const listCartItems = /* GraphQL */ `
+  query ListCartItems(
+    $filter: ModelCartItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCartItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        Product {
+          id
+          name
+          description
+          Image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          price
+          createdAt
+          updatedAt
+          productImageId
+          username
+          __typename
+        }
+        quantity
+        userID
+        createdAt
+        updatedAt
+        cartItemProductId
+        username
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const cartItemsByUserID = /* GraphQL */ `
+  query CartItemsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCartItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    cartItemsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        Product {
+          id
+          name
+          description
+          Image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
+          price
+          createdAt
+          updatedAt
+          productImageId
+          username
+          __typename
+        }
+        quantity
+        userID
+        createdAt
+        updatedAt
+        cartItemProductId
         username
         __typename
       }
@@ -621,7 +422,7 @@ export const getProduct = /* GraphQL */ `
       id
       name
       description
-      image {
+      Image {
         id
         url
         description
@@ -631,33 +432,6 @@ export const getProduct = /* GraphQL */ `
         __typename
       }
       price
-      quantities {
-        items {
-          id
-          productID
-          product {
-            id
-            name
-            description
-            price
-            createdAt
-            updatedAt
-            productImageId
-            username
-            __typename
-          }
-          quantity
-          createdAt
-          updatedAt
-          orderProductsId
-          shoppingCartProductsId
-          productQuantitiesId
-          username
-          __typename
-        }
-        nextToken
-        __typename
-      }
       createdAt
       updatedAt
       productImageId
@@ -677,7 +451,7 @@ export const listProducts = /* GraphQL */ `
         id
         name
         description
-        image {
+        Image {
           id
           url
           description
@@ -687,129 +461,9 @@ export const listProducts = /* GraphQL */ `
           __typename
         }
         price
-        quantities {
-          items {
-            id
-            productID
-            quantity
-            createdAt
-            updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         productImageId
-        username
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getProductQuantity = /* GraphQL */ `
-  query GetProductQuantity($id: ID!) {
-    getProductQuantity(id: $id) {
-      id
-      productID
-      product {
-        id
-        name
-        description
-        image {
-          id
-          url
-          description
-          createdAt
-          updatedAt
-          username
-          __typename
-        }
-        price
-        quantities {
-          items {
-            id
-            productID
-            quantity
-            createdAt
-            updatedAt
-            orderProductsId
-            shoppingCartProductsId
-            productQuantitiesId
-            username
-            __typename
-          }
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        productImageId
-        username
-        __typename
-      }
-      quantity
-      createdAt
-      updatedAt
-      orderProductsId
-      shoppingCartProductsId
-      productQuantitiesId
-      username
-      __typename
-    }
-  }
-`;
-export const listProductQuantities = /* GraphQL */ `
-  query ListProductQuantities(
-    $filter: ModelProductQuantityFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listProductQuantities(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        productID
-        product {
-          id
-          name
-          description
-          image {
-            id
-            url
-            description
-            createdAt
-            updatedAt
-            username
-            __typename
-          }
-          price
-          quantities {
-            nextToken
-            __typename
-          }
-          createdAt
-          updatedAt
-          productImageId
-          username
-          __typename
-        }
-        quantity
-        createdAt
-        updatedAt
-        orderProductsId
-        shoppingCartProductsId
-        productQuantitiesId
         username
         __typename
       }

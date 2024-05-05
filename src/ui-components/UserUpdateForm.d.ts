@@ -25,19 +25,19 @@ export declare type UserUpdateFormInputValues = {
     username?: string;
     email?: string;
     password?: string;
+    CartItems?: any[];
+    Orders?: any[];
     shippingAddress?: string;
     billingAddress?: string;
-    shoppingCart?: any;
-    orders?: any[];
 };
 export declare type UserUpdateFormValidationValues = {
     username?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     password?: ValidationFunction<string>;
+    CartItems?: ValidationFunction<any>;
+    Orders?: ValidationFunction<any>;
     shippingAddress?: ValidationFunction<string>;
     billingAddress?: ValidationFunction<string>;
-    shoppingCart?: ValidationFunction<any>;
-    orders?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserUpdateFormOverridesProps = {
@@ -45,10 +45,10 @@ export declare type UserUpdateFormOverridesProps = {
     username?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     password?: PrimitiveOverrideProps<TextFieldProps>;
+    CartItems?: PrimitiveOverrideProps<AutocompleteProps>;
+    Orders?: PrimitiveOverrideProps<AutocompleteProps>;
     shippingAddress?: PrimitiveOverrideProps<TextFieldProps>;
     billingAddress?: PrimitiveOverrideProps<TextFieldProps>;
-    shoppingCart?: PrimitiveOverrideProps<AutocompleteProps>;
-    orders?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type UserUpdateFormProps = React.PropsWithChildren<{
     overrides?: UserUpdateFormOverridesProps | undefined | null;

@@ -37,7 +37,7 @@ export default function ImageCreateForm(props) {
     setErrors({});
   };
   const validations = {
-    url: [{ type: "Required" }, { type: "URL" }],
+    url: [{ type: "URL" }],
     description: [],
   };
   const runValidationTasks = async (
@@ -123,7 +123,7 @@ export default function ImageCreateForm(props) {
     >
       <TextField
         label="Url"
-        isRequired={true}
+        isRequired={false}
         isReadOnly={false}
         value={url}
         onChange={(e) => {

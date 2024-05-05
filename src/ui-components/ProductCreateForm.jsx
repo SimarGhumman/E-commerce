@@ -21,8 +21,8 @@ import {
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { listImages, listProductQuantities } from "../graphql/queries";
-import { createProduct, updateProductQuantity } from "../graphql/mutations";
+import { listImages } from "../graphql/queries";
+import { createProduct } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
   items = [],
@@ -193,68 +193,48 @@ export default function ProductCreateForm(props) {
   const initialValues = {
     name: "",
     description: "",
-    image: undefined,
+    Image: undefined,
     price: "",
-    quantities: [],
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
-  const [image, setImage] = React.useState(initialValues.image);
-  const [imageLoading, setImageLoading] = React.useState(false);
+  const [Image, setImage] = React.useState(initialValues.Image);
+  const [ImageLoading, setImageLoading] = React.useState(false);
   const [imageRecords, setImageRecords] = React.useState([]);
   const [price, setPrice] = React.useState(initialValues.price);
-  const [quantities, setQuantities] = React.useState(initialValues.quantities);
-  const [quantitiesLoading, setQuantitiesLoading] = React.useState(false);
-  const [quantitiesRecords, setQuantitiesRecords] = React.useState([]);
   const autocompleteLength = 10;
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
     setDescription(initialValues.description);
-    setImage(initialValues.image);
+    setImage(initialValues.Image);
     setCurrentImageValue(undefined);
     setCurrentImageDisplayValue("");
     setPrice(initialValues.price);
-    setQuantities(initialValues.quantities);
-    setCurrentQuantitiesValue(undefined);
-    setCurrentQuantitiesDisplayValue("");
     setErrors({});
   };
   const [currentImageDisplayValue, setCurrentImageDisplayValue] =
     React.useState("");
   const [currentImageValue, setCurrentImageValue] = React.useState(undefined);
-  const imageRef = React.createRef();
-  const [currentQuantitiesDisplayValue, setCurrentQuantitiesDisplayValue] =
-    React.useState("");
-  const [currentQuantitiesValue, setCurrentQuantitiesValue] =
-    React.useState(undefined);
-  const quantitiesRef = React.createRef();
+  const ImageRef = React.createRef();
   const getIDValue = {
-    image: (r) => JSON.stringify({ id: r?.id }),
-    quantities: (r) => JSON.stringify({ id: r?.id }),
+    Image: (r) => JSON.stringify({ id: r?.id }),
   };
-  const imageIdSet = new Set(
-    Array.isArray(image)
-      ? image.map((r) => getIDValue.image?.(r))
-      : getIDValue.image?.(image)
-  );
-  const quantitiesIdSet = new Set(
-    Array.isArray(quantities)
-      ? quantities.map((r) => getIDValue.quantities?.(r))
-      : getIDValue.quantities?.(quantities)
+  const ImageIdSet = new Set(
+    Array.isArray(Image)
+      ? Image.map((r) => getIDValue.Image?.(r))
+      : getIDValue.Image?.(Image)
   );
   const getDisplayValue = {
-    image: (r) => `${r?.url ? r?.url + " - " : ""}${r?.id}`,
-    quantities: (r) => `${r?.quantity ? r?.quantity + " - " : ""}${r?.id}`,
+    Image: (r) => `${r?.url ? r?.url + " - " : ""}${r?.id}`,
   };
   const validations = {
-    name: [{ type: "Required" }],
+    name: [],
     description: [],
-    image: [],
-    price: [{ type: "Required" }],
-    quantities: [],
+    Image: [],
+    price: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -294,7 +274,7 @@ export default function ProductCreateForm(props) {
         })
       )?.data?.listImages?.items;
       var loaded = result.filter(
-        (item) => !imageIdSet.has(getIDValue.image?.(item))
+        (item) => !ImageIdSet.has(getIDValue.Image?.(item))
       );
       newOptions.push(...loaded);
       newNext = result.nextToken;
@@ -302,38 +282,8 @@ export default function ProductCreateForm(props) {
     setImageRecords(newOptions.slice(0, autocompleteLength));
     setImageLoading(false);
   };
-  const fetchQuantitiesRecords = async (value) => {
-    setQuantitiesLoading(true);
-    const newOptions = [];
-    let newNext = "";
-    while (newOptions.length < autocompleteLength && newNext != null) {
-      const variables = {
-        limit: autocompleteLength * 5,
-        filter: {
-          or: [{ quantity: { contains: value } }, { id: { contains: value } }],
-        },
-      };
-      if (newNext) {
-        variables["nextToken"] = newNext;
-      }
-      const result = (
-        await client.graphql({
-          query: listProductQuantities.replaceAll("__typename", ""),
-          variables,
-        })
-      )?.data?.listProductQuantities?.items;
-      var loaded = result.filter(
-        (item) => !quantitiesIdSet.has(getIDValue.quantities?.(item))
-      );
-      newOptions.push(...loaded);
-      newNext = result.nextToken;
-    }
-    setQuantitiesRecords(newOptions.slice(0, autocompleteLength));
-    setQuantitiesLoading(false);
-  };
   React.useEffect(() => {
     fetchImageRecords("");
-    fetchQuantitiesRecords("");
   }, []);
   return (
     <Grid
@@ -346,9 +296,8 @@ export default function ProductCreateForm(props) {
         let modelFields = {
           name,
           description,
-          image,
+          Image,
           price,
-          quantities,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -389,37 +338,17 @@ export default function ProductCreateForm(props) {
           const modelFieldsToSave = {
             name: modelFields.name,
             description: modelFields.description,
-            productImageId: modelFields?.image?.id,
+            productImageId: modelFields?.Image?.id,
             price: modelFields.price,
           };
-          const product = (
-            await client.graphql({
-              query: createProduct.replaceAll("__typename", ""),
-              variables: {
-                input: {
-                  ...modelFieldsToSave,
-                },
+          await client.graphql({
+            query: createProduct.replaceAll("__typename", ""),
+            variables: {
+              input: {
+                ...modelFieldsToSave,
               },
-            })
-          )?.data?.createProduct;
-          const promises = [];
-          promises.push(
-            ...quantities.reduce((promises, original) => {
-              promises.push(
-                client.graphql({
-                  query: updateProductQuantity.replaceAll("__typename", ""),
-                  variables: {
-                    input: {
-                      id: original.id,
-                      productQuantitiesId: product.id,
-                    },
-                  },
-                })
-              );
-              return promises;
-            }, [])
-          );
-          await Promise.all(promises);
+            },
+          });
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -438,7 +367,7 @@ export default function ProductCreateForm(props) {
     >
       <TextField
         label="Name"
-        isRequired={true}
+        isRequired={false}
         isReadOnly={false}
         value={name}
         onChange={(e) => {
@@ -447,9 +376,8 @@ export default function ProductCreateForm(props) {
             const modelFields = {
               name: value,
               description,
-              image,
+              Image,
               price,
-              quantities,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -475,9 +403,8 @@ export default function ProductCreateForm(props) {
             const modelFields = {
               name,
               description: value,
-              image,
+              Image,
               price,
-              quantities,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -500,12 +427,11 @@ export default function ProductCreateForm(props) {
             const modelFields = {
               name,
               description,
-              image: value,
+              Image: value,
               price,
-              quantities,
             };
             const result = onChange(modelFields);
-            value = result?.image ?? value;
+            value = result?.Image ?? value;
           }
           setImage(value);
           setCurrentImageValue(undefined);
@@ -513,20 +439,20 @@ export default function ProductCreateForm(props) {
         }}
         currentFieldValue={currentImageValue}
         label={"Image"}
-        items={image ? [image] : []}
-        hasError={errors?.image?.hasError}
+        items={Image ? [Image] : []}
+        hasError={errors?.Image?.hasError}
         runValidationTasks={async () =>
-          await runValidationTasks("image", currentImageValue)
+          await runValidationTasks("Image", currentImageValue)
         }
-        errorMessage={errors?.image?.errorMessage}
-        getBadgeText={getDisplayValue.image}
+        errorMessage={errors?.Image?.errorMessage}
+        getBadgeText={getDisplayValue.Image}
         setFieldValue={(model) => {
           setCurrentImageDisplayValue(
-            model ? getDisplayValue.image(model) : ""
+            model ? getDisplayValue.Image(model) : ""
           );
           setCurrentImageValue(model);
         }}
-        inputFieldRef={imageRef}
+        inputFieldRef={ImageRef}
         defaultFieldValue={""}
       >
         <Autocomplete
@@ -536,12 +462,12 @@ export default function ProductCreateForm(props) {
           placeholder="Search Image"
           value={currentImageDisplayValue}
           options={imageRecords
-            .filter((r) => !imageIdSet.has(getIDValue.image?.(r)))
+            .filter((r) => !ImageIdSet.has(getIDValue.Image?.(r)))
             .map((r) => ({
-              id: getIDValue.image?.(r),
-              label: getDisplayValue.image?.(r),
+              id: getIDValue.Image?.(r),
+              label: getDisplayValue.Image?.(r),
             }))}
-          isLoading={imageLoading}
+          isLoading={ImageLoading}
           onSelect={({ id, label }) => {
             setCurrentImageValue(
               imageRecords.find((r) =>
@@ -551,7 +477,7 @@ export default function ProductCreateForm(props) {
               )
             );
             setCurrentImageDisplayValue(label);
-            runValidationTasks("image", label);
+            runValidationTasks("Image", label);
           }}
           onClear={() => {
             setCurrentImageDisplayValue("");
@@ -559,23 +485,23 @@ export default function ProductCreateForm(props) {
           onChange={(e) => {
             let { value } = e.target;
             fetchImageRecords(value);
-            if (errors.image?.hasError) {
-              runValidationTasks("image", value);
+            if (errors.Image?.hasError) {
+              runValidationTasks("Image", value);
             }
             setCurrentImageDisplayValue(value);
             setCurrentImageValue(undefined);
           }}
-          onBlur={() => runValidationTasks("image", currentImageDisplayValue)}
-          errorMessage={errors.image?.errorMessage}
-          hasError={errors.image?.hasError}
-          ref={imageRef}
+          onBlur={() => runValidationTasks("Image", currentImageDisplayValue)}
+          errorMessage={errors.Image?.errorMessage}
+          hasError={errors.Image?.hasError}
+          ref={ImageRef}
           labelHidden={true}
-          {...getOverrideProps(overrides, "image")}
+          {...getOverrideProps(overrides, "Image")}
         ></Autocomplete>
       </ArrayField>
       <TextField
         label="Price"
-        isRequired={true}
+        isRequired={false}
         isReadOnly={false}
         type="number"
         step="any"
@@ -588,9 +514,8 @@ export default function ProductCreateForm(props) {
             const modelFields = {
               name,
               description,
-              image,
+              Image,
               price: value,
-              quantities,
             };
             const result = onChange(modelFields);
             value = result?.price ?? value;
@@ -605,86 +530,6 @@ export default function ProductCreateForm(props) {
         hasError={errors.price?.hasError}
         {...getOverrideProps(overrides, "price")}
       ></TextField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              name,
-              description,
-              image,
-              price,
-              quantities: values,
-            };
-            const result = onChange(modelFields);
-            values = result?.quantities ?? values;
-          }
-          setQuantities(values);
-          setCurrentQuantitiesValue(undefined);
-          setCurrentQuantitiesDisplayValue("");
-        }}
-        currentFieldValue={currentQuantitiesValue}
-        label={"Quantities"}
-        items={quantities}
-        hasError={errors?.quantities?.hasError}
-        runValidationTasks={async () =>
-          await runValidationTasks("quantities", currentQuantitiesValue)
-        }
-        errorMessage={errors?.quantities?.errorMessage}
-        getBadgeText={getDisplayValue.quantities}
-        setFieldValue={(model) => {
-          setCurrentQuantitiesDisplayValue(
-            model ? getDisplayValue.quantities(model) : ""
-          );
-          setCurrentQuantitiesValue(model);
-        }}
-        inputFieldRef={quantitiesRef}
-        defaultFieldValue={""}
-      >
-        <Autocomplete
-          label="Quantities"
-          isRequired={false}
-          isReadOnly={false}
-          placeholder="Search ProductQuantity"
-          value={currentQuantitiesDisplayValue}
-          options={quantitiesRecords.map((r) => ({
-            id: getIDValue.quantities?.(r),
-            label: getDisplayValue.quantities?.(r),
-          }))}
-          isLoading={quantitiesLoading}
-          onSelect={({ id, label }) => {
-            setCurrentQuantitiesValue(
-              quantitiesRecords.find((r) =>
-                Object.entries(JSON.parse(id)).every(
-                  ([key, value]) => r[key] === value
-                )
-              )
-            );
-            setCurrentQuantitiesDisplayValue(label);
-            runValidationTasks("quantities", label);
-          }}
-          onClear={() => {
-            setCurrentQuantitiesDisplayValue("");
-          }}
-          onChange={(e) => {
-            let { value } = e.target;
-            fetchQuantitiesRecords(value);
-            if (errors.quantities?.hasError) {
-              runValidationTasks("quantities", value);
-            }
-            setCurrentQuantitiesDisplayValue(value);
-            setCurrentQuantitiesValue(undefined);
-          }}
-          onBlur={() =>
-            runValidationTasks("quantities", currentQuantitiesDisplayValue)
-          }
-          errorMessage={errors.quantities?.errorMessage}
-          hasError={errors.quantities?.hasError}
-          ref={quantitiesRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "quantities")}
-        ></Autocomplete>
-      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

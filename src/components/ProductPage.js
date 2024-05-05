@@ -134,13 +134,14 @@ const ProductPage = () => {
         const productIndex = row * 3 + index;
         return (
           <td key={product.id}>
+            {console.log(product)}
             <Item
               overrides={{
                 "add to cart": {
                   onClick: () => handleAddtoCartClick(productIndex)
                 },
                 "ed-o-neil-AvvdZlhDowA-unsplash 1": {
-                  src: product.image.url,
+                  src: product.Image?.url || "",
                   alt: product.name
                 },
                 quantity: {
