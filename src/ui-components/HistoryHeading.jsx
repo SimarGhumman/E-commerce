@@ -12,7 +12,7 @@ export default function HistoryHeading(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="100%"
+      width="1400px"
       height="149px"
       display="block"
       gap="unset"
@@ -49,17 +49,17 @@ export default function HistoryHeading(props) {
         {...getOverrideProps(overrides, "Purchased History")}
       ></Text>
       <Icon
-        width="1248px"
+        width="1208px"
         height="0px"
         viewBox={{
           minX: 0,
           minY: 0,
-          width: 1248,
-          height: 0.00010910362516369787,
+          width: 1208,
+          height: 0.00010560671410075884,
         }}
         paths={[
           {
-            d: "M0 0L1248 0L1248 -2L0 -2L0 0Z",
+            d: "M0 0L1208 0L1208 -2L0 -2L0 0Z",
             stroke: "rgba(230,230,230,1)",
             fillRule: "nonzero",
             strokeWidth: 2,

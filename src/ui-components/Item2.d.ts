@@ -36,6 +36,7 @@ export declare type Item2OverridesProps = {
 } & EscapeHatchProps;
 export declare type Item2Props = React.PropsWithChildren<Partial<ViewProps> & {
     tomato?: any;
+    image?: any;
 } & {
     overrides?: Item2OverridesProps | undefined | null;
 }>;

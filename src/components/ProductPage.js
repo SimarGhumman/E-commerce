@@ -22,10 +22,14 @@ const ProductPage = () => {
 
     const handleCheckoutClick = () => {
       navigate('/checkout');
-  };
+    };
     
     const handleAboutClick = () => {
         navigate('/home');
+    };
+
+    const handleSearchClick = () => {
+      navigate('/search');
     };
 
     const handleSignOut = async () => {
@@ -103,13 +107,13 @@ const ProductPage = () => {
   
 
     const tableRows = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 6; i++) {
         const tableCells = [];
-        for (let j = 0; j < 3; j++) {
-            const index = i * 3 + j;
+        for (let j = 0; j < 2; j++) {
+            const index = i * 2 + j;
 
             tableCells.push(
-                <td key={`item-${i}-${j}`}>
+                <td key={`item-${i}-${j}`} style={{ padding: '50px' }}>
                     <Item
                         overrides={{
                               "add to cart": {
@@ -144,8 +148,6 @@ const ProductPage = () => {
                                   </div>
                               )
                             }
-                  
-
 
 
                         }}
@@ -170,7 +172,11 @@ const ProductPage = () => {
 
             "My profile": {
               onClick: handleProfileClick 
-            }
+            },
+
+            Search116156 :{
+              onClick: handleSearchClick
+            },
 
           }} />
 

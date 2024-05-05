@@ -26,14 +26,19 @@ export default function ImageUpdateForm(props) {
   } = props;
   const initialValues = {
     url: "",
+    description: "",
   };
   const [url, setUrl] = React.useState(initialValues.url);
+  const [description, setDescription] = React.useState(
+    initialValues.description
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = imageRecord
       ? { ...initialValues, ...imageRecord }
       : initialValues;
     setUrl(cleanValues.url);
+    setDescription(cleanValues.description);
     setErrors({});
   };
   const [imageRecord, setImageRecord] = React.useState(imageModelProp);
@@ -53,7 +58,8 @@ export default function ImageUpdateForm(props) {
   }, [idProp, imageModelProp]);
   React.useEffect(resetStateValues, [imageRecord]);
   const validations = {
-    url: [{ type: "URL" }],
+    url: [{ type: "Required" }, { type: "URL" }],
+    description: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -81,7 +87,8 @@ export default function ImageUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          url: url ?? null,
+          url,
+          description: description ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -135,7 +142,7 @@ export default function ImageUpdateForm(props) {
     >
       <TextField
         label="Url"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={url}
         onChange={(e) => {
@@ -143,6 +150,7 @@ export default function ImageUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               url: value,
+              description,
             };
             const result = onChange(modelFields);
             value = result?.url ?? value;
@@ -156,6 +164,31 @@ export default function ImageUpdateForm(props) {
         errorMessage={errors.url?.errorMessage}
         hasError={errors.url?.hasError}
         {...getOverrideProps(overrides, "url")}
+      ></TextField>
+      <TextField
+        label="Description"
+        isRequired={false}
+        isReadOnly={false}
+        value={description}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              url,
+              description: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.description ?? value;
+          }
+          if (errors.description?.hasError) {
+            runValidationTasks("description", value);
+          }
+          setDescription(value);
+        }}
+        onBlur={() => runValidationTasks("description", description)}
+        errorMessage={errors.description?.errorMessage}
+        hasError={errors.description?.hasError}
+        {...getOverrideProps(overrides, "description")}
       ></TextField>
       <Flex
         justifyContent="space-between"

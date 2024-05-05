@@ -70,6 +70,10 @@ const ProfilePage = () => {
         // TODO
     };
 
+    const handleSearchClick = () => {
+        navigate('/search');
+      };
+
     const handleSignOut = async () => {
         await signOut();
         localStorage.clear();
@@ -92,7 +96,11 @@ const ProfilePage = () => {
 
             Shop : {
                 onClick: handleShopClick
-              }
+            },
+
+            Search116156 :{
+                onClick: handleSearchClick
+            },
 
             }} />
         

@@ -348,7 +348,7 @@ export default function Checkout(props) {
             alignItems="unset"
             justifyContent="unset"
             position="absolute"
-            bottom="0px"
+            top="0px"
             left="0px"
             {...getOverrideProps(overrides, "Rectangle 973205")}
           ></Icon>
@@ -390,7 +390,7 @@ export default function Checkout(props) {
             alignItems="unset"
             justifyContent="unset"
             position="absolute"
-            bottom="0px"
+            top="0px"
             left="248px"
             {...getOverrideProps(overrides, "Rectangle 1073207")}
           ></Icon>
@@ -433,7 +433,7 @@ export default function Checkout(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          bottom="191px"
+          top="138px"
           left="22px"
           {...getOverrideProps(overrides, "Rectangle 15")}
         ></Icon>
@@ -497,7 +497,7 @@ export default function Checkout(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          bottom="109px"
+          top="220px"
           left="22px"
           {...getOverrideProps(overrides, "Rectangle 16")}
         ></Icon>

@@ -8,6 +8,7 @@ import ProducePage from './components/ProductPage';
 import ProfilePage from './components/ProfilePage';
 import SuccessPage from './components/SuccessPage';
 import HistoryPage from './components/HistoryPage';
+import SearchPage from './components/SearchPage';
 import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/produce" element={<ProtectedRoute component={ProducePage} />} />
                 <Route path="/profile" element={<ProtectedRoute component={ProfilePage} />} />
                 <Route path="/ordercomplete" element={<ProtectedRoute component={SuccessPage} />} />
+                <Route path="/search" element={<ProtectedRoute component={SearchPage} />} />
                 <Route path="/" element={<Navigate replace to="/login" />} />
                 <Route path="*" element={<LoginPage />} />
             </Routes>

@@ -80,6 +80,10 @@ const CheckoutPage = () => {
         navigate('/home');
     };
 
+    const handleSearchClick = () => {
+      navigate('/search')
+    };
+
     const handleSignOut = async () => {
         await signOut();
         localStorage.clear();
@@ -149,7 +153,11 @@ const CheckoutPage = () => {
 
             Shop : {
               onClick: handleShopClick
-            }
+            },
+
+            Search116156 :{
+              onClick: handleSearchClick
+            },
 
           }} />
 

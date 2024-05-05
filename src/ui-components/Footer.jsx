@@ -12,7 +12,7 @@ export default function Footer(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="100%"
+      width="1400px"
       height="200px"
       display="block"
       gap="unset"
@@ -156,10 +156,8 @@ export default function Footer(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="77.5%"
-        bottom="7.5%"
-        left="90.28%"
-        right="7.64%"
+        top="155px"
+        left="1300px"
         {...getOverrideProps(overrides, "Vector83989")}
       ></Icon>
       <Icon
@@ -178,10 +176,8 @@ export default function Footer(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="40%"
-        bottom="50%"
-        left="6.94%"
-        right="91.67%"
+        top="80px"
+        left="100px"
         {...getOverrideProps(overrides, "Vector83999")}
       ></Icon>
       <View

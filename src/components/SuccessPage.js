@@ -48,6 +48,10 @@ const CartPage = () => {
         navigate('/produce');
     };
 
+    const handleSearchClick = () => {
+      navigate('/search');
+  };
+
     return (
         <View className="App">
     
@@ -62,7 +66,11 @@ const CartPage = () => {
 
                 "My profile": {
                 onClick: handleProfileClick 
-                }
+                },
+
+                Search116156 :{
+                  onClick: handleSearchClick
+                },
 
           }} />
     
