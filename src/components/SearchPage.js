@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'; // Import useState
+import React, { useRef, useState, useEffect } from 'react';
 import { View } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
 import { useNavigate } from 'react-router-dom';
@@ -9,45 +9,58 @@ import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 
 const HistoryPage = () => {
+    const navigate = useNavigate();
+    const uploadInputRef = useRef(null);
+    const [fileName, setFileName] = useState('');
+    const [uploadedImage, setUploadedImage] = useState('');
+    const [itemName, setItemName] = useState('');
+    const [model, setModel] = useState(null);
 
-    const identifyImage = async (imageData) => {
-        // Load the MobileNet model
-        const model = await mobilenet.load({
-            backend: 'cpu'
-        });
-    
-        const img = new Image();
-        img.src = imageData;
-        await new Promise((resolve) => {
-            img.onload = resolve;
-        });
-        const image = tf.browser.fromPixels(img);
-    
-        // Make a prediction on the image
-        const predictions = await model.classify(image);
-    
-        if (predictions.length > 0) { // Check if predictions array is not empty
-            // Get the most likely prediction
-            const mostLikelyPrediction = predictions[0].className;
-    
-            // Print the most likely prediction to the console
-            console.log("Most likely item:", mostLikelyPrediction);
+    useEffect(() => {
+        loadModel();
+    }, []);
 
-            setItemName(mostLikelyPrediction.toFixed(3)); 
-        } else {
-            console.error("No predictions found.");
+    const loadModel = async () => {
+        try {
+            const loadedModel = await mobilenet.load();
+            setModel(loadedModel);
+        } catch (error) {
+            console.error('Error loading model:', error);
         }
     };
-    
-    
-    
-    
 
-    const navigate = useNavigate();
-    const uploadInputRef = useRef(null); // Create a ref for the file input
-    const [fileName, setFileName] = useState("File Name Here");
-    const [uploadedImage, setUploadedImage] = useState(null);
-    const [itemName, setItemName] = useState("");
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        setFileName(file.name);
+
+        // Load the image using FileReader
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const imageUrl = e.target.result;
+            const image = new Image();
+            image.onload = async () => {
+                setUploadedImage(imageUrl);
+                if (model) {
+                    const itemName = await predictItemName(image);
+                    setItemName(itemName);
+                } else {
+                    console.error('Model not loaded.');
+                }
+            };
+            image.src = imageUrl;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const predictItemName = async (image) => {
+        try {
+            const predictions = await model.classify(image);
+            return predictions[0].className;
+        } catch (error) {
+            console.error('Error predicting:', error);
+            return 'Unknown';
+        }
+    };
 
     const handleBasketClick = () => {
         navigate('/cart');
@@ -64,40 +77,6 @@ const HistoryPage = () => {
     const handleShopClick = () => {
         navigate('/produce');
     };
-
-    const readFileAsDataURL = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    };
-
-    const handleFileUpload = async (event) => {
-        const uploadedFile = event.target.files[0];
-        if (uploadedFile) {
-            try {
-                const imageData = await readFileAsDataURL(uploadedFile);
-                console.log("Image data:", imageData); // Log the image data
-                setUploadedImage(imageData); // Set the image data to the state
-                const uploadedFileName = uploadedFile.name;
-                setFileName(uploadedFileName);
-                console.log("File uploaded");
-    
-                // Identify the most likely image
-                await identifyImage();
-            } catch (error) {
-                console.error("Error uploading file:", error);
-            }
-        } else {
-            console.error("No file selected");
-        }
-    };
-    
-    
-    
-    
 
     return (
         <View className="App">
@@ -137,26 +116,21 @@ const HistoryPage = () => {
                             </div>
                         ),
                     },
-
-                    "file name":{
+                    "file name": {
                         children: (
-                            <div>{fileName}</div> 
+                            <div>{fileName}</div>
                         ),
                     },
-
-                    
-                    "this item is most likely a:":{
+                    "this item is most likely a:": {
                         children: (
-                            <div>Item is most likely:</div> 
+                            <div>Item is most likely:</div>
                         ),
                     },
-
                     "belanja 1": {
                         src: uploadedImage ? uploadedImage : '',
                         alt: "Uploaded Image",
                     },
-
-                    "item name":{
+                    "item name": {
                         children: (
                             <div>{itemName}</div>
                         ),
