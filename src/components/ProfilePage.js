@@ -153,6 +153,10 @@ const ProfilePage = () => {
         }
     };
 
+    const handleSearchClick = () => {
+        navigate('/search');
+      };
+
     const handleSignOut = async () => {
         await signOut();
         localStorage.clear();

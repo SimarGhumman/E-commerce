@@ -51,6 +51,10 @@ const HistoryPage = () => {
       const handleShopClick = () => {
         navigate('/produce')
       };
+
+      const handleSearchClick = () => {
+        navigate('/produce')
+      };
   
 
     return (
@@ -71,7 +75,11 @@ const HistoryPage = () => {
 
             Shop: {
               onClick: handleShopClick
-            }
+            },
+
+            Search116156 :{
+              onClick: handleSearchClick
+            },
 
           }} />
 
