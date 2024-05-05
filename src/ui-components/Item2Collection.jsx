@@ -80,9 +80,12 @@ export default function Item2Collection(props) {
   return (
     <div>
       <Collection
-        type="list"
-        direction="column"
-        justifyContent="left"
+        type="grid"
+        searchPlaceholder="Search..."
+        templateColumns="1fr 1fr"
+        autoFlow="row"
+        alignItems="stretch"
+        justifyContent="stretch"
         itemsPerPage={pageSize}
         isPaginated={!isApiPagination && isPaginated}
         items={itemsProp || (loading ? new Array(pageSize).fill({}) : items)}

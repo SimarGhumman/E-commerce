@@ -1,62 +1,55 @@
 type User @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [read]}]) {
   id: ID!
-  username: String!
-  email: String!
+  username: String
+  email: String
   password: String
+  CartItems: [CartItem] @hasMany(indexName: "byUser", fields: ["id"])
+  Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
   shippingAddress: String
   billingAddress: String
-  shoppingCart: ShoppingCart @hasOne
-  orders: [Order] @hasMany
 }
 
 type Order @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
   id: ID!
-  userID: ID! @index(name: "byUser", sortKeyFields: ["id"])
-  user: User @belongsTo(fields: ["userID"])
-  products: [ProductQuantity] @hasMany
-  date: AWSDateTime!
-  status: Status!
-  totalPrice: Float!
+  date: AWSDateTime
+  totalPrice: Float
+  userID: ID! @index(name: "byUser")
+  OrderItems: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
 }
 
-type ShoppingCart @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
+type OrderItem @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
   id: ID!
-  userID: ID! @index(name: "byUser", sortKeyFields: ["id"])
-  user: User @belongsTo(fields: ["userID"])
-  products: [ProductQuantity] @hasMany
+  name: String
+  price: Float
+  quantity: Int
+  orderID: ID! @index(name: "byOrder")
+}
+
+type CartItem @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
+  id: ID!
+  Product: Product @hasOne
+  quantity: Int
+  userID: ID! @index(name: "byUser")
 }
 
 type Product @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [read]}]) {
   id: ID!
-  name: String!
+  name: String
   description: String
-  image: Image @hasOne
-  price: Float!
-  quantities: [ProductQuantity] @hasMany
-}
-
-type ProductQuantity @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
-  id: ID!
-  productID: ID!
-  product: Product @belongsTo(fields: ["productID"])
-  quantity: Int!
+  Image: Image @hasOne
+  price: Float
 }
 
 type Image @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username"}]) {
   id: ID!
-  url: AWSURL!
+  url: AWSURL
   description: String
 }
 
 type Note @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String!
+  name: String
   description: String
   image: String
 }
 
-enum Status {
-  PAYMENT_PENDING
-  PAYMENT_COMPLETE
-  SHIPPED
-}

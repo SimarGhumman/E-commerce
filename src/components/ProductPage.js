@@ -153,23 +153,49 @@ const ProductPage = () => {
                               )
                             },
 
-                            ItemName: { //Name of product
-                              children: (
-                                  <div>
-                                      {fruits[index]}
-                                  </div>
-                              )
-                            }
-                  
-
-
-
-                        }}
-                    />
-                </td>
-            );
-        }
-        tableRows.push(<tr key={`row-${i}`}>{tableCells}</tr>);
+const tableRows = useMemo(() => {
+    let rows = [];
+    const numRows = Math.ceil(products.length / 3);
+    for (let row = 0; row < numRows; row++) {
+      let cells = products.slice(row * 3, (row + 1) * 3).map((product, index) => {
+        const productIndex = row * 3 + index;
+        return (
+          <td key={product.id}>
+            {console.log(product)}
+            <Item
+              overrides={{
+                "add to cart": {
+                  onClick: () => handleAddtoCartClick(productIndex)
+                },
+                "ed-o-neil-AvvdZlhDowA-unsplash 1": {
+                  src: product.Image?.url || "",
+                  alt: product.name
+                },
+                quantity: {
+                  children: (
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+                      <input
+                        type="number"
+                        value={quantities[productIndex]}
+                        onChange={(event) => handleQuantityChange(productIndex, event)}
+                        style={{ fontSize: '12px', width: '50px', border: 'none' }}
+                        min="0"
+                      />
+                    </div>
+                  )
+                },
+                UnitPrice: {
+                  children: <div>{product.price.toFixed(2)} /lb</div>
+                },
+                ItemName: {
+                  children: <div>{product.name}</div>
+                }
+              }}
+            />
+          </td>
+        );
+      });
+      rows.push(<tr key={`row-${row}`}>{cells}</tr>);
     }
     return rows;
   }, [products, quantities, handleAddtoCartClick]);

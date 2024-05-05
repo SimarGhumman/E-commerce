@@ -21,35 +21,32 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type OrderUpdateFormInputValues = {
-    date?: string;
-    totalPrice?: number;
+export declare type CartItemUpdateFormInputValues = {
+    Product?: any;
+    quantity?: number;
     userID?: string;
-    OrderItems?: any[];
 };
-export declare type OrderUpdateFormValidationValues = {
-    date?: ValidationFunction<string>;
-    totalPrice?: ValidationFunction<number>;
+export declare type CartItemUpdateFormValidationValues = {
+    Product?: ValidationFunction<any>;
+    quantity?: ValidationFunction<number>;
     userID?: ValidationFunction<string>;
-    OrderItems?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type OrderUpdateFormOverridesProps = {
-    OrderUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    date?: PrimitiveOverrideProps<TextFieldProps>;
-    totalPrice?: PrimitiveOverrideProps<TextFieldProps>;
+export declare type CartItemUpdateFormOverridesProps = {
+    CartItemUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    Product?: PrimitiveOverrideProps<AutocompleteProps>;
+    quantity?: PrimitiveOverrideProps<TextFieldProps>;
     userID?: PrimitiveOverrideProps<AutocompleteProps>;
-    OrderItems?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
-export declare type OrderUpdateFormProps = React.PropsWithChildren<{
-    overrides?: OrderUpdateFormOverridesProps | undefined | null;
+export declare type CartItemUpdateFormProps = React.PropsWithChildren<{
+    overrides?: CartItemUpdateFormOverridesProps | undefined | null;
 } & {
     id?: string;
-    order?: any;
-    onSubmit?: (fields: OrderUpdateFormInputValues) => OrderUpdateFormInputValues;
-    onSuccess?: (fields: OrderUpdateFormInputValues) => void;
-    onError?: (fields: OrderUpdateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: OrderUpdateFormInputValues) => OrderUpdateFormInputValues;
-    onValidate?: OrderUpdateFormValidationValues;
+    cartItem?: any;
+    onSubmit?: (fields: CartItemUpdateFormInputValues) => CartItemUpdateFormInputValues;
+    onSuccess?: (fields: CartItemUpdateFormInputValues) => void;
+    onError?: (fields: CartItemUpdateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: CartItemUpdateFormInputValues) => CartItemUpdateFormInputValues;
+    onValidate?: CartItemUpdateFormValidationValues;
 } & React.CSSProperties>;
-export default function OrderUpdateForm(props: OrderUpdateFormProps): React.ReactElement;
+export default function CartItemUpdateForm(props: CartItemUpdateFormProps): React.ReactElement;

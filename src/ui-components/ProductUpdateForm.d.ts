@@ -24,25 +24,22 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type ProductUpdateFormInputValues = {
     name?: string;
     description?: string;
-    image?: any;
+    Image?: any;
     price?: number;
-    quantities?: any[];
 };
 export declare type ProductUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
-    image?: ValidationFunction<any>;
+    Image?: ValidationFunction<any>;
     price?: ValidationFunction<number>;
-    quantities?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ProductUpdateFormOverridesProps = {
     ProductUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
-    image?: PrimitiveOverrideProps<AutocompleteProps>;
+    Image?: PrimitiveOverrideProps<AutocompleteProps>;
     price?: PrimitiveOverrideProps<TextFieldProps>;
-    quantities?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type ProductUpdateFormProps = React.PropsWithChildren<{
     overrides?: ProductUpdateFormOverridesProps | undefined | null;

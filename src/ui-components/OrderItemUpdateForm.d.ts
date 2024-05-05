@@ -21,34 +21,35 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type ProductCreateFormInputValues = {
+export declare type OrderItemUpdateFormInputValues = {
     name?: string;
-    description?: string;
-    Image?: any;
     price?: number;
+    quantity?: number;
+    orderID?: string;
 };
-export declare type ProductCreateFormValidationValues = {
+export declare type OrderItemUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
-    description?: ValidationFunction<string>;
-    Image?: ValidationFunction<any>;
     price?: ValidationFunction<number>;
+    quantity?: ValidationFunction<number>;
+    orderID?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type ProductCreateFormOverridesProps = {
-    ProductCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type OrderItemUpdateFormOverridesProps = {
+    OrderItemUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
-    description?: PrimitiveOverrideProps<TextFieldProps>;
-    Image?: PrimitiveOverrideProps<AutocompleteProps>;
     price?: PrimitiveOverrideProps<TextFieldProps>;
+    quantity?: PrimitiveOverrideProps<TextFieldProps>;
+    orderID?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
-export declare type ProductCreateFormProps = React.PropsWithChildren<{
-    overrides?: ProductCreateFormOverridesProps | undefined | null;
+export declare type OrderItemUpdateFormProps = React.PropsWithChildren<{
+    overrides?: OrderItemUpdateFormOverridesProps | undefined | null;
 } & {
-    clearOnSuccess?: boolean;
-    onSubmit?: (fields: ProductCreateFormInputValues) => ProductCreateFormInputValues;
-    onSuccess?: (fields: ProductCreateFormInputValues) => void;
-    onError?: (fields: ProductCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: ProductCreateFormInputValues) => ProductCreateFormInputValues;
-    onValidate?: ProductCreateFormValidationValues;
+    id?: string;
+    orderItem?: any;
+    onSubmit?: (fields: OrderItemUpdateFormInputValues) => OrderItemUpdateFormInputValues;
+    onSuccess?: (fields: OrderItemUpdateFormInputValues) => void;
+    onError?: (fields: OrderItemUpdateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: OrderItemUpdateFormInputValues) => OrderItemUpdateFormInputValues;
+    onValidate?: OrderItemUpdateFormValidationValues;
 } & React.CSSProperties>;
-export default function ProductCreateForm(props: ProductCreateFormProps): React.ReactElement;
+export default function OrderItemUpdateForm(props: OrderItemUpdateFormProps): React.ReactElement;
