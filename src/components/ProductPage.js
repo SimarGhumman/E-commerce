@@ -140,7 +140,7 @@ const ProductPage = () => {
                   onClick: () => handleAddtoCartClick(productIndex)
                 },
                 "ed-o-neil-AvvdZlhDowA-unsplash 1": {
-                  src: product.image.url,
+                  src: product.Image?.url || "",
                   alt: product.name
                 },
                 quantity: {
