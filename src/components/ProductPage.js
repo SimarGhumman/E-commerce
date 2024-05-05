@@ -175,7 +175,7 @@ const ProductPage = () => {
 
   return (
     <View className="App">
-      <Navigation overrides={{
+      <Navigation width="100vw" overrides={{
         Basket: {
           onClick: handleBasketClick
         },
@@ -188,7 +188,7 @@ const ProductPage = () => {
       }} />
       <div className="container">
         <div className="left-column">
-          <div style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+          <div style={{ paddingTop: '50px', paddingBottom: '50px', paddingLeft: '50px', width: '100%' }}>
             <table className="Grid">
               <tbody>{tableRows}</tbody>
             </table>
@@ -207,7 +207,7 @@ const ProductPage = () => {
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Signout onClick={handleSignOut}>Sign Out</Signout>
       </div>
-      <Footer />
+      <Footer style={{ width: '100%' }} />
     </View>
   );
 };

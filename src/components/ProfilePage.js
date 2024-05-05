@@ -163,7 +163,7 @@ const ProfilePage = () => {
     return (
         <View className="App">
 
-            <Navigation overrides={{
+            <Navigation  style={{ width: '100%' }} overrides={{
 
                 Basket: {
                     onClick: handleBasketClick
@@ -179,7 +179,7 @@ const ProfilePage = () => {
 
             }} />
 
-            <Profile width="100vw" overrides={{
+            <Profile style={{ width: '100%' }} overrides={{
 
                 "order history": {
                     onClick: handleHistoryClick
@@ -266,7 +266,7 @@ const ProfilePage = () => {
             </div>
 
 
-            <Footer />
+            <Footer style={{ width: '100%' }}/>
 
         </View>
     );
