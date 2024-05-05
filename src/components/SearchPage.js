@@ -32,10 +32,8 @@ const HistoryPage = () => {
     
             // Print the most likely prediction to the console
             console.log("Most likely item:", mostLikelyPrediction);
-    
-            // Update the state or component to display the most likely prediction
-            // For example, set the item name state:
-            setItemName(mostLikelyPrediction.toFixed(3));
+
+            setItemName(mostLikelyPrediction.toFixed(3)); 
         } else {
             console.error("No predictions found.");
         }

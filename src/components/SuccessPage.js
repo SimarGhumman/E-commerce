@@ -52,6 +52,7 @@ const CartPage = () => {
       navigate('/search');
   };
 
+  
     return (
         <View className="App">
     
