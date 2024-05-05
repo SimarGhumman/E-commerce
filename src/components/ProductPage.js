@@ -21,9 +21,9 @@ const ProductPage = () => {
 
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [tax, setTax] = useState(0);
-  const [orderTotal, setOrderTotal] = useState(0);
+  //const [totalPrice, setTotalPrice] = useState(0);
+  //const [tax, setTax] = useState(0);
+  //const [orderTotal, setOrderTotal] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -119,13 +119,13 @@ const ProductPage = () => {
   
 
     const tableRows = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
         const tableCells = [];
-        for (let j = 0; j < 3; j++) {
-            const index = i * 3 + j;
+        for (let j = 0; j < 6; j++) {
+            const index = i * 2 + j;
 
             tableCells.push(
-                <td key={`item-${i}-${j}`}>
+              <td key={`item-${i}-${j}`} style={{ padding: '50px' }}>
                     <Item
                         overrides={{
                               "add to cart": {

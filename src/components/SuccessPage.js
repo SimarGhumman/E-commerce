@@ -69,8 +69,8 @@ const CartPage = () => {
                 onClick: handleProfileClick 
                 },
 
-                Search116156 :{
-                  onClick: handleSearchClick
+                Search116156  :{
+                  onClick: handleSearchClick 
                 },
 
           }} />

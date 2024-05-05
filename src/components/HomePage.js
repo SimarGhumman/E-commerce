@@ -106,7 +106,7 @@ function HomePage() {
 
   const handleSearchClick = () => {
     navigate('/search')
-  };
+  } ;
 
 
   async function fetchNotes() {

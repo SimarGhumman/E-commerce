@@ -157,7 +157,7 @@ const CheckoutPage = () => {
 
             Search116156 :{
               onClick: handleSearchClick
-            },
+            } ,
 
           }} />
 

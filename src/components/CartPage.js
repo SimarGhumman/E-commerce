@@ -157,7 +157,7 @@ const CartPage = () => {
 
             Search116156 :{
               onClick: handleSearchClick
-            },
+            } ,
 
           }} />
 

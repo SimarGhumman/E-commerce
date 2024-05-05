@@ -54,7 +54,7 @@ const HistoryPage = () => {
 
       const handleSearchClick = () => {
         navigate('/produce')
-      };
+      } ;
   
 
     return (
