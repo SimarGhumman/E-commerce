@@ -16,13 +16,17 @@ import {
   Icon,
   ScrollView,
   Text,
-  TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { listProducts } from "../graphql/queries";
-import { createInventory } from "../graphql/mutations";
+import {
+  getShoppingCart,
+  getUser,
+  listProducts,
+  listUsers,
+} from "../graphql/queries";
+import { updateProduct, updateShoppingCart } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
   items = [],
@@ -179,9 +183,10 @@ function ArrayField({
     </React.Fragment>
   );
 }
-export default function InventoryCreateForm(props) {
+export default function ShoppingCartUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    shoppingCart: shoppingCartModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -191,27 +196,81 @@ export default function InventoryCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    quantity: "",
-    product: undefined,
+    product: [],
+    userID: undefined,
   };
-  const [quantity, setQuantity] = React.useState(initialValues.quantity);
   const [product, setProduct] = React.useState(initialValues.product);
   const [productLoading, setProductLoading] = React.useState(false);
   const [productRecords, setProductRecords] = React.useState([]);
+  const [userID, setUserID] = React.useState(initialValues.userID);
+  const [userIDLoading, setUserIDLoading] = React.useState(false);
+  const [userIDRecords, setUserIDRecords] = React.useState([]);
+  const [selectedUserIDRecords, setSelectedUserIDRecords] = React.useState([]);
   const autocompleteLength = 10;
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setQuantity(initialValues.quantity);
-    setProduct(initialValues.product);
+    const cleanValues = shoppingCartRecord
+      ? {
+          ...initialValues,
+          ...shoppingCartRecord,
+          product: linkedProduct,
+          userID,
+        }
+      : initialValues;
+    setProduct(cleanValues.product ?? []);
     setCurrentProductValue(undefined);
     setCurrentProductDisplayValue("");
+    setUserID(cleanValues.userID);
+    setCurrentUserIDValue(undefined);
+    setCurrentUserIDDisplayValue("");
     setErrors({});
   };
+  const [shoppingCartRecord, setShoppingCartRecord] = React.useState(
+    shoppingCartModelProp
+  );
+  const [linkedProduct, setLinkedProduct] = React.useState([]);
+  const canUnlinkProduct = false;
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? (
+            await client.graphql({
+              query: getShoppingCart.replaceAll("__typename", ""),
+              variables: { id: idProp },
+            })
+          )?.data?.getShoppingCart
+        : shoppingCartModelProp;
+      const linkedProduct = record?.product?.items ?? [];
+      setLinkedProduct(linkedProduct);
+      const userIDRecord = record ? record.userID : undefined;
+      const userRecord = userIDRecord
+        ? (
+            await client.graphql({
+              query: getUser.replaceAll("__typename", ""),
+              variables: { id: userIDRecord },
+            })
+          )?.data?.getUser
+        : undefined;
+      setUserID(userIDRecord);
+      setSelectedUserIDRecords([userRecord]);
+      setShoppingCartRecord(record);
+    };
+    queryData();
+  }, [idProp, shoppingCartModelProp]);
+  React.useEffect(resetStateValues, [
+    shoppingCartRecord,
+    linkedProduct,
+    userID,
+  ]);
   const [currentProductDisplayValue, setCurrentProductDisplayValue] =
     React.useState("");
   const [currentProductValue, setCurrentProductValue] =
     React.useState(undefined);
   const productRef = React.createRef();
+  const [currentUserIDDisplayValue, setCurrentUserIDDisplayValue] =
+    React.useState("");
+  const [currentUserIDValue, setCurrentUserIDValue] = React.useState(undefined);
+  const userIDRef = React.createRef();
   const getIDValue = {
     product: (r) => JSON.stringify({ id: r?.id }),
   };
@@ -222,10 +281,11 @@ export default function InventoryCreateForm(props) {
   );
   const getDisplayValue = {
     product: (r) => `${r?.name ? r?.name + " - " : ""}${r?.id}`,
+    userID: (r) => `${r?.username ? r?.username + " - " : ""}${r?.id}`,
   };
   const validations = {
-    quantity: [],
     product: [],
+    userID: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -273,8 +333,36 @@ export default function InventoryCreateForm(props) {
     setProductRecords(newOptions.slice(0, autocompleteLength));
     setProductLoading(false);
   };
+  const fetchUserIDRecords = async (value) => {
+    setUserIDLoading(true);
+    const newOptions = [];
+    let newNext = "";
+    while (newOptions.length < autocompleteLength && newNext != null) {
+      const variables = {
+        limit: autocompleteLength * 5,
+        filter: {
+          or: [{ username: { contains: value } }, { id: { contains: value } }],
+        },
+      };
+      if (newNext) {
+        variables["nextToken"] = newNext;
+      }
+      const result = (
+        await client.graphql({
+          query: listUsers.replaceAll("__typename", ""),
+          variables,
+        })
+      )?.data?.listUsers?.items;
+      var loaded = result.filter((item) => userID !== item.id);
+      newOptions.push(...loaded);
+      newNext = result.nextToken;
+    }
+    setUserIDRecords(newOptions.slice(0, autocompleteLength));
+    setUserIDLoading(false);
+  };
   React.useEffect(() => {
     fetchProductRecords("");
+    fetchUserIDRecords("");
   }, []);
   return (
     <Grid
@@ -285,8 +373,8 @@ export default function InventoryCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          quantity,
-          product,
+          product: product ?? null,
+          userID,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -324,23 +412,73 @@ export default function InventoryCreateForm(props) {
               modelFields[key] = null;
             }
           });
-          const modelFieldsToSave = {
-            quantity: modelFields.quantity,
-            inventoryProductId: modelFields?.product?.id,
-          };
-          await client.graphql({
-            query: createInventory.replaceAll("__typename", ""),
-            variables: {
-              input: {
-                ...modelFieldsToSave,
-              },
-            },
+          const promises = [];
+          const productToLink = [];
+          const productToUnLink = [];
+          const productSet = new Set();
+          const linkedProductSet = new Set();
+          product.forEach((r) => productSet.add(getIDValue.product?.(r)));
+          linkedProduct.forEach((r) =>
+            linkedProductSet.add(getIDValue.product?.(r))
+          );
+          linkedProduct.forEach((r) => {
+            if (!productSet.has(getIDValue.product?.(r))) {
+              productToUnLink.push(r);
+            }
           });
+          product.forEach((r) => {
+            if (!linkedProductSet.has(getIDValue.product?.(r))) {
+              productToLink.push(r);
+            }
+          });
+          productToUnLink.forEach((original) => {
+            if (!canUnlinkProduct) {
+              throw Error(
+                `Product ${original.id} cannot be unlinked from ShoppingCart because shoppingcartID is a required field.`
+              );
+            }
+            promises.push(
+              client.graphql({
+                query: updateProduct.replaceAll("__typename", ""),
+                variables: {
+                  input: {
+                    id: original.id,
+                    shoppingcartID: null,
+                  },
+                },
+              })
+            );
+          });
+          productToLink.forEach((original) => {
+            promises.push(
+              client.graphql({
+                query: updateProduct.replaceAll("__typename", ""),
+                variables: {
+                  input: {
+                    id: original.id,
+                    shoppingcartID: shoppingCartRecord.id,
+                  },
+                },
+              })
+            );
+          });
+          const modelFieldsToSave = {
+            userID: modelFields.userID,
+          };
+          promises.push(
+            client.graphql({
+              query: updateShoppingCart.replaceAll("__typename", ""),
+              variables: {
+                input: {
+                  id: shoppingCartRecord.id,
+                  ...modelFieldsToSave,
+                },
+              },
+            })
+          );
+          await Promise.all(promises);
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -349,57 +487,27 @@ export default function InventoryCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "InventoryCreateForm")}
+      {...getOverrideProps(overrides, "ShoppingCartUpdateForm")}
       {...rest}
     >
-      <TextField
-        label="Quantity"
-        isRequired={false}
-        isReadOnly={false}
-        type="number"
-        step="any"
-        value={quantity}
-        onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
-          if (onChange) {
-            const modelFields = {
-              quantity: value,
-              product,
-            };
-            const result = onChange(modelFields);
-            value = result?.quantity ?? value;
-          }
-          if (errors.quantity?.hasError) {
-            runValidationTasks("quantity", value);
-          }
-          setQuantity(value);
-        }}
-        onBlur={() => runValidationTasks("quantity", quantity)}
-        errorMessage={errors.quantity?.errorMessage}
-        hasError={errors.quantity?.hasError}
-        {...getOverrideProps(overrides, "quantity")}
-      ></TextField>
       <ArrayField
-        lengthLimit={1}
         onChange={async (items) => {
-          let value = items[0];
+          let values = items;
           if (onChange) {
             const modelFields = {
-              quantity,
-              product: value,
+              product: values,
+              userID,
             };
             const result = onChange(modelFields);
-            value = result?.product ?? value;
+            values = result?.product ?? values;
           }
-          setProduct(value);
+          setProduct(values);
           setCurrentProductValue(undefined);
           setCurrentProductDisplayValue("");
         }}
         currentFieldValue={currentProductValue}
         label={"Product"}
-        items={product ? [product] : []}
+        items={product}
         hasError={errors?.product?.hasError}
         runValidationTasks={async () =>
           await runValidationTasks("product", currentProductValue)
@@ -461,18 +569,110 @@ export default function InventoryCreateForm(props) {
           {...getOverrideProps(overrides, "product")}
         ></Autocomplete>
       </ArrayField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              product,
+              userID: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.userID ?? value;
+          }
+          setUserID(value);
+          setCurrentUserIDValue(undefined);
+        }}
+        currentFieldValue={currentUserIDValue}
+        label={"User id"}
+        items={userID ? [userID] : []}
+        hasError={errors?.userID?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("userID", currentUserIDValue)
+        }
+        errorMessage={errors?.userID?.errorMessage}
+        getBadgeText={(value) =>
+          value
+            ? getDisplayValue.userID(
+                userIDRecords.find((r) => r.id === value) ??
+                  selectedUserIDRecords.find((r) => r.id === value)
+              )
+            : ""
+        }
+        setFieldValue={(value) => {
+          setCurrentUserIDDisplayValue(
+            value
+              ? getDisplayValue.userID(
+                  userIDRecords.find((r) => r.id === value) ??
+                    selectedUserIDRecords.find((r) => r.id === value)
+                )
+              : ""
+          );
+          setCurrentUserIDValue(value);
+          const selectedRecord = userIDRecords.find((r) => r.id === value);
+          if (selectedRecord) {
+            setSelectedUserIDRecords([selectedRecord]);
+          }
+        }}
+        inputFieldRef={userIDRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="User id"
+          isRequired={true}
+          isReadOnly={false}
+          placeholder="Search User"
+          value={currentUserIDDisplayValue}
+          options={userIDRecords
+            .filter(
+              (r, i, arr) =>
+                arr.findIndex((member) => member?.id === r?.id) === i
+            )
+            .map((r) => ({
+              id: r?.id,
+              label: getDisplayValue.userID?.(r),
+            }))}
+          isLoading={userIDLoading}
+          onSelect={({ id, label }) => {
+            setCurrentUserIDValue(id);
+            setCurrentUserIDDisplayValue(label);
+            runValidationTasks("userID", label);
+          }}
+          onClear={() => {
+            setCurrentUserIDDisplayValue("");
+          }}
+          defaultValue={userID}
+          onChange={(e) => {
+            let { value } = e.target;
+            fetchUserIDRecords(value);
+            if (errors.userID?.hasError) {
+              runValidationTasks("userID", value);
+            }
+            setCurrentUserIDDisplayValue(value);
+            setCurrentUserIDValue(undefined);
+          }}
+          onBlur={() => runValidationTasks("userID", currentUserIDValue)}
+          errorMessage={errors.userID?.errorMessage}
+          hasError={errors.userID?.hasError}
+          ref={userIDRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "userID")}
+        ></Autocomplete>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || shoppingCartModelProp)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -482,7 +682,10 @@ export default function InventoryCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || shoppingCartModelProp) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

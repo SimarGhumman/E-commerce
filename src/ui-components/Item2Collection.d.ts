@@ -5,7 +5,8 @@
  **************************************************************************/
 
 import * as React from "react";
-import { FlexProps, TextProps } from "@aws-amplify/ui-react";
+import { Item2Props } from "./Item2";
+import { CollectionProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -17,14 +18,17 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type CheckoutitemOverridesProps = {
-    Checkoutitem?: PrimitiveOverrideProps<FlexProps>;
-    item?: PrimitiveOverrideProps<TextProps>;
-    price?: PrimitiveOverrideProps<TextProps>;
+export declare type Item2CollectionOverridesProps = {
+    Item2Collection?: PrimitiveOverrideProps<CollectionProps>;
+    Item2?: Item2Props;
 } & EscapeHatchProps;
-export declare type CheckoutitemProps = React.PropsWithChildren<Partial<FlexProps> & {
-    inventory?: any;
+export declare type Item2CollectionProps = React.PropsWithChildren<Partial<CollectionProps<any>> & {
+    items?: any[];
+    overrideItems?: (collectionItem: {
+        item: any;
+        index: number;
+    }) => Item2Props;
 } & {
-    overrides?: CheckoutitemOverridesProps | undefined | null;
+    overrides?: Item2CollectionOverridesProps | undefined | null;
 }>;
-export default function Checkoutitem(props: CheckoutitemProps): React.ReactElement;
+export default function Item2Collection(props: Item2CollectionProps): React.ReactElement;

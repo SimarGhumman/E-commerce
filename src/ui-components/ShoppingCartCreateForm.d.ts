@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -21,28 +21,28 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type InventoryCreateFormInputValues = {
-    quantity?: number;
-    product?: any;
+export declare type ShoppingCartCreateFormInputValues = {
+    product?: any[];
+    userID?: string;
 };
-export declare type InventoryCreateFormValidationValues = {
-    quantity?: ValidationFunction<number>;
+export declare type ShoppingCartCreateFormValidationValues = {
     product?: ValidationFunction<any>;
+    userID?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type InventoryCreateFormOverridesProps = {
-    InventoryCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    quantity?: PrimitiveOverrideProps<TextFieldProps>;
+export declare type ShoppingCartCreateFormOverridesProps = {
+    ShoppingCartCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     product?: PrimitiveOverrideProps<AutocompleteProps>;
+    userID?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
-export declare type InventoryCreateFormProps = React.PropsWithChildren<{
-    overrides?: InventoryCreateFormOverridesProps | undefined | null;
+export declare type ShoppingCartCreateFormProps = React.PropsWithChildren<{
+    overrides?: ShoppingCartCreateFormOverridesProps | undefined | null;
 } & {
     clearOnSuccess?: boolean;
-    onSubmit?: (fields: InventoryCreateFormInputValues) => InventoryCreateFormInputValues;
-    onSuccess?: (fields: InventoryCreateFormInputValues) => void;
-    onError?: (fields: InventoryCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: InventoryCreateFormInputValues) => InventoryCreateFormInputValues;
-    onValidate?: InventoryCreateFormValidationValues;
+    onSubmit?: (fields: ShoppingCartCreateFormInputValues) => ShoppingCartCreateFormInputValues;
+    onSuccess?: (fields: ShoppingCartCreateFormInputValues) => void;
+    onError?: (fields: ShoppingCartCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: ShoppingCartCreateFormInputValues) => ShoppingCartCreateFormInputValues;
+    onValidate?: ShoppingCartCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function InventoryCreateForm(props: InventoryCreateFormProps): React.ReactElement;
+export default function ShoppingCartCreateForm(props: ShoppingCartCreateFormProps): React.ReactElement;

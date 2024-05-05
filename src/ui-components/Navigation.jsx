@@ -7,20 +7,20 @@
 /* eslint-disable */
 import * as React from "react";
 import { getOverrideProps } from "./utils";
-import { Text, View } from "@aws-amplify/ui-react";
+import { Flex, Text } from "@aws-amplify/ui-react";
 export default function Navigation(props) {
   const { overrides, ...rest } = props;
   return (
-    <View
-      width="100%"
-      height="112px"
-      display="block"
-      gap="unset"
-      alignItems="unset"
-      justifyContent="unset"
+    <Flex
+      gap="163px"
+      direction="row"
+      width="1400px"
+      height="unset"
+      justifyContent="flex-start"
+      alignItems="flex-start"
       overflow="hidden"
       position="relative"
-      padding="0px 0px 0px 0px"
+      padding="32px 70px 32px 70px"
       {...getOverrideProps(overrides, "Navigation")}
       {...rest}
     >
@@ -39,9 +39,8 @@ export default function Navigation(props) {
         height="39px"
         gap="unset"
         alignItems="unset"
-        position="absolute"
-        top="41px"
-        left="96px"
+        shrink="0"
+        position="relative"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="E-commerce"
@@ -61,53 +60,13 @@ export default function Navigation(props) {
         height="unset"
         gap="unset"
         alignItems="unset"
-        position="absolute"
-        top="45px"
-        right="414px"
+        shrink="0"
+        position="relative"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="My profile"
-        {...getOverrideProps(overrides, "My profile")}
+        children="Who we are"
+        {...getOverrideProps(overrides, "Who we are")}
       ></Text>
-      <View
-        width="120px"
-        height="40px"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
-        overflow="hidden"
-        position="absolute"
-        top="35px"
-        right="70px"
-        borderRadius="8px"
-        padding="0px 0px 0px 0px"
-        backgroundColor="rgba(66,107,31,1)"
-        {...getOverrideProps(overrides, "Cart button")}
-      >
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="600"
-          color="rgba(255,255,255,1)"
-          lineHeight="20.799999237060547px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="calc(50% - 10.5px - -0.5px)"
-          left="calc(50% - 26.5px - -0.5px)"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Basket "
-          {...getOverrideProps(overrides, "Basket")}
-        ></Text>
-      </View>
       <Text
         fontFamily="Inter"
         fontSize="16px"
@@ -122,27 +81,25 @@ export default function Navigation(props) {
         height="unset"
         gap="unset"
         alignItems="unset"
-        position="absolute"
-        top="45px"
-        right="550px"
+        shrink="0"
+        position="relative"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="Who we are"
-        {...getOverrideProps(overrides, "Who we are")}
+        children="My profile"
+        {...getOverrideProps(overrides, "My profile")}
       ></Text>
-      <View
-        width="120px"
-        height="40px"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
+      <Flex
+        gap="10px"
+        direction="row"
+        width="unset"
+        height="unset"
+        justifyContent="center"
+        alignItems="center"
         overflow="hidden"
-        position="absolute"
-        top="35px"
-        left="calc(50% - 60px - -440px)"
+        shrink="0"
+        position="relative"
         borderRadius="8px"
-        padding="0px 0px 0px 0px"
+        padding="9px 39px 9px 39px"
         backgroundColor="rgba(66,107,31,1)"
         {...getOverrideProps(overrides, "Button")}
       >
@@ -160,15 +117,51 @@ export default function Navigation(props) {
           height="unset"
           gap="unset"
           alignItems="unset"
-          position="absolute"
-          top="calc(50% - 10.5px - -0.5px)"
-          left="calc(50% - 20px - 1px)"
+          shrink="0"
+          position="relative"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Shop"
           {...getOverrideProps(overrides, "Shop")}
         ></Text>
-      </View>
-    </View>
+      </Flex>
+      <Flex
+        gap="10px"
+        direction="row"
+        width="unset"
+        height="unset"
+        justifyContent="center"
+        alignItems="center"
+        overflow="hidden"
+        shrink="0"
+        position="relative"
+        borderRadius="8px"
+        padding="9px 33px 9px 33px"
+        backgroundColor="rgba(66,107,31,1)"
+        {...getOverrideProps(overrides, "Cart button")}
+      >
+        <Text
+          fontFamily="Inter"
+          fontSize="16px"
+          fontWeight="600"
+          color="rgba(255,255,255,1)"
+          lineHeight="20.799999237060547px"
+          textAlign="center"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="unset"
+          height="unset"
+          gap="unset"
+          alignItems="unset"
+          shrink="0"
+          position="relative"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="Basket "
+          {...getOverrideProps(overrides, "Basket")}
+        ></Text>
+      </Flex>
+    </Flex>
   );
 }

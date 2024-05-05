@@ -9,7 +9,7 @@ import * as React from "react";
 import { getOverrideProps } from "./utils";
 import { Flex, Text } from "@aws-amplify/ui-react";
 export default function Checkoutitem(props) {
-  const { overrides, ...rest } = props;
+  const { inventory, overrides, ...rest } = props;
   return (
     <Flex
       gap="174px"

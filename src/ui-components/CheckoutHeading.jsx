@@ -12,7 +12,7 @@ export default function CheckoutHeading(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="100%"
+      width="1400px"
       height="149px"
       display="block"
       gap="unset"
@@ -40,7 +40,7 @@ export default function CheckoutHeading(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        bottom="33px"
+        top="90px"
         left="301px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
@@ -63,7 +63,7 @@ export default function CheckoutHeading(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        bottom="16px"
+        top="56px"
         left="96px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
@@ -92,9 +92,8 @@ export default function CheckoutHeading(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        bottom="0px"
+        top="149px"
         left="96px"
-        right="96px"
         transformOrigin="top left"
         transform="rotate(0deg)"
         {...getOverrideProps(overrides, "Divider")}

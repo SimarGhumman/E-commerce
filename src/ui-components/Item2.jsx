@@ -9,7 +9,7 @@ import * as React from "react";
 import { getOverrideProps } from "./utils";
 import { Icon, Image, Text, View } from "@aws-amplify/ui-react";
 export default function Item2(props) {
-  const { tomato, overrides, ...rest } = props;
+  const { tomato, image, overrides, ...rest } = props;
   return (
     <View
       width="395px"
@@ -85,7 +85,7 @@ export default function Item2(props) {
         right="0px"
         padding="0px 0px 0px 0px"
         objectFit="cover"
-        src={tomato?.image}
+        src={image?.url}
         {...getOverrideProps(overrides, "ed-o-neil-AvvdZlhDowA-unsplash 1")}
       ></Image>
       <View

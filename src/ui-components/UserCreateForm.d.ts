@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { AutocompleteProps, GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -27,6 +27,8 @@ export declare type UserCreateFormInputValues = {
     password?: string;
     shippingAddress?: string;
     billingAddress?: string;
+    shoppingCart?: any[];
+    order?: any[];
 };
 export declare type UserCreateFormValidationValues = {
     username?: ValidationFunction<string>;
@@ -34,6 +36,8 @@ export declare type UserCreateFormValidationValues = {
     password?: ValidationFunction<string>;
     shippingAddress?: ValidationFunction<string>;
     billingAddress?: ValidationFunction<string>;
+    shoppingCart?: ValidationFunction<any>;
+    order?: ValidationFunction<any>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserCreateFormOverridesProps = {
@@ -43,6 +47,8 @@ export declare type UserCreateFormOverridesProps = {
     password?: PrimitiveOverrideProps<TextFieldProps>;
     shippingAddress?: PrimitiveOverrideProps<TextFieldProps>;
     billingAddress?: PrimitiveOverrideProps<TextFieldProps>;
+    shoppingCart?: PrimitiveOverrideProps<AutocompleteProps>;
+    order?: PrimitiveOverrideProps<AutocompleteProps>;
 } & EscapeHatchProps;
 export declare type UserCreateFormProps = React.PropsWithChildren<{
     overrides?: UserCreateFormOverridesProps | undefined | null;

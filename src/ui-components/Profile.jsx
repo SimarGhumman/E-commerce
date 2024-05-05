@@ -5,74 +5,16 @@
  **************************************************************************/
 
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { getOverrideProps } from "./utils";
+import * as React from "react";
+import { getOverrideProps, useNavigateAction } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
-import { fetchAuthSession } from 'aws-amplify/auth';
-import { generateClient } from 'aws-amplify/api';
-import * as queries from '../graphql/queries';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-
 export default function Profile(props) {
-  const { overrides, ...rest } = props;
-  const [username, setUsername] = useState('Loading...');
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
-  const client = generateClient();
-
-  useEffect(() => {
-    //Admin Fetch Users
-    // const fetchTodos = async () => {
-    //   try {
-    //     const allTodos = await client.graphql({
-    //       query: queries.listUsers,
-    //       authMode: 'userPool'
-    //     });
-    //     console.log('All Todos:', allTodos);
-    //   } catch (error) {
-    //     console.error('Error fetching todos:', error);
-    //   }
-    // };
-
-    // fetchTodos();
-
-    // //AWS Cognito Fetch User
-    // const checkUser = async () => {
-    //   try {
-    //     const userData = await fetchAuthSession();
-    //     if (userData) {
-    //       console.log('User data retrieved:', userData);
-    //     } else {
-    //       console.log('No user signed in');
-    //     }
-    //   } catch (error) {
-    //     console.log('Failed to retrieve user:', error);
-    //   }
-    // };
-
-    // checkUser();
-    console.log("This is using Authenticator.Provider", user)
-
-    const fetchUserData = async () => {
-      try {
-        const userData = await client.graphql({
-          query: queries.getUser,
-          variables: { id: user.userId },  // Pass `id` to the query
-          authMode: 'userPool'        // Specify the authentication mode if necessary
-        });
-        console.log('User Data:', userData);
-        setUsername(userData.data.getUser.username); // Use setUsername to update state
-      } catch (error) {
-        console.error('Error fetching todos:', error);
-      }
-    };
-
-    fetchUserData();
-
-  }, []);
+  const { note, user, birthday, image, overrides, ...rest } = props;
+  const cancelButtonOnClick = useNavigateAction({ type: "reload" });
   return (
     <View
       width="1400px"
-      height="1500px"
+      height="1350px"
       display="block"
       gap="unset"
       alignItems="unset"
@@ -220,7 +162,7 @@ export default function Profile(props) {
             left="150px"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="your name"
+            children={user?.username}
             {...getOverrideProps(overrides, "your name")}
           ></Text>
         </View>
@@ -246,203 +188,6 @@ export default function Profile(props) {
         left="100px"
         {...getOverrideProps(overrides, "Vector 7577210")}
       ></Icon>
-      <View
-        padding="0px 0px 0px 0px"
-        width="1200px"
-        height="220px"
-        display="block"
-        gap="unset"
-        alignItems="unset"
-        justifyContent="unset"
-        position="absolute"
-        top="410px"
-        left="100px"
-        {...getOverrideProps(overrides, "Name")}
-      >
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="700"
-          color="rgba(56,77,108,1)"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="139.62px"
-          height="22.92px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="0px"
-          left="2.31px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="First Name"
-          {...getOverrideProps(overrides, "First Name")}
-        ></Text>
-        <View
-          width="573.46px"
-          height="59.58px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          top="41.25px"
-          left="0px"
-          border="1px SOLID rgba(209,213,219,1)"
-          borderRadius="8px"
-          padding="0px 0px 0px 0px"
-          backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Name Field77213")}
-        ></View>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(171,177,187,1)"
-          fontStyle="italic"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="76.15px"
-          height="22.92px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="59.58px"
-          left="21.92px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="eg. Alaa"
-          {...getOverrideProps(overrides, "eg. Alaa")}
-        ></Text>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="700"
-          color="rgba(56,77,108,1)"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="139.62px"
-          height="22.92px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="0px"
-          left="608.08px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Last Name"
-          {...getOverrideProps(overrides, "Last Name")}
-        ></Text>
-        <View
-          width="573.46px"
-          height="59.58px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          top="41.25px"
-          left="608.08px"
-          border="1px SOLID rgba(209,213,219,1)"
-          borderRadius="8px"
-          padding="0px 0px 0px 0px"
-          backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Name Field77216")}
-        ></View>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(171,177,187,1)"
-          fontStyle="italic"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="130.38px"
-          height="22.92px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="59.58px"
-          left="634.62px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="eg. Mohamed"
-          {...getOverrideProps(overrides, "eg. Mohamed")}
-        ></Text>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="700"
-          color="rgba(56,77,108,1)"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="139.62px"
-          height="22.92px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="119.17px"
-          left="0px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="User Name"
-          {...getOverrideProps(overrides, "User Name")}
-        ></Text>
-        <View
-          width="1197.69px"
-          height="59.58px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          top="160.42px"
-          left="2.31px"
-          border="1px SOLID rgba(209,213,219,1)"
-          borderRadius="8px"
-          padding="0px 0px 0px 0px"
-          backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Name Field77219")}
-        ></View>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(171,177,187,1)"
-          fontStyle="italic"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="178.85px"
-          height="22.92px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="178.75px"
-          left="21.92px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="eg. alaa.mohamed"
-          {...getOverrideProps(overrides, "eg. alaa.mohamed")}
-        ></Text>
-      </View>
       <Icon
         width="1200px"
         height="0px"
@@ -460,21 +205,21 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="670px"
+        top="550px"
         left="100px"
         {...getOverrideProps(overrides, "Vector 76")}
       ></Icon>
       <View
         padding="0px 0px 0px 0px"
-        width="1200px"
+        width="1197px"
         height="110px"
         display="block"
         gap="unset"
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="710px"
-        left="100px"
+        top="395px"
+        left="103px"
         {...getOverrideProps(overrides, "Email & Phone")}
       >
         <Text
@@ -500,7 +245,7 @@ export default function Profile(props) {
           {...getOverrideProps(overrides, "Email Address")}
         ></Text>
         <View
-          width="582.42px"
+          width="1197px"
           height="65px"
           display="block"
           gap="unset"
@@ -535,7 +280,7 @@ export default function Profile(props) {
           left="80px"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
-          children="eg. alaa.mohamed.gmail.com"
+          children={user?.email}
           {...getOverrideProps(overrides, "eg. alaa.mohamed.gmail.com")}
         ></Text>
         <View
@@ -580,109 +325,6 @@ export default function Profile(props) {
             {...getOverrideProps(overrides, "Vector77226")}
           ></Icon>
         </View>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="16px"
-          fontWeight="700"
-          color="rgba(56,77,108,1)"
-          lineHeight="19.503999710083008px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="153.52px"
-          height="25px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="0px"
-          left="617.58px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Phone Number"
-          {...getOverrideProps(overrides, "Phone Number")}
-        ></Text>
-        <View
-          width="582.42px"
-          height="65px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          position="absolute"
-          top="45px"
-          left="617.58px"
-          border="1px SOLID rgba(209,213,219,1)"
-          borderRadius="8px"
-          padding="0px 0px 0px 0px"
-          backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Phone Field")}
-        ></View>
-        <Text
-          fontFamily="Montserrat"
-          fontSize="18px"
-          fontWeight="400"
-          color="rgba(171,177,187,1)"
-          fontStyle="italic"
-          lineHeight="21.941999435424805px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          width="400px"
-          height="35px"
-          gap="unset"
-          alignItems="unset"
-          position="absolute"
-          top="60px"
-          left="694px"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="eg. 408-123-4567"
-          {...getOverrideProps(overrides, "eg. 408-123-4567")}
-        ></Text>
-        <View
-          width="32.81px"
-          height="35px"
-          display="block"
-          gap="unset"
-          alignItems="unset"
-          justifyContent="unset"
-          overflow="hidden"
-          position="absolute"
-          top="60px"
-          left="642.19px"
-          padding="0px 0px 0px 0px"
-          {...getOverrideProps(overrides, "Phone")}
-        >
-          <Icon
-            width="16.41px"
-            height="29.17px"
-            viewBox={{
-              minX: 0,
-              minY: 0,
-              width: 16.40625,
-              height: 29.166664123535156,
-            }}
-            paths={[
-              {
-                d: "M13.3301 0C15.0289 0 16.4062 1.46907 16.4062 3.28125L16.4062 25.8854C16.4062 27.6975 15.0289 29.1667 13.3301 29.1667L3.07617 29.1667C1.37725 29.1667 0 27.6975 0 25.8854L0 3.28125C0 1.46907 1.37725 0 3.07617 0L13.3301 0ZM9.91211 23.3333L6.49414 23.3333C5.92785 23.3333 5.46875 23.823 5.46875 24.4271C5.46875 25.0311 5.92785 25.5208 6.49414 25.5208L9.91211 25.5208C10.4784 25.5208 10.9375 25.0311 10.9375 24.4271C10.9375 23.823 10.4784 23.3333 9.91211 23.3333Z",
-                fill: "rgba(171,177,187,1)",
-                fillRule: "nonzero",
-              },
-            ]}
-            display="block"
-            gap="unset"
-            alignItems="unset"
-            justifyContent="unset"
-            position="absolute"
-            top="8.33%"
-            bottom="8.33%"
-            left="25%"
-            right="25%"
-            {...getOverrideProps(overrides, "Vector77230")}
-          ></Icon>
-        </View>
       </View>
       <Icon
         width="1200px"
@@ -701,7 +343,7 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="860px"
+        top="740px"
         left="100px"
         {...getOverrideProps(overrides, "Vector 77")}
       ></Icon>
@@ -722,7 +364,7 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="1240px"
+        top="1120px"
         left="100px"
         {...getOverrideProps(overrides, "Vector 79")}
       ></Icon>
@@ -735,9 +377,9 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="900px"
+        top="583px"
         left="100px"
-        {...getOverrideProps(overrides, "billingaddress")}
+        {...getOverrideProps(overrides, "billingaddress77253")}
       >
         <Text
           fontFamily="Montserrat"
@@ -775,7 +417,7 @@ export default function Profile(props) {
           borderRadius="8px"
           padding="0px 0px 0px 0px"
           backgroundColor="rgba(255,255,255,1)"
-          {...getOverrideProps(overrides, "Location Field")}
+          {...getOverrideProps(overrides, "Location Field77255")}
         ></View>
         <Text
           fontFamily="Montserrat"
@@ -797,7 +439,7 @@ export default function Profile(props) {
           left="80px"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
-          children="eg. 12345 billing st. San Jose, CA, 94233"
+          children={user?.billingAddress}
           {...getOverrideProps(
             overrides,
             "eg. 12345 billing st. San Jose, CA, 94233"
@@ -817,7 +459,7 @@ export default function Profile(props) {
           padding="0px 0px 0px 0px"
           {...getOverrideProps(
             overrides,
-            "Location / undefined / Glyph: undefined"
+            "Location / undefined / Glyph: undefined77256"
           )}
         >
           <Icon
@@ -858,7 +500,530 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="1090px"
+        top="961px"
+        left="100px"
+        {...getOverrideProps(overrides, "billingaddress1532")}
+      >
+        <Text
+          fontFamily="Montserrat"
+          fontSize="16px"
+          fontWeight="700"
+          color="rgba(56,77,108,1)"
+          lineHeight="19.503999710083008px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="160px"
+          height="25px"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="0px"
+          left="0px"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="Date of Birth"
+          {...getOverrideProps(overrides, "Date of Birth")}
+        ></Text>
+        <View
+          width="1197.69px"
+          height="65px"
+          display="block"
+          gap="unset"
+          alignItems="unset"
+          justifyContent="unset"
+          position="absolute"
+          top="45px"
+          left="2.31px"
+          border="1px SOLID rgba(209,213,219,1)"
+          borderRadius="8px"
+          padding="0px 0px 0px 0px"
+          backgroundColor="rgba(255,255,255,1)"
+          {...getOverrideProps(overrides, "Location Field1534")}
+        ></View>
+        <Text
+          fontFamily="Montserrat"
+          fontSize="18px"
+          fontWeight="400"
+          color="rgba(171,177,187,1)"
+          fontStyle="italic"
+          lineHeight="21.941999435424805px"
+          textAlign="left"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="900px"
+          height="35px"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="60px"
+          left="80px"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="eg. 12/31/2000"
+          {...getOverrideProps(overrides, "eg. 12/31/2000")}
+        ></Text>
+        <View
+          width="27.69px"
+          height="30px"
+          display="block"
+          gap="unset"
+          alignItems="unset"
+          justifyContent="unset"
+          overflow="hidden"
+          position="absolute"
+          top="60px"
+          left="19.62px"
+          padding="0px 0px 0px 0px"
+          {...getOverrideProps(
+            overrides,
+            "Location / undefined / Glyph: undefined1536"
+          )}
+        >
+          <View
+            width="26px"
+            height="26px"
+            display="block"
+            gap="unset"
+            alignItems="unset"
+            justifyContent="unset"
+            overflow="hidden"
+            position="absolute"
+            top="2px"
+            left="0px"
+            padding="0px 0px 0px 0px"
+            {...getOverrideProps(overrides, "wpf:birthday")}
+          >
+            <Icon
+              width="26.05px"
+              height="26px"
+              viewBox={{
+                minX: 0,
+                minY: 0,
+                width: 26.048105239868164,
+                height: 26.0011043548584,
+              }}
+              paths={[
+                {
+                  d: "M5.0481 0C5.0481 0 3.0791 2.169 3.0791 3.25C3.07953 3.73225 3.25864 4.19724 3.58184 4.55516C3.90504 4.91308 4.3494 5.13854 4.8291 5.188C4.59938 5.14015 4.39319 5.01456 4.24527 4.8324C4.09736 4.65024 4.01678 4.42265 4.01711 4.188C4.01711 3.625 5.0481 2.5 5.0481 2.5C5.0481 2.5 6.0791 3.624 6.0791 4.188C6.0791 4.681 5.7311 5.093 5.2671 5.188C5.74681 5.13854 6.19117 4.91308 6.51437 4.55516C6.83757 4.19724 7.01668 3.73225 7.0171 3.25C7.0171 2.17 5.0481 0 5.0481 0ZM13.0481 0C13.0481 0 11.0791 2.169 11.0791 3.25C11.0795 3.73225 11.2586 4.19724 11.5818 4.55516C11.905 4.91308 12.3494 5.13854 12.8291 5.188C12.5994 5.14015 12.3932 5.01456 12.2453 4.8324C12.0974 4.65024 12.0168 4.42265 12.0171 4.188C12.0171 3.625 13.0481 2.5 13.0481 2.5C13.0481 2.5 14.0791 3.624 14.0791 4.188C14.0791 4.681 13.7311 5.093 13.2671 5.188C13.7468 5.13854 14.1912 4.91308 14.5144 4.55516C14.8376 4.19724 15.0167 3.73225 15.0171 3.25C15.0171 2.17 13.0481 0 13.0481 0ZM21.0481 0C21.0481 0 19.0791 2.169 19.0791 3.25C19.0795 3.73225 19.2586 4.19724 19.5818 4.55516C19.905 4.91308 20.3494 5.13854 20.8291 5.188C20.5994 5.14015 20.3932 5.01456 20.2453 4.8324C20.0974 4.65024 20.0168 4.42265 20.0171 4.188C20.0171 3.625 21.0481 2.5 21.0481 2.5C21.0481 2.5 22.0791 3.624 22.0791 4.188C22.0791 4.681 21.7311 5.093 21.2671 5.188C21.7468 5.13854 22.1912 4.91308 22.5144 4.55516C22.8376 4.19724 23.0167 3.73225 23.0171 3.25C23.0171 2.17 21.0481 0 21.0481 0ZM3.0791 5.688C2.99773 5.67346 2.91415 5.67718 2.83439 5.69889C2.75464 5.72061 2.6807 5.75977 2.61793 5.81354C2.55515 5.86732 2.50511 5.93438 2.47142 6.00986C2.43773 6.08534 2.42122 6.16736 2.42311 6.25C2.42311 6.61 3.0791 7.261 3.0791 8.406L3.0791 13.969L7.0181 13.969L7.0181 8.313C7.0181 7.614 7.6741 7.361 7.6741 7C7.6741 6.64 7.6591 6.25 6.5491 6.25C4.8981 6.25 3.08011 5.687 3.08011 5.687L3.0791 5.688ZM11.0791 5.688C10.9977 5.67346 10.9141 5.67718 10.8344 5.69889C10.7546 5.72061 10.6807 5.75977 10.6179 5.81354C10.5552 5.86732 10.5051 5.93438 10.4714 6.00986C10.4377 6.08534 10.4212 6.16736 10.4231 6.25C10.4231 6.61 11.0791 7.261 11.0791 8.406L11.0791 13.969L15.0171 13.969L15.0171 8.313C15.0171 7.614 15.6731 7.361 15.6731 7C15.6731 6.64 15.6581 6.25 14.5481 6.25C12.8971 6.25 11.0791 5.687 11.0791 5.687L11.0791 5.688ZM19.0791 5.688C18.9977 5.67346 18.9142 5.67718 18.8344 5.69889C18.7546 5.72061 18.6807 5.75977 18.6179 5.81354C18.5552 5.86732 18.5051 5.93438 18.4714 6.00986C18.4377 6.08534 18.4212 6.16736 18.4231 6.25C18.4231 6.61 19.0791 7.261 19.0791 8.406L19.0791 13.969L23.0171 13.969L23.0171 8.313C23.0171 7.614 23.6731 7.361 23.6731 7C23.6731 6.64 23.6581 6.25 22.5481 6.25C20.8971 6.25 19.0791 5.687 19.0791 5.687L19.0791 5.688ZM4.0481 15C2.3921 15 1.04811 16.344 1.04811 18L1.04811 24C1.01679 23.9985 0.985421 23.9985 0.954105 24C0.822783 24.0062 0.693963 24.0381 0.574999 24.0941C0.456036 24.1501 0.349258 24.2289 0.260764 24.3261C0.082042 24.5225 -0.0113602 24.7818 0.001105 25.047C0.0135702 25.3122 0.130882 25.5616 0.327232 25.7403C0.523583 25.9191 0.782889 26.0125 1.04811 26L25.0481 26C25.3133 26 25.5677 25.8946 25.7552 25.7071C25.9427 25.5196 26.0481 25.2652 26.0481 25C26.0481 24.7348 25.9427 24.4804 25.7552 24.2929C25.5677 24.1054 25.3133 24 25.0481 24L25.0481 18C25.0481 16.344 23.7041 15 22.0481 15L4.0481 15ZM5.0481 19C5.0481 19.5304 5.25882 20.0391 5.63389 20.4142C6.00896 20.7893 6.51767 21 7.0481 21C7.57854 21 8.08725 20.7893 8.46232 20.4142C8.83739 20.0391 9.04811 19.5304 9.04811 19C9.04811 19.5304 9.25882 20.0391 9.63389 20.4142C10.009 20.7893 10.5177 21 11.0481 21C11.5785 21 12.0872 20.7893 12.4623 20.4142C12.8374 20.0391 13.0481 19.5304 13.0481 19C13.0481 19.5304 13.2588 20.0391 13.6339 20.4142C14.009 20.7893 14.5177 21 15.0481 21C15.5785 21 16.0872 20.7893 16.4623 20.4142C16.8374 20.0391 17.0481 19.5304 17.0481 19C17.0481 19.5304 17.2588 20.0391 17.6339 20.4142C18.009 20.7893 18.5177 21 19.0481 21C19.5785 21 20.0872 20.7893 20.4623 20.4142C20.8374 20.0391 21.0481 19.5304 21.0481 19C21.0481 19.5304 21.2588 20.0391 21.6339 20.4142C22.009 20.7893 22.5177 21 23.0481 21L23.0481 24L3.04811 24L3.04811 21C3.57854 21 4.08725 20.7893 4.46232 20.4142C4.83739 20.0391 5.0481 19.5304 5.0481 19Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="0%"
+              bottom="0%"
+              left="-0.19%"
+              right="0%"
+              {...getOverrideProps(overrides, "Vector15335")}
+            ></Icon>
+          </View>
+          <View
+            width="36px"
+            height="36px"
+            display="block"
+            gap="unset"
+            alignItems="unset"
+            justifyContent="unset"
+            overflow="hidden"
+            position="absolute"
+            top="0px"
+            left="0px"
+            padding="0px 0px 0px 0px"
+            {...getOverrideProps(overrides, "clarity:date-line")}
+          >
+            <Icon
+              width="32px"
+              height="26px"
+              viewBox={{
+                minX: 0,
+                minY: 0,
+                width: 32.00051498413086,
+                height: 26,
+              }}
+              paths={[
+                {
+                  d: "M30.2503 0L27.0003 0L27.0003 2L30.0003 2L30.0003 24L2.00026 24L2.00026 2L5.00026 2L5.00026 0L1.75026 0C1.51649 0.00390661 1.28579 0.0538262 1.07132 0.146908C0.856857 0.239989 0.662828 0.37441 0.500319 0.54249C0.33781 0.710571 0.210004 0.90902 0.124203 1.1265C0.0384012 1.34398 -0.00371596 1.57624 0.000257051 1.81L0.000257051 24.19C-0.00371596 24.4238 0.0384012 24.656 0.124203 24.8735C0.210004 25.091 0.33781 25.2894 0.500319 25.4575C0.662828 25.6256 0.856857 25.76 1.07132 25.8531C1.28579 25.9462 1.51649 25.9961 1.75026 26L30.2503 26C30.484 25.9961 30.7147 25.9462 30.9292 25.8531C31.1437 25.76 31.3377 25.6256 31.5002 25.4575C31.6627 25.2894 31.7905 25.091 31.8763 24.8735C31.9621 24.656 32.0042 24.4238 32.0003 24.19L32.0003 1.81C32.0042 1.57624 31.9621 1.34398 31.8763 1.1265C31.7905 0.90902 31.6627 0.710571 31.5002 0.54249C31.3377 0.37441 31.1437 0.239989 30.9292 0.146908C30.7147 0.0538262 30.484 0.00390661 30.2503 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="16.67%"
+              bottom="11.11%"
+              left="5.55%"
+              right="5.55%"
+              {...getOverrideProps(overrides, "Vector15315")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="38.89%"
+              bottom="55.56%"
+              left="22.22%"
+              right="72.22%"
+              {...getOverrideProps(overrides, "Vector15316")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="38.89%"
+              bottom="55.56%"
+              left="38.89%"
+              right="55.56%"
+              {...getOverrideProps(overrides, "Vector15317")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="38.89%"
+              bottom="55.56%"
+              left="55.56%"
+              right="38.89%"
+              {...getOverrideProps(overrides, "Vector15318")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="38.89%"
+              bottom="55.56%"
+              left="72.22%"
+              right="22.22%"
+              {...getOverrideProps(overrides, "Vector15319")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="52.78%"
+              bottom="41.67%"
+              left="22.22%"
+              right="72.22%"
+              {...getOverrideProps(overrides, "Vector15320")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="52.78%"
+              bottom="41.67%"
+              left="38.89%"
+              right="55.56%"
+              {...getOverrideProps(overrides, "Vector15321")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="52.78%"
+              bottom="41.67%"
+              left="55.56%"
+              right="38.89%"
+              {...getOverrideProps(overrides, "Vector15322")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="52.78%"
+              bottom="41.67%"
+              left="72.22%"
+              right="22.22%"
+              {...getOverrideProps(overrides, "Vector15323")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="66.67%"
+              bottom="27.78%"
+              left="22.22%"
+              right="72.22%"
+              {...getOverrideProps(overrides, "Vector15324")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="66.67%"
+              bottom="27.78%"
+              left="38.89%"
+              right="55.56%"
+              {...getOverrideProps(overrides, "Vector15325")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="66.67%"
+              bottom="27.78%"
+              left="55.56%"
+              right="38.89%"
+              {...getOverrideProps(overrides, "Vector15326")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L2 0L2 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="66.67%"
+              bottom="27.78%"
+              left="72.22%"
+              right="22.22%"
+              {...getOverrideProps(overrides, "Vector15327")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="8px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 8 }}
+              paths={[
+                {
+                  d: "M1 8C1.26522 8 1.51957 7.89464 1.70711 7.70711C1.89464 7.51957 2 7.26522 2 7L2 1C2 0.734784 1.89464 0.48043 1.70711 0.292893C1.51957 0.105357 1.26522 6.66134e-16 1 0C0.734784 6.66134e-16 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1L0 7C0 7.26522 0.105357 7.51957 0.292893 7.70711C0.48043 7.89464 0.734784 8 1 8Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="5.56%"
+              bottom="72.22%"
+              left="25%"
+              right="69.44%"
+              {...getOverrideProps(overrides, "Vector15328")}
+            ></Icon>
+            <Icon
+              width="2px"
+              height="8px"
+              viewBox={{ minX: 0, minY: 0, width: 2, height: 8 }}
+              paths={[
+                {
+                  d: "M1 8C1.26522 8 1.51957 7.89464 1.70711 7.70711C1.89464 7.51957 2 7.26522 2 7L2 1C2 0.734784 1.89464 0.48043 1.70711 0.292893C1.51957 0.105357 1.26522 6.66134e-16 1 0C0.734784 6.66134e-16 0.480429 0.105357 0.292892 0.292893C0.105356 0.48043 0 0.734784 0 1L0 7C0 7.26522 0.105356 7.51957 0.292892 7.70711C0.480429 7.89464 0.734784 8 1 8Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="5.56%"
+              bottom="72.22%"
+              left="69.44%"
+              right="25%"
+              {...getOverrideProps(overrides, "Vector15329")}
+            ></Icon>
+            <Icon
+              width="10px"
+              height="2px"
+              viewBox={{ minX: 0, minY: 0, width: 10, height: 2 }}
+              paths={[
+                {
+                  d: "M0 0L10 0L10 2L0 2L0 0Z",
+                  fill: "rgba(0,0,0,1)",
+                  fillRule: "nonzero",
+                },
+              ]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="16.67%"
+              bottom="77.78%"
+              left="36.11%"
+              right="36.11%"
+              {...getOverrideProps(overrides, "Vector15330")}
+            ></Icon>
+            <Icon
+              width="36px"
+              height="36px"
+              viewBox={{ minX: 0, minY: 0, width: 36, height: 36 }}
+              paths={[]}
+              display="block"
+              gap="unset"
+              alignItems="unset"
+              justifyContent="unset"
+              position="absolute"
+              top="0%"
+              bottom="0%"
+              left="0%"
+              right="0%"
+              {...getOverrideProps(overrides, "Vector15331")}
+            ></Icon>
+          </View>
+        </View>
+      </View>
+      <View
+        padding="0px 0px 0px 0px"
+        width="1200px"
+        height="110px"
+        display="block"
+        gap="unset"
+        alignItems="unset"
+        justifyContent="unset"
+        position="absolute"
+        top="771px"
         left="100px"
         {...getOverrideProps(overrides, "shippingaddress")}
       >
@@ -920,7 +1085,7 @@ export default function Profile(props) {
           left="80px"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
-          children="eg. 12345 shipping st. San Jose, CA, 94231"
+          children={user?.shippingAddress}
           {...getOverrideProps(
             overrides,
             "eg. 12345 shipping st. San Jose, CA, 94231"
@@ -989,7 +1154,7 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="1050px"
+        top="930px"
         left="100px"
         {...getOverrideProps(overrides, "Vector 78")}
       ></Icon>
@@ -1002,7 +1167,7 @@ export default function Profile(props) {
         alignItems="center"
         overflow="hidden"
         position="absolute"
-        top="1327px"
+        top="1197px"
         left="1047px"
         border="3px SOLID rgba(56,77,108,1)"
         borderRadius="11px"
@@ -1041,12 +1206,15 @@ export default function Profile(props) {
         alignItems="center"
         overflow="hidden"
         position="absolute"
-        top="1330px"
+        top="1200px"
         left="150px"
         border="1px SOLID rgba(56,77,108,1)"
         borderRadius="8px"
         padding="7px 0px 7px 0px"
         backgroundColor="rgba(66,107,31,1)"
+        onClick={() => {
+          cancelButtonOnClick();
+        }}
         {...getOverrideProps(overrides, "Cancel Button")}
       >
         <Text
