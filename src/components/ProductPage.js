@@ -103,10 +103,10 @@ const ProductPage = () => {
   
 
     const tableRows = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 6; i++) {
         const tableCells = [];
-        for (let j = 0; j < 3; j++) {
-            const index = i * 3 + j;
+        for (let j = 0; j < 2; j++) {
+            const index = i * 2 + j;
 
             tableCells.push(
                 <td key={`item-${i}-${j}`}>
@@ -158,8 +158,7 @@ const ProductPage = () => {
 
     return (
         <View className="App">
-        
-        <Navigation overrides={{
+        <Navigation width="100vw" overrides={{
             Basket: {
               onClick: handleBasketClick
             },
@@ -170,13 +169,14 @@ const ProductPage = () => {
 
             "My profile": {
               onClick: handleProfileClick 
-            }
-
+            },
+            
           }} />
+          
 
           <div class="container">
               <div class="left-column">
-                  <div style= {{paddingTop: '50px', paddingBottom: '50px'}}>
+                  <div style= {{paddingTop: '50px', paddingBottom: '50px', paddingLeft: '50px', width: '100%'}}>
                       <table class="Grid">
                           <tbody>
                             {tableRows}
@@ -234,7 +234,7 @@ const ProductPage = () => {
                 </Signout>
           </div>
 
-         <Footer />
+          <Footer style={{ width: '100%' }} />
 
         </View>
       );

@@ -134,7 +134,7 @@ const CheckoutPage = () => {
     return (
         <View className="App">
     
-          <Navigation overrides={{
+          <Navigation style={{ width: '100%' }} overrides={{
             Basket: {
               onClick: handleBasketClick
             },
@@ -157,7 +157,7 @@ const CheckoutPage = () => {
 
               <div class="left-column">
 
-                <Checkout overrides={{
+                <Checkout style={{ width: '100%' }} overrides={{
                   Address73192: { 
                     children: (
                       <div>
@@ -253,11 +253,11 @@ const CheckoutPage = () => {
           
               <div class="summary">
 
-                <Header style={{ padding: '10px', marginBottom: '10px' }}></Header>
+                <Header style={{ padding: '10px', width: '100%', marginBottom: '10px' }}></Header>
                 
                 {itemsWithQuantity.map(([fruit, quantity]) => (
                   
-                  <Item  style={{ padding: '10px', marginBottom: '10px' }} overrides ={{
+                  <Item  style={{ padding: '10px', width: '100%', marginBottom: '10px' }} overrides ={{
 
                     item : {
                       children : (
@@ -276,7 +276,7 @@ const CheckoutPage = () => {
                 ))}
 
 
-                <Summary style={{ padding: '10px', marginBottom: '10px' }} overrides={{
+                <Summary style={{ padding: '10px', width: '100%', marginBottom: '10px' }} overrides={{
 
                     subtotal: { //Billing Address
                       children: (

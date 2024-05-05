@@ -134,7 +134,7 @@ const CartPage = () => {
     return (
         <View className="App">
     
-          <Navigation overrides={{
+          <Navigation style={{ width: '100%' }} overrides={{
             Basket: {
               onClick: handleBasketClick
             },
@@ -153,7 +153,7 @@ const CartPage = () => {
 
           }} />
 
-          <CheckoutHeading overrides ={{
+          <CheckoutHeading style={{ width: '100%' }} overrides ={{
 
             "3 items" : {
               children : (
@@ -217,7 +217,7 @@ const CartPage = () => {
 
           </div>
         <div className="summary">
-          <Summary overrides = {{
+          <Summary style={{ width: '100%' }} overrides = {{
 
             "Order Total": { //Total Price
                 children: (
