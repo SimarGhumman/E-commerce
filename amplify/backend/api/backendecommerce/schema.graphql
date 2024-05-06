@@ -1,4 +1,4 @@
-type User @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [read]}]) {
+type User @model @auth(rules: [{ allow: private }]) {
   id: ID!
   username: String
   email: String
@@ -9,7 +9,7 @@ type User @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner
   billingAddress: String
 }
 
-type Order @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
+type Order @model @auth(rules: [{ allow: private }]) {
   id: ID!
   date: AWSDateTime
   totalPrice: Float
@@ -17,7 +17,7 @@ type Order @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owne
   OrderItems: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
 }
 
-type OrderItem @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
+type OrderItem @model @auth(rules: [{ allow: private }]) {
   id: ID!
   name: String
   price: Float
@@ -26,14 +26,14 @@ type OrderItem @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: 
   orderID: ID! @index(name: "byOrder")
 }
 
-type CartItem @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [create, read]}]) {
+type CartItem @model @auth(rules: [{ allow: private }]) {
   id: ID!
   Product: Product @hasOne
   quantity: Int
   userID: ID! @index(name: "byUser")
 }
 
-type Product @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username", operations: [read]}]) {
+type Product @model @auth(rules: [{ allow: private }]) {
   id: ID!
   name: String
   description: String
@@ -41,7 +41,7 @@ type Product @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: ow
   price: Float
 }
 
-type Image @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: owner, ownerField: "username"}]) {
+type Image @model @auth(rules: [{ allow: private }]) {
   id: ID!
   url: AWSURL
   description: String

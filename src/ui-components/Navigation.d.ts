@@ -20,9 +20,11 @@ export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes
 export declare type NavigationOverridesProps = {
     Navigation?: PrimitiveOverrideProps<ViewProps>;
     "E-commerce"?: PrimitiveOverrideProps<TextProps>;
+    whoweare?: PrimitiveOverrideProps<FlexProps>;
     "Who we are"?: PrimitiveOverrideProps<TextProps>;
+    myprofile?: PrimitiveOverrideProps<FlexProps>;
     "My profile"?: PrimitiveOverrideProps<TextProps>;
-    Search116156?: PrimitiveOverrideProps<ViewProps>;
+    Search116156?: PrimitiveOverrideProps<FlexProps>;
     Search116157?: PrimitiveOverrideProps<TextProps>;
     Button?: PrimitiveOverrideProps<FlexProps>;
     Shop?: PrimitiveOverrideProps<TextProps>;

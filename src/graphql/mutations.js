@@ -22,7 +22,6 @@ export const createUser = /* GraphQL */ `
             createdAt
             updatedAt
             productImageId
-            username
             __typename
           }
           quantity
@@ -30,7 +29,6 @@ export const createUser = /* GraphQL */ `
           createdAt
           updatedAt
           cartItemProductId
-          username
           __typename
         }
         nextToken
@@ -48,7 +46,6 @@ export const createUser = /* GraphQL */ `
           }
           createdAt
           updatedAt
-          username
           __typename
         }
         nextToken
@@ -83,7 +80,6 @@ export const updateUser = /* GraphQL */ `
             createdAt
             updatedAt
             productImageId
-            username
             __typename
           }
           quantity
@@ -91,7 +87,6 @@ export const updateUser = /* GraphQL */ `
           createdAt
           updatedAt
           cartItemProductId
-          username
           __typename
         }
         nextToken
@@ -109,7 +104,6 @@ export const updateUser = /* GraphQL */ `
           }
           createdAt
           updatedAt
-          username
           __typename
         }
         nextToken
@@ -144,7 +138,6 @@ export const deleteUser = /* GraphQL */ `
             createdAt
             updatedAt
             productImageId
-            username
             __typename
           }
           quantity
@@ -152,7 +145,6 @@ export const deleteUser = /* GraphQL */ `
           createdAt
           updatedAt
           cartItemProductId
-          username
           __typename
         }
         nextToken
@@ -170,7 +162,6 @@ export const deleteUser = /* GraphQL */ `
           }
           createdAt
           updatedAt
-          username
           __typename
         }
         nextToken
@@ -206,14 +197,12 @@ export const createOrder = /* GraphQL */ `
             description
             createdAt
             updatedAt
-            username
             __typename
           }
           orderID
           createdAt
           updatedAt
           orderItemImageId
-          username
           __typename
         }
         nextToken
@@ -221,7 +210,6 @@ export const createOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -248,14 +236,12 @@ export const updateOrder = /* GraphQL */ `
             description
             createdAt
             updatedAt
-            username
             __typename
           }
           orderID
           createdAt
           updatedAt
           orderItemImageId
-          username
           __typename
         }
         nextToken
@@ -263,7 +249,6 @@ export const updateOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -290,14 +275,12 @@ export const deleteOrder = /* GraphQL */ `
             description
             createdAt
             updatedAt
-            username
             __typename
           }
           orderID
           createdAt
           updatedAt
           orderItemImageId
-          username
           __typename
         }
         nextToken
@@ -305,7 +288,6 @@ export const deleteOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -326,14 +308,12 @@ export const createOrderItem = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       orderID
       createdAt
       updatedAt
       orderItemImageId
-      username
       __typename
     }
   }
@@ -354,14 +334,12 @@ export const updateOrderItem = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       orderID
       createdAt
       updatedAt
       orderItemImageId
-      username
       __typename
     }
   }
@@ -382,14 +360,12 @@ export const deleteOrderItem = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       orderID
       createdAt
       updatedAt
       orderItemImageId
-      username
       __typename
     }
   }
@@ -411,14 +387,12 @@ export const createCartItem = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         price
         createdAt
         updatedAt
         productImageId
-        username
         __typename
       }
       quantity
@@ -426,7 +400,6 @@ export const createCartItem = /* GraphQL */ `
       createdAt
       updatedAt
       cartItemProductId
-      username
       __typename
     }
   }
@@ -448,14 +421,12 @@ export const updateCartItem = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         price
         createdAt
         updatedAt
         productImageId
-        username
         __typename
       }
       quantity
@@ -463,7 +434,6 @@ export const updateCartItem = /* GraphQL */ `
       createdAt
       updatedAt
       cartItemProductId
-      username
       __typename
     }
   }
@@ -485,14 +455,12 @@ export const deleteCartItem = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         price
         createdAt
         updatedAt
         productImageId
-        username
         __typename
       }
       quantity
@@ -500,7 +468,6 @@ export const deleteCartItem = /* GraphQL */ `
       createdAt
       updatedAt
       cartItemProductId
-      username
       __typename
     }
   }
@@ -520,14 +487,12 @@ export const createProduct = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       price
       createdAt
       updatedAt
       productImageId
-      username
       __typename
     }
   }
@@ -547,14 +512,12 @@ export const updateProduct = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       price
       createdAt
       updatedAt
       productImageId
-      username
       __typename
     }
   }
@@ -574,14 +537,12 @@ export const deleteProduct = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       price
       createdAt
       updatedAt
       productImageId
-      username
       __typename
     }
   }
@@ -597,7 +558,6 @@ export const createImage = /* GraphQL */ `
       description
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -613,7 +573,6 @@ export const updateImage = /* GraphQL */ `
       description
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -629,7 +588,6 @@ export const deleteImage = /* GraphQL */ `
       description
       createdAt
       updatedAt
-      username
       __typename
     }
   }

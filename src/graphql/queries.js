@@ -19,7 +19,6 @@ export const getUser = /* GraphQL */ `
             createdAt
             updatedAt
             productImageId
-            username
             __typename
           }
           quantity
@@ -27,7 +26,6 @@ export const getUser = /* GraphQL */ `
           createdAt
           updatedAt
           cartItemProductId
-          username
           __typename
         }
         nextToken
@@ -45,7 +43,6 @@ export const getUser = /* GraphQL */ `
           }
           createdAt
           updatedAt
-          username
           __typename
         }
         nextToken
@@ -79,7 +76,6 @@ export const listUsers = /* GraphQL */ `
             createdAt
             updatedAt
             cartItemProductId
-            username
             __typename
           }
           nextToken
@@ -93,7 +89,6 @@ export const listUsers = /* GraphQL */ `
             userID
             createdAt
             updatedAt
-            username
             __typename
           }
           nextToken
@@ -129,14 +124,12 @@ export const getOrder = /* GraphQL */ `
             description
             createdAt
             updatedAt
-            username
             __typename
           }
           orderID
           createdAt
           updatedAt
           orderItemImageId
-          username
           __typename
         }
         nextToken
@@ -144,7 +137,6 @@ export const getOrder = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -171,7 +163,6 @@ export const listOrders = /* GraphQL */ `
             createdAt
             updatedAt
             orderItemImageId
-            username
             __typename
           }
           nextToken
@@ -179,7 +170,6 @@ export const listOrders = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        username
         __typename
       }
       nextToken
@@ -217,7 +207,6 @@ export const ordersByUserID = /* GraphQL */ `
             createdAt
             updatedAt
             orderItemImageId
-            username
             __typename
           }
           nextToken
@@ -225,7 +214,6 @@ export const ordersByUserID = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        username
         __typename
       }
       nextToken
@@ -246,14 +234,12 @@ export const getOrderItem = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       orderID
       createdAt
       updatedAt
       orderItemImageId
-      username
       __typename
     }
   }
@@ -276,14 +262,12 @@ export const listOrderItems = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         orderID
         createdAt
         updatedAt
         orderItemImageId
-        username
         __typename
       }
       nextToken
@@ -317,14 +301,12 @@ export const orderItemsByOrderID = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         orderID
         createdAt
         updatedAt
         orderItemImageId
-        username
         __typename
       }
       nextToken
@@ -346,14 +328,12 @@ export const getCartItem = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         price
         createdAt
         updatedAt
         productImageId
-        username
         __typename
       }
       quantity
@@ -361,7 +341,6 @@ export const getCartItem = /* GraphQL */ `
       createdAt
       updatedAt
       cartItemProductId
-      username
       __typename
     }
   }
@@ -385,14 +364,12 @@ export const listCartItems = /* GraphQL */ `
             description
             createdAt
             updatedAt
-            username
             __typename
           }
           price
           createdAt
           updatedAt
           productImageId
-          username
           __typename
         }
         quantity
@@ -400,7 +377,6 @@ export const listCartItems = /* GraphQL */ `
         createdAt
         updatedAt
         cartItemProductId
-        username
         __typename
       }
       nextToken
@@ -435,14 +411,12 @@ export const cartItemsByUserID = /* GraphQL */ `
             description
             createdAt
             updatedAt
-            username
             __typename
           }
           price
           createdAt
           updatedAt
           productImageId
-          username
           __typename
         }
         quantity
@@ -450,7 +424,6 @@ export const cartItemsByUserID = /* GraphQL */ `
         createdAt
         updatedAt
         cartItemProductId
-        username
         __typename
       }
       nextToken
@@ -470,14 +443,12 @@ export const getProduct = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       price
       createdAt
       updatedAt
       productImageId
-      username
       __typename
     }
   }
@@ -499,14 +470,12 @@ export const listProducts = /* GraphQL */ `
           description
           createdAt
           updatedAt
-          username
           __typename
         }
         price
         createdAt
         updatedAt
         productImageId
-        username
         __typename
       }
       nextToken
@@ -522,7 +491,6 @@ export const getImage = /* GraphQL */ `
       description
       createdAt
       updatedAt
-      username
       __typename
     }
   }
@@ -540,7 +508,6 @@ export const listImages = /* GraphQL */ `
         description
         createdAt
         updatedAt
-        username
         __typename
       }
       nextToken

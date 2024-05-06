@@ -111,7 +111,7 @@ export default function SuccessPayment(props) {
           display="block"
           direction="column"
           justifyContent="unset"
-          width="unset"
+          width="437px"
           height="unset"
           gap="unset"
           alignItems="unset"
@@ -134,7 +134,7 @@ export default function SuccessPayment(props) {
           display="block"
           direction="column"
           justifyContent="unset"
-          width="unset"
+          width="132px"
           height="unset"
           gap="unset"
           alignItems="unset"
@@ -210,7 +210,7 @@ export default function SuccessPayment(props) {
           position="absolute"
           top="440px"
           left="5.59%"
-          right="65.63%"
+          right="65.62%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Payment Time"
@@ -398,12 +398,12 @@ export default function SuccessPayment(props) {
             viewBox={{
               minX: 0,
               minY: 0,
-              width: 81.91390228271484,
+              width: 81.91389465332031,
               height: 81.91390228271484,
             }}
             paths={[
               {
-                d: "M81.9139 40.957C81.9139 63.5769 63.5769 81.9139 40.957 81.9139C18.3371 81.9139 0 63.5769 0 40.957C0 18.3371 18.3371 0 40.957 0C63.5769 0 81.9139 18.3371 81.9139 40.957Z",
+                d: "M81.9139 40.957C81.9139 63.5769 63.5768 81.9139 40.9569 81.9139C18.337 81.9139 0 63.5769 0 40.957C0 18.3371 18.337 0 40.9569 0C63.5768 0 81.9139 18.3371 81.9139 40.957Z",
                 fill: "rgba(0,229,64,1)",
                 fillRule: "nonzero",
               },
@@ -508,7 +508,7 @@ export default function SuccessPayment(props) {
         <Icon
           width="380.14px"
           height="55px"
-          viewBox={{ minX: 0, minY: 0, width: 380.1388854980469, height: 55 }}
+          viewBox={{ minX: 0, minY: 0, width: 380.13885498046875, height: 55 }}
           paths={[
             {
               d: "M0 27.5C0 12.3122 12.3122 0 27.5 0L352.639 0C367.827 0 380.139 12.3122 380.139 27.5L380.139 27.5C380.139 42.6878 367.827 55 352.639 55L27.5 55C12.3122 55 0 42.6878 0 27.5L0 27.5Z",

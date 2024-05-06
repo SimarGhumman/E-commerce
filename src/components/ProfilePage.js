@@ -51,7 +51,7 @@ const ProfilePage = () => {
             try {
                 const userData = await fetchAuthSession();
                 if (userData) {
-                    console.log('User data retrieved:', userData);
+                    console.log('Amplify Auth fetchAuthSession', userData);
                 } else {
                     console.log('No user signed in');
                 }
@@ -64,7 +64,7 @@ const ProfilePage = () => {
         async function handleFetchUserAttributes() {
             try {
                 const userAttributes = await fetchUserAttributes();
-                console.log(userAttributes);
+                console.log("Amplify Auth fetchUserAttributes", userAttributes);
                 setBirthday(userAttributes.birthdate);
             } catch (error) {
                 console.log(error);
