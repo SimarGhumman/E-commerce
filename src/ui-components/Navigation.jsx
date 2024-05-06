@@ -7,20 +7,20 @@
 /* eslint-disable */
 import * as React from "react";
 import { getOverrideProps } from "./utils";
-import { Flex, Text } from "@aws-amplify/ui-react";
+import { Flex, Text, View } from "@aws-amplify/ui-react";
 export default function Navigation(props) {
   const { overrides, ...rest } = props;
   return (
-    <Flex
-      gap="113px"
-      direction="row"
+    <View
       width="1400px"
-      height="unset"
-      justifyContent="flex-start"
-      alignItems="flex-start"
+      height="103px"
+      display="block"
+      gap="unset"
+      alignItems="unset"
+      justifyContent="unset"
       overflow="hidden"
       position="relative"
-      padding="32px 22px 32px 22px"
+      padding="0px 0px 0px 0px"
       {...getOverrideProps(overrides, "Navigation")}
       {...rest}
     >
@@ -39,8 +39,9 @@ export default function Navigation(props) {
         height="39px"
         gap="unset"
         alignItems="unset"
-        shrink="0"
-        position="relative"
+        position="absolute"
+        top="32px"
+        left="22px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="E-commerce"
@@ -60,8 +61,9 @@ export default function Navigation(props) {
         height="unset"
         gap="unset"
         alignItems="unset"
-        shrink="0"
-        position="relative"
+        position="absolute"
+        top="32px"
+        right="954px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="Who we are"
@@ -81,25 +83,27 @@ export default function Navigation(props) {
         height="unset"
         gap="unset"
         alignItems="unset"
-        shrink="0"
-        position="relative"
+        position="absolute"
+        top="32px"
+        right="765px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="My profile"
         {...getOverrideProps(overrides, "My profile")}
       ></Text>
-      <Flex
-        gap="10px"
-        direction="row"
-        width="unset"
-        height="unset"
-        justifyContent="center"
-        alignItems="center"
+      <View
+        width="133px"
+        height="39px"
+        display="block"
+        gap="unset"
+        alignItems="unset"
+        justifyContent="unset"
         overflow="hidden"
-        shrink="0"
-        position="relative"
+        position="absolute"
+        top="32px"
+        right="519px"
         borderRadius="8px"
-        padding="9px 39px 9px 39px"
+        padding="0px 0px 0px 0px"
         backgroundColor="rgba(66,107,31,1)"
         {...getOverrideProps(overrides, "Search116156")}
       >
@@ -117,14 +121,15 @@ export default function Navigation(props) {
           height="unset"
           gap="unset"
           alignItems="unset"
-          shrink="0"
-          position="relative"
+          position="absolute"
+          top="9px"
+          left="39px"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Search"
           {...getOverrideProps(overrides, "Search116157")}
         ></Text>
-      </Flex>
+      </View>
       <Flex
         gap="10px"
         direction="row"
@@ -133,8 +138,9 @@ export default function Navigation(props) {
         justifyContent="center"
         alignItems="center"
         overflow="hidden"
-        shrink="0"
-        position="relative"
+        position="absolute"
+        top="32px"
+        right="288px"
         borderRadius="8px"
         padding="9px 39px 9px 39px"
         backgroundColor="rgba(66,107,31,1)"
@@ -170,8 +176,9 @@ export default function Navigation(props) {
         justifyContent="center"
         alignItems="center"
         overflow="hidden"
-        shrink="0"
-        position="relative"
+        position="absolute"
+        top="32px"
+        right="56px"
         borderRadius="8px"
         padding="9px 33px 9px 33px"
         backgroundColor="rgba(66,107,31,1)"
@@ -199,6 +206,6 @@ export default function Navigation(props) {
           {...getOverrideProps(overrides, "Basket")}
         ></Text>
       </Flex>
-    </Flex>
+    </View>
   );
 }

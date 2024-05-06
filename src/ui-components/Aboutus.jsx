@@ -12,7 +12,7 @@ export default function Aboutus(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="1440px"
+      width="1400px"
       height="2087px"
       display="block"
       gap="unset"
@@ -92,31 +92,6 @@ export default function Aboutus(props) {
       </View>
       <Text
         fontFamily="Inter"
-        fontSize="20px"
-        fontWeight="400"
-        color="rgba(0,0,0,1)"
-        lineHeight="32px"
-        textAlign="left"
-        display="block"
-        direction="column"
-        justifyContent="unset"
-        width="822px"
-        height="unset"
-        gap="unset"
-        alignItems="unset"
-        position="absolute"
-        top="1550px"
-        left="309px"
-        padding="0px 0px 0px 0px"
-        whiteSpace="pre-wrap"
-        children="At E-Commerce , we take pride in delivering the finest selection of fruits straight to your table. Our produce is sourced from local farms known for their dedication to quality and sustainability. From the crisp sweetness of apples to the tropical juiciness of mangoes, each fruit is carefully selected to ensure freshness and flavor.&#x2028;&#x2028;We believe in supporting our local communities and farmers, which is why we prioritize sourcing from nearby growers. By choosing  E-Commerce, you're not only enjoying delicious fruits but also contributing to the livelihoods of hardworking farmers.&#x2028;&#x2028;With a wide range of options including bananas, oranges, grapes, and more, our goal is to provide you with the freshest and most flavorful fruits for you and your family to enjoy. Experience the difference with  E-Commerce – where quality meets taste."
-        {...getOverrideProps(
-          overrides,
-          "At E-Commerce , we take pride in delivering the finest selection of fruits straight to your table. Our produce is sourced from local farms known for their dedication to quality and sustainability. From the crisp sweetness of apples to the tropical juiciness of mangoes, each fruit is carefully selected to ensure freshness and flavor.\u2028\u2028We believe in supporting our local communities and farmers, which is why we prioritize sourcing from nearby growers. By choosing E-Commerce, you're not only enjoying delicious fruits but also contributing to the livelihoods of hardworking farmers.\u2028\u2028With a wide range of options including bananas, oranges, grapes, and more, our goal is to provide you with the freshest and most flavorful fruits for you and your family to enjoy. Experience the difference with E-Commerce \u2013 where quality meets taste."
-        )}
-      ></Text>
-      <Text
-        fontFamily="Inter"
         fontSize="14px"
         fontWeight="600"
         color="rgba(0,0,0,1)"
@@ -132,15 +107,44 @@ export default function Aboutus(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="1555px"
-        left="96px"
+        top="74.51%"
+        bottom="24.44%"
+        left="6.86%"
+        right="80.21%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="WHAT WE BELIEVE"
         {...getOverrideProps(overrides, "WHAT WE BELIEVE")}
       ></Text>
+      <Text
+        fontFamily="Inter"
+        fontSize="20px"
+        fontWeight="400"
+        color="rgba(0,0,0,1)"
+        lineHeight="32px"
+        textAlign="left"
+        display="block"
+        direction="column"
+        justifyContent="unset"
+        width="822px"
+        height="unset"
+        gap="unset"
+        alignItems="unset"
+        position="absolute"
+        top="74.27%"
+        bottom="7.33%"
+        left="21.57%"
+        right="19.71%"
+        padding="0px 0px 0px 0px"
+        whiteSpace="pre-wrap"
+        children="At E-Commerce , we take pride in delivering the finest selection of fruits straight to your table. Our produce is sourced from local farms known for their dedication to quality and sustainability. From the crisp sweetness of apples to the tropical juiciness of mangoes, each fruit is carefully selected to ensure freshness and flavor.&#x2028;&#x2028;We believe in supporting our local communities and farmers, which is why we prioritize sourcing from nearby growers. By choosing  E-Commerce, you're not only enjoying delicious fruits but also contributing to the livelihoods of hardworking farmers.&#x2028;&#x2028;With a wide range of options including bananas, oranges, grapes, and more, our goal is to provide you with the freshest and most flavorful fruits for you and your family to enjoy. Experience the difference with  E-Commerce – where quality meets taste."
+        {...getOverrideProps(
+          overrides,
+          "At E-Commerce , we take pride in delivering the finest selection of fruits straight to your table. Our produce is sourced from local farms known for their dedication to quality and sustainability. From the crisp sweetness of apples to the tropical juiciness of mangoes, each fruit is carefully selected to ensure freshness and flavor.\u2028\u2028We believe in supporting our local communities and farmers, which is why we prioritize sourcing from nearby growers. By choosing E-Commerce, you're not only enjoying delicious fruits but also contributing to the livelihoods of hardworking farmers.\u2028\u2028With a wide range of options including bananas, oranges, grapes, and more, our goal is to provide you with the freshest and most flavorful fruits for you and your family to enjoy. Experience the difference with E-Commerce \u2013 where quality meets taste."
+        )}
+      ></Text>
       <Image
-        width="calc(100% - 936px)"
+        width="34.79%"
         height="693px"
         display="block"
         gap="unset"
@@ -148,10 +152,10 @@ export default function Aboutus(props) {
         justifyContent="unset"
         position="absolute"
         top="662px"
-        left="96px"
-        right="840px"
+        left="6.86%"
+        right="58.36%"
         padding="0px 0px 0px 0px"
-        objectFit="cover"
+        objectFit="unset"
         {...getOverrideProps(
           overrides,
           "jonathan-kemper-1HHrdIoLFpU-unsplash 1"
@@ -168,14 +172,14 @@ export default function Aboutus(props) {
         direction="column"
         justifyContent="unset"
         letterSpacing="0px"
-        width="736px"
+        width="713px"
         height="unset"
         gap="unset"
         alignItems="unset"
         position="absolute"
         top="1281px"
-        left="660px"
-        right="44px"
+        left="45.93%"
+        right="3.14%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="Central California — The person who grew these was located in Central California and, er, hopefully very well-compensated."
@@ -185,7 +189,7 @@ export default function Aboutus(props) {
         )}
       ></Text>
       <Image
-        width="calc(100% - 660px)"
+        width="54.07%"
         height="480px"
         display="block"
         gap="unset"
@@ -193,10 +197,10 @@ export default function Aboutus(props) {
         justifyContent="unset"
         position="absolute"
         top="755px"
-        left="660px"
-        right="0px"
+        left="45.93%"
+        right="0%"
         padding="0px 0px 0px 0px"
-        objectFit="cover"
+        objectFit="unset"
         {...getOverrideProps(
           overrides,
           "Stocksy_txp226f62b2aNe300_Medium_4582193 1"

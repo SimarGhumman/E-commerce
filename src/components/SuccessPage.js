@@ -1,116 +1,121 @@
-import React from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
-import {
-    Button,
-    View
-  } from "@aws-amplify/ui-react";
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticator, View, Button } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
 import Success from '../ui-components/SuccessPayment';
-import Navigation  from '../ui-components/Navigation';
+import Navigation from '../ui-components/Navigation';
+import { generateClient } from 'aws-amplify/api';
+import * as queries from '../graphql/queries';
 
 const CartPage = () => {
-    const navigate = useNavigate();
-    const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const navigate = useNavigate();
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const client = generateClient();
 
-    let total = "123.52"
-    let orderNum = 12325221;
+  const [latestOrder, setLatestOrder] = useState({});
 
-    const currentTime = new Date();
-    const hours = currentTime.getHours();
-    const minutes = currentTime.getMinutes();
-    const seconds = currentTime.getSeconds();
-    const milliseconds = currentTime.getMilliseconds();
-    const timeString = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+  useEffect(() => {
+    fetchLatestOrder();
+  }, [user]);
 
+  const fetchLatestOrder = async () => {
+    try {
+      const { data } = await client.graphql({
+        query: queries.listOrders,
+        variables: {
+          filter: { userID: { eq: user.userId } },
+          limit: 100  // Adjust the limit based on expected order volume
+        },
+        authMode: 'userPool'
+      });
 
-    const handleBasketClick = () => {
-        navigate('/cart');
-    };
-    
-    const handleAboutClick = () => {
-        navigate('/home');
-    };
-
-    const handleSignOut = async () => {
-        await signOut();
-        localStorage.clear();
-        sessionStorage.clear();
-        navigate('/login');
-    };
-
-    const handleProfileClick = () => {
-      navigate('/profile')
-    };
-
-    const handleProduceClick = () => {
-        navigate('/produce');
-    };
-
-    const handleSearchClick = () => {
-      navigate('/search');
+      // Sort orders by date descending and pick the latest one
+      const latestOrder = data.listOrders.items.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+      console.log(latestOrder);
+      if (latestOrder) {
+        setLatestOrder(latestOrder);
+      }
+    } catch (error) {
+      console.error("Error fetching the latest order:", error);
+    }
   };
 
-  
-    return (
-        <View className="App">
-    
-          <Navigation  style={{ width: '100%' }} overrides={{
-                Basket: {
-                onClick: handleBasketClick
-                },
+  const handleBasketClick = () => {
+    navigate('/cart');
+  };
 
-                "Who we are": {
-                onClick: handleAboutClick 
-                },
+  const handleAboutClick = () => {
+    navigate('/home');
+  };
 
-                "My profile": {
-                onClick: handleProfileClick 
-                },
+  const handleSignOut = async () => {
+    await signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
+  };
 
-                Search116156  :{
-                  onClick: handleSearchClick 
-                },
+  const handleProfileClick = () => {
+    navigate('/profile')
+  };
 
-          }} />
-    
-            <Success  style={{ width: '100%' }} overrides={{
-                "Back To Merchants": {
-                onClick: handleProduceClick
-                },
+  const handleProduceClick = () => {
+    navigate('/produce');
+  };
 
-                total7464:{ //Order Total in Big
-                  children: (
-                    <div>${total}</div>
-                )},
+  const handleSearchClick = () => {
+    navigate('/search');
+  };
+  console.log(user);
 
-                total7476:{ //Order Total in Small
-                  children: (
-                    <div>${total}</div>
-                )},
+  return (
+    <View className="App">
+      <Navigation style={{ width: '100%' }} overrides={{
+        Basket: { onClick: () => navigate('/cart') },
+        "Who we are": { onClick: () => navigate('/home') },
+        "My profile": { onClick: () => navigate('/profile') },
+        Shop: { onClick: () => navigate('/produce') },
+        Search: { onClick: () => navigate('/search') },
+      }} />
 
-                refnumber:{ 
-                  children: (
-                    <div>{String(orderNum).padStart(9, '0')}</div>
-                )},
+      {latestOrder && latestOrder.totalPrice !== undefined ? (
+        <Success style={{ width: '100%' }} overrides={{
+          "Back To Merchants": {
+            onClick: () => navigate('/produce')
+          },
+          total7464: { children: <div>${latestOrder.totalPrice.toFixed(2)}</div> },
+          total7476: { children: <div>${latestOrder.totalPrice.toFixed(2)}</div> },
+          refnumber: {
+            children: (
+              <div>
+                {latestOrder.id && latestOrder.id.length > 9 ? `${latestOrder.id.substring(0, 9)}...` : latestOrder.id}
+              </div>
+            )
+          },
+          time: {
+            children: (
+              <div>
+                {latestOrder.date ? new Date(latestOrder.date).toLocaleString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }) : 'Not available'}
+              </div>
+            )
+          },
+        }} />
+      ) : (
+        <div>No recent orders found or missing order details.</div>
+      )}
 
-                time:{ 
-                  children: (
-                    <div>{timeString}</div>
-                )},
 
-
-                "your name":{ 
-                  children: (
-                    <div>{total}</div>
-                )},
-            }} />
-
-      
-            <Button onClick={handleSignOut}>Sign Out</Button>
-        </View>
-      );
+      <Button onClick={handleSignOut}>Sign Out</Button>
+    </View>
+  );
 };
 
 export default CartPage;

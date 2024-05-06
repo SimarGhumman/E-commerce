@@ -12,7 +12,7 @@ export default function Search(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="1440px"
+      width="1400px"
       height="1444px"
       display="block"
       gap="unset"
@@ -27,12 +27,12 @@ export default function Search(props) {
       {...rest}
     >
       <Icon
-        width="540px"
+        width="525px"
         height="0px"
-        viewBox={{ minX: 0, minY: 0, width: 540, height: 1 }}
+        viewBox={{ minX: 0, minY: 0, width: 525, height: 1 }}
         paths={[
           {
-            d: "M0 -0.5C-0.276142 -0.5 -0.5 -0.276142 -0.5 0C-0.5 0.276142 -0.276142 0.5 0 0.5L0 -0.5ZM540 0.5C540.276 0.5 540.5 0.276142 540.5 0C540.5 -0.276142 540.276 -0.5 540 -0.5L540 0.5ZM0 0.5L540 0.5L540 -0.5L0 -0.5L0 0.5Z",
+            d: "M0 -0.5C-0.276142 -0.5 -0.5 -0.276142 -0.5 0C-0.5 0.276142 -0.276142 0.5 0 0.5L0 -0.5ZM525 0.5C525.276 0.5 525.5 0.276142 525.5 0C525.5 -0.276142 525.276 -0.5 525 -0.5L525 0.5ZM0 0.5L525 0.5L525 -0.5L0 -0.5L0 0.5Z",
             stroke: "rgba(0,53,102,1)",
             fillRule: "nonzero",
             strokeLinejoin: "round",
@@ -44,10 +44,10 @@ export default function Search(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="236px"
-        bottom="1208px"
-        left="86px"
-        right="814px"
+        top="16.34%"
+        bottom="83.66%"
+        left="5.97%"
+        right="56.53%"
         {...getOverrideProps(overrides, "Vector 5")}
       ></Icon>
       <Text
@@ -60,81 +60,95 @@ export default function Search(props) {
         display="block"
         direction="column"
         justifyContent="unset"
-        width="400px"
+        width="388.89px"
         height="76px"
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="94px"
-        bottom="1274px"
-        left="86px"
-        right="954px"
+        top="6.51%"
+        bottom="88.23%"
+        left="5.97%"
+        right="66.25%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="Search"
         {...getOverrideProps(overrides, "Search15831")}
       ></Text>
-      <Icon
-        width="200px"
+      <View
+        padding="0px 0px 0px 0px"
+        width="266.39px"
         height="70px"
-        viewBox={{ minX: 0, minY: 0, width: 200, height: 70 }}
-        paths={[
-          {
-            d: "M0 0L200 0L200 70L0 70L0 0Z",
-            fill: "rgba(66,107,31,1)",
-            fillRule: "nonzero",
-          },
-        ]}
         display="block"
         gap="unset"
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
         top="420px"
-        bottom="954px"
-        left="243px"
-        right="997px"
-        {...getOverrideProps(overrides, "Rectangle 8")}
-      ></Icon>
-      <Text
-        fontFamily="Lato"
-        fontSize="25px"
-        fontWeight="700"
-        color="rgba(255,255,255,1)"
-        lineHeight="30.000001907348633px"
-        textAlign="center"
-        display="block"
-        direction="column"
-        justifyContent="unset"
-        width="274px"
-        height="unset"
-        gap="unset"
-        alignItems="unset"
-        position="absolute"
-        top="440px"
-        bottom="974px"
-        left="207px"
-        right="959px"
-        padding="0px 0px 0px 0px"
-        whiteSpace="pre-wrap"
-        children="upload"
-        {...getOverrideProps(overrides, "upload")}
-      ></Text>
+        left="201.25px"
+        {...getOverrideProps(overrides, "Group 3")}
+      >
+        <Icon
+          width="194.44px"
+          height="70px"
+          viewBox={{ minX: 0, minY: 0, width: 194.44444274902344, height: 70 }}
+          paths={[
+            {
+              d: "M0 0L194.444 0L194.444 70L0 70L0 0Z",
+              fill: "rgba(66,107,31,1)",
+              fillRule: "nonzero",
+            },
+          ]}
+          display="block"
+          gap="unset"
+          alignItems="unset"
+          justifyContent="unset"
+          position="absolute"
+          top="0%"
+          bottom="0%"
+          left="13.14%"
+          right="13.87%"
+          {...getOverrideProps(overrides, "Rectangle 8")}
+        ></Icon>
+        <Text
+          fontFamily="Lato"
+          fontSize="25px"
+          fontWeight="700"
+          color="rgba(255,255,255,1)"
+          lineHeight="30.000001907348633px"
+          textAlign="center"
+          display="block"
+          direction="column"
+          justifyContent="unset"
+          width="266.39px"
+          height="unset"
+          gap="unset"
+          alignItems="unset"
+          position="absolute"
+          top="28.57%"
+          bottom="28.57%"
+          left="0%"
+          right="0%"
+          padding="0px 0px 0px 0px"
+          whiteSpace="pre-wrap"
+          children="upload"
+          {...getOverrideProps(overrides, "upload")}
+        ></Text>
+      </View>
       <Image
-        width="calc(100% - 892px)"
-        height="calc(100% - 888px)"
+        width="38.06%"
+        height="38.5%"
         display="block"
         gap="unset"
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="544px"
-        bottom="344px"
-        left="481px"
-        right="411px"
+        top="37.67%"
+        bottom="23.82%"
+        left="33.4%"
+        right="28.54%"
         boxShadow="0px 0px 12px rgba(0, 0.2078431397676468, 0.4000000059604645, 0.11999999731779099)"
         padding="0px 0px 0px 0px"
-        objectFit="cover"
+        objectFit="unset"
         {...getOverrideProps(overrides, "belanja 1")}
       ></Image>
       <Text
@@ -147,15 +161,15 @@ export default function Search(props) {
         display="block"
         direction="column"
         justifyContent="unset"
-        width="550px"
+        width="534.72px"
         height="70px"
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="300px"
-        bottom="1074px"
-        left="60px"
-        right="830px"
+        top="20.78%"
+        bottom="74.38%"
+        left="4.17%"
+        right="57.64%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="image upload:"
@@ -171,15 +185,15 @@ export default function Search(props) {
         display="block"
         direction="column"
         justifyContent="unset"
-        width="550px"
+        width="534.72px"
         height="70px"
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="300px"
-        bottom="1074px"
-        left="640px"
-        right="250px"
+        top="20.78%"
+        bottom="74.38%"
+        left="44.44%"
+        right="17.36%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="file name"
@@ -195,15 +209,15 @@ export default function Search(props) {
         display="block"
         direction="column"
         justifyContent="unset"
-        width="550px"
+        width="534.72px"
         height="70px"
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="1180px"
-        bottom="194px"
-        left="870px"
-        right="20px"
+        top="81.72%"
+        bottom="13.43%"
+        left="60.42%"
+        right="1.39%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="item name"
@@ -219,15 +233,15 @@ export default function Search(props) {
         display="block"
         direction="column"
         justifyContent="unset"
-        width="800px"
+        width="777.78px"
         height="70px"
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="1180px"
-        bottom="194px"
-        left="60px"
-        right="580px"
+        top="81.72%"
+        bottom="13.43%"
+        left="4.17%"
+        right="40.28%"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="this item is most likely a:"

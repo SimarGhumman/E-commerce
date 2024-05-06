@@ -110,8 +110,8 @@ export default function Footer(props) {
         gap="unset"
         alignItems="unset"
         position="absolute"
-        top="160px"
-        left="1170px"
+        bottom="16px"
+        right="132px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
         children="Check us on:"
@@ -156,8 +156,8 @@ export default function Footer(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="155px"
-        left="1300px"
+        bottom="15px"
+        right="70px"
         {...getOverrideProps(overrides, "Vector83989")}
       ></Icon>
       <Icon

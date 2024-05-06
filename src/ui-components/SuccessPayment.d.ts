@@ -19,6 +19,7 @@ export declare type Variant = {
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type SuccessPaymentOverridesProps = {
     SuccessPayment?: PrimitiveOverrideProps<ViewProps>;
+    "Group 2"?: PrimitiveOverrideProps<ViewProps>;
     "Rectangle 18"?: PrimitiveOverrideProps<ViewProps>;
     "Vector 5"?: PrimitiveOverrideProps<IconProps>;
     "Vector 6"?: PrimitiveOverrideProps<IconProps>;
@@ -31,14 +32,15 @@ export declare type SuccessPaymentOverridesProps = {
     "Payment Methode"?: PrimitiveOverrideProps<TextProps>;
     "Credit Card"?: PrimitiveOverrideProps<TextProps>;
     "Sender Name"?: PrimitiveOverrideProps<TextProps>;
-    "Thank you for your payments!"?: PrimitiveOverrideProps<TextProps>;
     "your name"?: PrimitiveOverrideProps<TextProps>;
     "Total Payment + Taxes"?: PrimitiveOverrideProps<TextProps>;
-    "Ellipse 13"?: PrimitiveOverrideProps<IconProps>;
     total7476?: PrimitiveOverrideProps<TextProps>;
-    "Ellipse 14"?: PrimitiveOverrideProps<IconProps>;
     Group?: PrimitiveOverrideProps<ViewProps>;
+    "Ellipse 14"?: PrimitiveOverrideProps<IconProps>;
     Vector?: PrimitiveOverrideProps<IconProps>;
+    "Ellipse 13"?: PrimitiveOverrideProps<IconProps>;
+    "Thank you for your payments!"?: PrimitiveOverrideProps<TextProps>;
+    "Group 1"?: PrimitiveOverrideProps<ViewProps>;
     "Rectangle 8"?: PrimitiveOverrideProps<IconProps>;
     "Back To Merchants"?: PrimitiveOverrideProps<TextProps>;
     "belanja 1"?: PrimitiveOverrideProps<ImageProps>;

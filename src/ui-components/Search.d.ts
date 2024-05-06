@@ -21,6 +21,7 @@ export declare type SearchOverridesProps = {
     Search?: PrimitiveOverrideProps<ViewProps>;
     "Vector 5"?: PrimitiveOverrideProps<IconProps>;
     Search15831?: PrimitiveOverrideProps<TextProps>;
+    "Group 3"?: PrimitiveOverrideProps<ViewProps>;
     "Rectangle 8"?: PrimitiveOverrideProps<IconProps>;
     upload?: PrimitiveOverrideProps<TextProps>;
     "belanja 1"?: PrimitiveOverrideProps<ImageProps>;

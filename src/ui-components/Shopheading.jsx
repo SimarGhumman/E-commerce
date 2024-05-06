@@ -12,7 +12,7 @@ export default function Shopheading(props) {
   const { overrides, ...rest } = props;
   return (
     <View
-      width="1440px"
+      width="1400px"
       height="149px"
       display="block"
       gap="unset"
@@ -92,8 +92,10 @@ export default function Shopheading(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        bottom="0px"
-        left="96px"
+        top="100%"
+        bottom="0%"
+        left="6.86%"
+        right="4%"
         transformOrigin="top left"
         transform="rotate(0deg)"
         {...getOverrideProps(overrides, "Divider")}

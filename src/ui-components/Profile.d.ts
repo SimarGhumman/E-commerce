@@ -78,14 +78,14 @@ export declare type ProfileOverridesProps = {
     Text77287?: PrimitiveOverrideProps<TextProps>;
     "Cancel Button"?: PrimitiveOverrideProps<FlexProps>;
     Cancel?: PrimitiveOverrideProps<TextProps>;
-    "order history"?: PrimitiveOverrideProps<FlexProps>;
+    "order history"?: PrimitiveOverrideProps<ViewProps>;
     Text1423?: PrimitiveOverrideProps<TextProps>;
 } & EscapeHatchProps;
 export declare type ProfileProps = React.PropsWithChildren<Partial<ViewProps> & {
     note?: any;
     user?: any;
+    birthday?: Number;
     image?: any;
-    birthday?: any;
 } & {
     overrides?: ProfileOverridesProps | undefined | null;
 }>;

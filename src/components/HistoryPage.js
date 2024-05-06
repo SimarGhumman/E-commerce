@@ -1,143 +1,85 @@
-import React from 'react';
-import {
-    View
-  } from "@aws-amplify/ui-react";
+import React, { useState, useEffect } from 'react';
+import { useAuthenticator, View } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+
 import { useNavigate } from 'react-router-dom';
 import HistoryHeading from '../ui-components/HistoryHeading';
+import { generateClient } from 'aws-amplify/api';
 import Navigation  from '../ui-components/Navigation';
+import * as queries from '../graphql/queries';
 import Item from '../ui-components/Itemhistory';
 import './styles.css'; 
 
-const fruitPrices = {
-    'Apple': 2.99,
-    'Banana': 0.89,
-    'Orange': 1.49,
-    'Grapes': 1.88,
-    'Strawberry': 3.50,
-    'Plum': 3.49,
-    'Tomato': 3.99,
-    'Mango': 1.23,
-    'Kiwi': 0.79,
-    'Peach': 1.49,
-    'Pear': 1.99,
-    'Cherry': 1.59
-  };
-
-  
-
-  const fruitQuantities = [
-    { fruit: 'Apple', quantity: 2 , ref : 41, time :"01:32:52 PM 04/24/2024" },
-    { fruit: 'Banana', quantity: 4, ref : 132, time :"12:34:52 AM 04/24/2024"},
-    { fruit: 'Apple', quantity: 3, ref : 12633, time : "10:32:52 AM 04/24/2024"}
-  ];
-
-
 const HistoryPage = () => {
-    const navigate = useNavigate();
+  const { user } = useAuthenticator((context) => [context.user]);
+  const [orders, setOrders] = useState([]);
+  const client = generateClient();
+  const navigate = useNavigate();
 
-    const handleBasketClick = () => {
-        navigate('/cart');
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const { data } = await client.graphql({
+          query: queries.listOrders,
+          variables: { userID: user.userId },
+          authMode: 'userPool'
+        });
+        setOrders(data.listOrders.items);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
     };
-    
-    const handleAboutClick = () => {
-        navigate('/home');
-    };
 
-    const handleProfileClick = () => {
-        navigate('/profile')
-      };
-  
-      const handleShopClick = () => {
-        navigate('/produce')
-      };
+    fetchOrders();
+  }, [user.userId]);
 
-      const handleSearchClick = () => {
-        navigate('/produce')
-      } ;
-  
 
-    return (
-        <View className="App">
-    
-          <Navigation  style={{ width: '100%' }} overrides={{
-            Basket: {
-              onClick: handleBasketClick
-            },
+  return (
+    <View className="App">
+        <Navigation style={{ width: '100%' }} overrides={{
+            Basket: { onClick: () => navigate('/cart') },
+            "Who we are": { onClick: () => navigate('/home') },
+            "My profile": { onClick: () => navigate('/profile') },
+            Shop: { onClick: () => navigate('/produce') },
+            Search116156: { onClick: () => navigate('/search') },
+        }} />
 
-            "Who we are": {
-              onClick: handleAboutClick 
-            },
-
-            "My profile": {
-              onClick: handleProfileClick 
-            },
-
-            Shop: {
-              onClick: handleShopClick
-            },
-
-            Search116156 :{
-              onClick: handleSearchClick
-            },
-
-          }} />
-
-        <HistoryHeading  style={{ width: '100%' }} overrides = {{
-           "Purchased History" :{
-              children :(
-                <div> Purchase History</div>
-              )
-           }
+        <HistoryHeading style={{ width: '100%' }} overrides={{
+            "Purchased History": {
+                children: <div>Purchase History</div>
+            }
         }}/>
 
         <div>
-            {fruitQuantities.map((item, index) => (
-                <div style={{ marginBottom: '20px', paddingLeft: '50px'}}>
-                    <Item style={{ padding: '10px', marginBottom: '10px' }} overrides={{
-                        itemName: { 
-                            children: (
-                                <div>
-                                    {item.fruit} x{item.quantity} lbs
-                                </div>
-                            )}, 
-
-                            unitprice: { 
-                                children: (
-                                    <div>
-                                        {fruitPrices[item.fruit]}
+            {orders.map(order => (
+                <div key={order.id}>
+                    {order.OrderItems.items.map((item, productIndex) => (
+                        <div style={{ marginBottom: '20px', paddingLeft: '50px' }} key={item.id}>
+                            <Item style={{ padding: '10px', marginBottom: '10px' }} overrides={{
+                                itemName: { children: <div>{item.name} x{item.quantity} lbs</div> },
+                                unitprice: { children: <div>{item.price.toFixed(2)}</div> },
+                                price: { children: <div>${(item.price * item.quantity).toFixed(2)}</div> },
+                                Refnumber: { children: <div>Reference: {String(order.id).padStart(9, '0')}</div> },
+                                "Time Purchased": { children: <div>{new Date(item.createdAt).toLocaleString()}</div> },
+                                Qty: {
+                                  children: (
+                                    <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                      <span style={{ fontSize: '12px', width: '50px', textAlign: 'center' }}>
+                                       Qty {item.quantity}
+                                      </span>
                                     </div>
-                                )},        
-
-                                
-                            price: { 
-                                children: (
-                                    <div>
-                                        ${(fruitPrices[item.fruit] * item.quantity).toFixed(2)}
-                                    </div>
-                            )},                                 
-
-                            Refnumber: { 
-                                children: (
-                                    <div>
-                                        Reference: {String(item.ref).padStart(9, '0')}
-                                    </div>
-                            )}, 
-
-                            "Time Purchased": { 
-                                children: (
-                                    <div>
-                                        {item.time}
-                                    </div>
-                            )}, 
-                                
-                    }}/>
+                                  )
+                                },
+                            }}/>
+                        </div>
+                    ))}
                 </div>
             ))}
         </div>
+    </View>
+);
 
-        </View>  
-      );
+
 
 };
 

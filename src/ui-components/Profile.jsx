@@ -9,7 +9,7 @@ import * as React from "react";
 import { getOverrideProps, useNavigateAction } from "./utils";
 import { Flex, Icon, Text, View } from "@aws-amplify/ui-react";
 export default function Profile(props) {
-  const { note, user, image, birthday, overrides, ...rest } = props;
+  const { note, user, birthday, image, overrides, ...rest } = props;
   const cancelButtonOnClick = useNavigateAction({ type: "reload" });
   return (
     <View
@@ -184,8 +184,10 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="370px"
-        left="100px"
+        top="27.41%"
+        bottom="72.59%"
+        left="7.14%"
+        right="7.14%"
         {...getOverrideProps(overrides, "Vector 7577210")}
       ></Icon>
       <Icon
@@ -205,8 +207,10 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="550px"
-        left="100px"
+        top="40.74%"
+        bottom="59.26%"
+        left="7.14%"
+        right="7.14%"
         {...getOverrideProps(overrides, "Vector 76")}
       ></Icon>
       <View
@@ -237,8 +241,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="0px"
-          left="2.34px"
+          top="0%"
+          bottom="77.27%"
+          left="0.2%"
+          right="86.44%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Email Address"
@@ -252,8 +258,10 @@ export default function Profile(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          top="45px"
-          left="0px"
+          top="40.91%"
+          bottom="0%"
+          left="0%"
+          right="0%"
           border="1px SOLID rgba(209,213,219,1)"
           borderRadius="8px"
           padding="0px 0px 0px 0px"
@@ -276,8 +284,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="60px"
-          left="80px"
+          top="54.55%"
+          bottom="13.64%"
+          left="6.68%"
+          right="59.9%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children={user?.email}
@@ -292,8 +302,10 @@ export default function Profile(props) {
           justifyContent="unset"
           overflow="hidden"
           position="absolute"
-          top="60px"
-          left="22.27px"
+          top="54.55%"
+          bottom="13.64%"
+          left="1.86%"
+          right="95.4%"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(overrides, "Mail")}
         >
@@ -343,8 +355,10 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="740px"
-        left="100px"
+        top="54.81%"
+        bottom="45.19%"
+        left="7.14%"
+        right="7.14%"
         {...getOverrideProps(overrides, "Vector 77")}
       ></Icon>
       <Icon
@@ -364,8 +378,10 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="1120px"
-        left="100px"
+        top="82.96%"
+        bottom="17.04%"
+        left="7.14%"
+        right="7.14%"
         {...getOverrideProps(overrides, "Vector 79")}
       ></Icon>
       <View
@@ -396,8 +412,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="0px"
-          left="0px"
+          top="0%"
+          bottom="77.27%"
+          left="0%"
+          right="86.67%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Billing Address"
@@ -411,8 +429,10 @@ export default function Profile(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          top="45px"
-          left="2.31px"
+          top="40.91%"
+          bottom="0%"
+          left="0.19%"
+          right="0%"
           border="1px SOLID rgba(209,213,219,1)"
           borderRadius="8px"
           padding="0px 0px 0px 0px"
@@ -435,8 +455,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="60px"
-          left="80px"
+          top="54.55%"
+          bottom="13.64%"
+          left="6.67%"
+          right="18.33%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children={user?.billingAddress}
@@ -454,8 +476,10 @@ export default function Profile(props) {
           justifyContent="unset"
           overflow="hidden"
           position="absolute"
-          top="60px"
-          left="19.62px"
+          top="54.55%"
+          bottom="18.18%"
+          left="1.63%"
+          right="96.06%"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(
             overrides,
@@ -519,8 +543,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="0px"
-          left="0px"
+          top="0%"
+          bottom="77.27%"
+          left="0%"
+          right="86.67%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Date of Birth"
@@ -534,8 +560,10 @@ export default function Profile(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          top="45px"
-          left="2.31px"
+          top="40.91%"
+          bottom="0%"
+          left="0.19%"
+          right="0%"
           border="1px SOLID rgba(209,213,219,1)"
           borderRadius="8px"
           padding="0px 0px 0px 0px"
@@ -558,8 +586,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="60px"
-          left="80px"
+          top="54.55%"
+          bottom="13.64%"
+          left="6.67%"
+          right="18.33%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="eg. 12/31/2000"
@@ -574,8 +604,10 @@ export default function Profile(props) {
           justifyContent="unset"
           overflow="hidden"
           position="absolute"
-          top="60px"
-          left="19.62px"
+          top="54.55%"
+          bottom="18.18%"
+          left="1.63%"
+          right="96.06%"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(
             overrides,
@@ -1042,8 +1074,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="0px"
-          left="0px"
+          top="0%"
+          bottom="77.27%"
+          left="0%"
+          right="86.67%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Shipping Address"
@@ -1057,8 +1091,10 @@ export default function Profile(props) {
           alignItems="unset"
           justifyContent="unset"
           position="absolute"
-          top="45px"
-          left="2.31px"
+          top="40.91%"
+          bottom="0%"
+          left="0.19%"
+          right="0%"
           border="1px SOLID rgba(209,213,219,1)"
           borderRadius="8px"
           padding="0px 0px 0px 0px"
@@ -1081,8 +1117,10 @@ export default function Profile(props) {
           gap="unset"
           alignItems="unset"
           position="absolute"
-          top="60px"
-          left="80px"
+          top="54.55%"
+          bottom="13.64%"
+          left="6.67%"
+          right="18.33%"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children={user?.shippingAddress}
@@ -1100,8 +1138,10 @@ export default function Profile(props) {
           justifyContent="unset"
           overflow="hidden"
           position="absolute"
-          top="60px"
-          left="23.08px"
+          top="54.55%"
+          bottom="18.18%"
+          left="1.92%"
+          right="95.77%"
           padding="0px 0px 0px 0px"
           {...getOverrideProps(
             overrides,
@@ -1114,7 +1154,7 @@ export default function Profile(props) {
             viewBox={{
               minX: 0,
               minY: 0,
-              width: 23.076923370361328,
+              width: 23.076921463012695,
               height: 25,
             }}
             paths={[
@@ -1154,8 +1194,10 @@ export default function Profile(props) {
         alignItems="unset"
         justifyContent="unset"
         position="absolute"
-        top="930px"
-        left="100px"
+        top="68.89%"
+        bottom="31.11%"
+        left="7.14%"
+        right="7.14%"
         {...getOverrideProps(overrides, "Vector 78")}
       ></Icon>
       <Flex
@@ -1167,8 +1209,8 @@ export default function Profile(props) {
         alignItems="center"
         overflow="hidden"
         position="absolute"
-        top="1197px"
-        left="1047px"
+        bottom="97px"
+        right="177px"
         border="3px SOLID rgba(56,77,108,1)"
         borderRadius="11px"
         padding="10px 19px 10px 21px"
@@ -1206,7 +1248,7 @@ export default function Profile(props) {
         alignItems="center"
         overflow="hidden"
         position="absolute"
-        top="1200px"
+        bottom="100px"
         left="150px"
         border="1px SOLID rgba(56,77,108,1)"
         borderRadius="8px"
@@ -1239,20 +1281,20 @@ export default function Profile(props) {
           {...getOverrideProps(overrides, "Cancel")}
         ></Text>
       </Flex>
-      <Flex
-        gap="8px"
-        direction="column"
+      <View
         width="176px"
         height="56px"
-        justifyContent="center"
-        alignItems="center"
+        display="block"
+        gap="unset"
+        alignItems="unset"
+        justifyContent="unset"
         overflow="hidden"
         position="absolute"
         top="97px"
-        left="1047px"
+        right="177px"
         border="3px SOLID rgba(56,77,108,1)"
         borderRadius="11px"
-        padding="10px 19px 10px 21px"
+        padding="0px 0px 0px 0px"
         backgroundColor="rgba(66,107,31,1)"
         {...getOverrideProps(overrides, "order history")}
       >
@@ -1270,14 +1312,15 @@ export default function Profile(props) {
           height="unset"
           gap="unset"
           alignItems="unset"
-          shrink="0"
-          position="relative"
+          position="absolute"
+          top="14.5px"
+          left="36.5px"
           padding="0px 0px 0px 0px"
           whiteSpace="pre-wrap"
           children="Order History"
           {...getOverrideProps(overrides, "Text1423")}
         ></Text>
-      </Flex>
+      </View>
     </View>
   );
 }

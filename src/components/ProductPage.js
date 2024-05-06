@@ -13,6 +13,7 @@ import Footer from '../ui-components/Footer';
 import Signout from '../ui-components/Signout';
 import * as queries from '../graphql/queries';
 import { generateClient } from 'aws-amplify/api';
+import * as mutations from '../graphql/mutations';
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -66,13 +67,36 @@ const ProductPage = () => {
   };
 
 
-  const handleAddtoCartClick = (index) => {
+  const handleAddtoCartClick = async (index) => {
     const productID = products[index].id;  // Assuming each product has a unique ID
     const quantity = quantities[index];   // Get the quantity for the clicked product
-    console.log("Button clicked for product ID:", productID, "with quantity:", quantity);
-    // Here you would typically dispatch this data to your store or backend API
-  };
+    console.log(productID);
+    console.log(quantity);
+    console.log(user);
 
+    if (quantity < 1) {
+      console.error("Quantity must be at least 1");
+      return;
+    }
+  
+    try {
+      // Create the cart item using the mutation with a condition
+      const createCartItemResponse = await client.graphql({
+        query: mutations.createCartItem,
+        variables: {
+          input: {
+            cartItemProductId: productID,
+            quantity: quantity,
+            userID: user.userId // Assuming you have user's ID in `user.id`
+          },
+        },
+        authMode: 'userPool' // Assuming you're using Amazon Cognito User Pools
+      });
+      console.log('CartItem created:', createCartItemResponse.data.createCartItem);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
 
   const prices = [
     2.99,

@@ -1,343 +1,332 @@
-import React, { useState } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
-import {
-    Button,
-    View
-  } from "@aws-amplify/ui-react";
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticator, View } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
+import Navigation from '../ui-components/Navigation';
 import Checkout from '../ui-components/Checkout';
-import Navigation  from '../ui-components/Navigation';
-import Summary  from '../ui-components/Checkouttotal';
-import Header  from '../ui-components/Checkoutheader';
+import Header from '../ui-components/Checkoutheader';
 import Item from '../ui-components/Checkoutitem';
+import Summary from '../ui-components/Checkouttotal';
 import Signout from '../ui-components/Signout';
 
+import { generateClient } from 'aws-amplify/api';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
+
 const CheckoutPage = () => {
-    const navigate = useNavigate();
-    const { user, signOut } = useAuthenticator((context) => [context.user]);
-
-    const fruitPrices = {
-      'Apple': 2.99,
-      'Banana': 0.89,
-      'Orange': 1.49,
-      'Grapes': 1.88,
-      'Strawberry': 3.50,
-      'Plum': 3.49,
-      'Tomato': 3.99,
-      'Mango': 1.23,
-      'Kiwi': 0.79,
-      'Peach': 1.49,
-      'Pear': 1.99,
-      'Cherry': 1.59
-    };
-
-  const fruitCart = {
-    'Apple': 2,
-    'Banana': 4,
-    'Orange': 3,
-    'Grapes': 2,
-    'Strawberry': 1,
-    'Plum': 6,
-    'Tomato': 5,
-    'Mango': 2,
-    'Kiwi': 4,
-    'Peach': 2,
-    'Pear': 1,
-    'Cherry': 2
-  };
-
-  let totalPrice = 0;
-
-
+  const navigate = useNavigate();
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const client = generateClient();
+  const SHIPPING_COST = 4.99;
+  const [cartItems, setCartItems] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
   const [userBillingAddress, setBillingAdd] = useState('');
   const [userShippingAddress, setShippingAdd] = useState('');
   const [cardholderName, setCardholderName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expDate, setExpDate] = useState('');
-  const [cvc, setCvc] = useState(0); 
+  const [cvc, setCvc] = useState('');
+
+  const generateOrderID = () => {
+    return `${user.userId}-${Date.now()}`;
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+    fetchUserData();
+  }, []);
+
+  const fetchCartItems = async () => {
+    try {
+      const { data } = await client.graphql({
+        query: queries.listCartItems,
+        authMode: 'userPool'
+      });
+      const items = data.listCartItems.items;
+      let localTotalPrice = 0;
+      let localCartItems = {};
+
+      items.forEach(item => {
+        localCartItems[item.Product.name] = {
+          quantity: item.quantity,
+          price: item.Product.price,
+          id: item.id
+        };
+        localTotalPrice += item.quantity * item.Product.price;
+      });
+
+      setCartItems(localCartItems);
+      setTotalPrice(localTotalPrice);
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const { data } = await client.graphql({
+        query: queries.getUser,
+        variables: { id: user.userId },  // Ensure the correct user ID is used
+        authMode: 'userPool'
+      });
+      setBillingAdd(data.getUser.billingAddress || '');
+      setShippingAdd(data.getUser.shippingAddress || '');
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  const itemsWithQuantity = Object.entries(cartItems).filter(([_, item]) => item.quantity > 0);
+
+  const handleSignOut = async () => {
+    await signOut();
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
+  };
+
+  const handleCheckoutClick = async () => {
+    const orderID = generateOrderID();  // Generate a unique order ID
+  
+    try {
+      const orderItemResponses = await Promise.all(
+        Object.entries(cartItems).map(([name, { price, quantity, id }]) =>
+          client.graphql({
+            query: mutations.createOrderItem,
+            variables: {
+              input: {
+                name,
+                price,
+                quantity,
+                orderID
+              }
+            },
+            authMode: 'userPool'
+          })
+        )
+      );
+  
+      console.log("Order items created:");
+      orderItemResponses.forEach(response => {
+        console.log(response.data.createOrderItem);
+      });
+  
+      const totalOrderPrice = orderItemResponses.reduce((acc, res) => acc + (res.data.createOrderItem.price * res.data.createOrderItem.quantity), 0) + SHIPPING_COST;
+  
+      // Create the order with the total price and linked items
+      const orderResponse = await client.graphql({
+        query: mutations.createOrder,
+        variables: {
+          input: {
+            id: orderID,
+            date: new Date().toISOString(),
+            totalPrice: totalOrderPrice,
+            userID: user.userId
+          }
+        },
+        authMode: 'userPool'
+      });
+  
+      console.log("Order created:", orderResponse.data.createOrder);
+  
+      // After successfully creating order items and the order, delete the cart items
+      await Promise.all(
+        Object.values(cartItems).map(item =>
+          client.graphql({
+            query: mutations.deleteCartItem,
+            variables: {
+              input: {
+                id: item.id  // Ensure this is correctly obtaining a non-null id
+              },
+            },
+            authMode: 'userPool'
+          })
+        )
+      );
+  
+      // Clear local state and navigate to order completion
+      setCartItems({});
+      setTotalPrice(0);
+      navigate('/ordercomplete');
+    } catch (error) {
+      console.error('Error processing the order:', error);
+    }
+  };
+  
+  
+
+  // Event handlers to update the state variables
+  const handleBillingChange = (event) => {
+    setBillingAdd(event.target.value);
+  };
+
+  const handleShippingChange = (event) => {
+    setShippingAdd(event.target.value);
+  };
+
+  // Event handlers to update the state variables
+  const handleCardholderNameChange = (event) => {
+    setCardholderName(event.target.value);
+  };
+
+  const handleCardNumberChange = (event) => {
+    setCardNumber(event.target.value);
+  };
+
+  const handleExpDateChange = (event) => {
+    setExpDate(event.target.value);
+  };
+
+  const handleCvcChange = (event) => {
+    const value = event.target.value;
+
+    // Check if the entered value is a valid integer
+    if (!isNaN(value) && value !== '') {
+      // If valid, convert CVC to an integer and update the state
+      setCvc(parseInt(value));
+    } else {
+      // If not valid, set CVC to an empty string
+      setCvc('');
+    }
+  };
 
 
-  for (const fruit in fruitCart) {
-    const quantity = fruitCart[fruit];
-    const price = fruitPrices[fruit];
-    
-    totalPrice += quantity * price;
-  }
+  return (
+    <View className="App">
+      <Navigation style={{ width: '100%' }} overrides={{
+        Basket: { onClick: () => navigate('/cart') },
+        "Who we are": { onClick: () => navigate('/home') },
+        "My profile": { onClick: () => navigate('/profile') },
+        Shop: { onClick: () => navigate('/produce') },
+        Search: { onClick: () => navigate('/search') },
+      }} />
 
-  const itemsWithQuantity = Object.entries(fruitCart).filter(([fruit, quantity]) => quantity > 0);
+      <div className="container">
 
-    const handleBasketClick = () => {
-        navigate('/cart');
-    };
-    
-    const handleCheckoutClick = () => {
-        navigate('/ordercomplete');
-    };
-    
-    const handleAboutClick = () => {
-        navigate('/home');
-    };
+        <div className="left-column">
 
-    const handleSearchClick = () => {
-      navigate('/search')
-    };
-
-    const handleSignOut = async () => {
-        await signOut();
-        localStorage.clear();
-        sessionStorage.clear();
-        navigate('/login');
-    };
-
-    const handleProfileClick = () => {
-      navigate('/profile')
-    };
-
-    const handleShopClick = () => {
-      navigate('/produce')
-    };
-
-
-    // Event handlers to update the state variables
-    const handleBillingChange = (event) => {
-      setBillingAdd(event.target.value);
-    };
-
-    const handleShippingChange = (event) => {
-      setShippingAdd(event.target.value);
-    };    
-
-    // Event handlers to update the state variables
-    const handleCardholderNameChange = (event) => {
-      setCardholderName(event.target.value);
-    };
-
-    const handleCardNumberChange = (event) => {
-      setCardNumber(event.target.value);
-    };
-
-    const handleExpDateChange = (event) => {
-      setExpDate(event.target.value);
-    };
-
-    const handleCvcChange = (event) => {
-      const value = event.target.value;
-      
-      // Check if the entered value is a valid integer
-      if (!isNaN(value) && value !== '') {
-        // If valid, convert CVC to an integer and update the state
-        setCvc(parseInt(value));
-      } else {
-        // If not valid, set CVC to an empty string
-        setCvc('');
-      }
-    };
-
-    return (
-        <View className="App">
-    
-          <Navigation style={{ width: '100%' }} overrides={{
-            Basket: {
-              onClick: handleBasketClick
+          <Checkout style={{ width: '100%' }} overrides={{
+            Address73192: {
+              children: (
+                <div>
+                  <input
+                    className="input-field"
+                    type="text"
+                    placeholder="Shipping Address"
+                    value={userShippingAddress}
+                    style={{ width: '250%' }}
+                    onChange={handleShippingChange}
+                  />
+                </div>
+              )
             },
 
-            "Who we are": {
-              onClick: handleAboutClick 
+            Address73307: {
+              children: (
+                <div>
+                  <input
+                    className="input-field"
+                    type="text"
+                    placeholder="Billing Address"
+                    value={userBillingAddress}
+                    style={{ width: '250%' }}
+                    onChange={handleBillingChange}
+                  />
+                </div>
+              )
             },
 
-            "My profile": {
-              onClick: handleProfileClick 
+            "Cardholder Name": {
+              children: (
+                <div>
+                  <input
+                    className="input-field"
+                    type="text"
+                    placeholder="Cardholder Name"
+                    value={cardholderName}
+                    onChange={handleCardholderNameChange}
+                    style={{ width: '250%' }}
+                  />
+                </div>
+              )
             },
 
-            Shop : {
-              onClick: handleShopClick
+            "Card Number": {
+              children: (
+                <div>
+                  <input
+                    className="input-field"
+                    type="text"
+                    placeholder="Card Number"
+                    value={cardNumber}
+                    style={{ width: '250%' }}
+                    onChange={handleCardNumberChange}
+                  />
+                </div>
+              )
             },
 
-            Search116156 :{
-              onClick: handleSearchClick
-            } ,
+            "EXP Date": {
+              children: (
+                <div>
+                  <input
+                    className="input-field"
+                    type="text"
+                    placeholder="EXP Date"
+                    value={expDate}
+                    style={{ width: '70%' }}
+                    onChange={handleExpDateChange}
+                  />
+                </div>
+              )
+            },
 
+            CVC: {
+              children: (
+                <div>
+                  <input
+                    className="input-field"
+                    type="text"
+                    placeholder="CVC"
+                    value={cvc}
+                    style={{ width: '80%' }}
+                    onChange={handleCvcChange}
+                  />
+                </div>
+              )
+            },
           }} />
 
-          <div class="container">
+        </div>
 
-              <div class="left-column">
+        <div className="summary">
+          <Header style={{ padding: '10px', width: '100%', marginBottom: '10px' }}></Header>
+          {itemsWithQuantity.map(([name, { quantity, price }]) => (
+            <Item style={{ padding: '10px', width: '100%', marginBottom: '10px' }} key={name} overrides={{
+              item: { children: `${name} x${quantity} lbs` },
+              price: { children: `$${(price * quantity).toFixed(2)}` },
+            }} />
+          ))}
+          <Summary style={{ padding: '10px', width: '100%', marginBottom: '10px' }} overrides={{
+            subtotal: { children: `$${totalPrice.toFixed(2)}` },
+            shipping: { children: "$4.99" },
+            total: { children: `$${(totalPrice * 1.09 + 4.99).toFixed(2)}` },
+            tax: { children: `$${(totalPrice * 0.09).toFixed(2)}` },
+            Checkout: { onClick: handleCheckoutClick }
+          }} />
+        </div>
 
-                <Checkout style={{ width: '100%' }} overrides={{
-                  Address73192: { 
-                    children: (
-                      <div>
-                        <input
-                        className="input-field" 
-                          type="text"
-                          placeholder="Shipping Address"
-                          value={userShippingAddress}
-                          style={{ width: '250%'}}
-                          onChange={handleShippingChange}
-                        />
-                      </div>
-                    )
-                  },      
-
-                  Address73307: { 
-                    children: (
-                      <div>
-                        <input
-                        className="input-field" 
-                          type="text"
-                          placeholder="Billing Address"
-                          value={userBillingAddress}
-                          style={{ width: '250%'}}
-                          onChange={handleBillingChange}
-                        />
-                      </div>
-                    )
-                  },           
-
-                  "Cardholder Name": { 
-                    children: (
-                      <div>
-                        <input
-                          className="input-field" 
-                          type="text"
-                          placeholder="Cardholder Name"
-                          value={cardholderName}
-                          onChange={handleCardholderNameChange}
-                          style={{ width: '250%'}}
-                        />
-                    </div>
-                    )
-                  }, 
-
-                  "Card Number": { 
-                    children: (
-                      <div>
-                        <input
-                         className="input-field" 
-                          type="text"
-                          placeholder="Card Number"
-                          value={cardNumber}
-                          style={{ width: '250%'}}
-                          onChange={handleCardNumberChange}
-                        />
-                      </div>
-                    )
-                  }, 
-
-                  "EXP Date": { 
-                    children: (
-                      <div>
-                      <input
-                        className="input-field" 
-                        type="text"
-                        placeholder="EXP Date"
-                        value={expDate}
-                        style={{ width: '70%'}}
-                        onChange={handleExpDateChange}
-                      />
-                      </div>
-                    )
-                  }, 
-
-                  CVC: { 
-                    children: (
-                      <div>
-                        <input
-                          className="input-field" 
-                          type="text"
-                          placeholder="CVC"
-                          value={cvc}
-                          style={{ width: '80%'}}
-                          onChange={handleCvcChange}
-                        />
-                      </div>
-                    )
-                  }, 
-                }} />
-
-              </div>
-          
-              <div class="summary">
-
-                <Header style={{ padding: '10px', width: '100%', marginBottom: '10px' }}></Header>
-                
-                {itemsWithQuantity.map(([fruit, quantity]) => (
-                  
-                  <Item  style={{ padding: '10px', width: '100%', marginBottom: '10px' }} overrides ={{
-
-                    item : {
-                      children : (
-                        <div>{fruit}    x{quantity} lbs</div>
-                      )
-                    },
-
-                    price : {
-                      children : (
-                        <div>{(fruitPrices[fruit] * quantity).toFixed(2)}</div>
-                      )
-                    },
-
-                  }} />
-
-                ))}
+      </div>
 
 
-                <Summary style={{ padding: '10px', width: '100%', marginBottom: '10px' }} overrides={{
-
-                    subtotal: { //Billing Address
-                      children: (
-                          <div>
-                              ${totalPrice}
-                          </div>
-                      )
-                    },  
-
-                    shipping: { //Billing Address
-                      children: (
-                          <div>
-                              $4.99
-                          </div>
-                      )
-                    }, 
-
-                    total: { //Billing Address
-                      children: (
-                          <div>
-                              ${(totalPrice * 1.09 + 4.99).toFixed(2)}
-                          </div>
-                      )
-                    },  
-
-                    tax: { //Billing Address
-                      children: (
-                          <div>
-                              ${(totalPrice * 0.09).toFixed(2)}
-                          </div>
-                      )
-                    },  
-
-                    Checkout: {
-                      onClick: handleCheckoutClick 
-                    }
-
-
-                }} />
-
-              </div>
-
-          </div>
-    
-      
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <Signout onClick={handleSignOut}>
-                    Sign Out
-                </Signout>
-          </div>
-          
-        </View>
-      );
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Signout onClick={handleSignOut}>
+          Sign Out
+        </Signout>
+      </div>
+    </View>
+  );
 };
 
 export default CheckoutPage;
