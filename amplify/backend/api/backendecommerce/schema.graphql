@@ -22,6 +22,7 @@ type OrderItem @model @auth(rules: [{allow: groups, groups: ["Admin"]}, {allow: 
   name: String
   price: Float
   quantity: Int
+  Image: Image @hasOne
   orderID: ID! @index(name: "byOrder")
 }
 

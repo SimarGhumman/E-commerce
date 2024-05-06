@@ -21,7 +21,7 @@ import {
 } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { listOrders } from "../graphql/queries";
+import { listImages, listOrders } from "../graphql/queries";
 import { createOrderItem } from "../graphql/mutations";
 const client = generateClient();
 function ArrayField({
@@ -194,11 +194,15 @@ export default function OrderItemCreateForm(props) {
     name: "",
     price: "",
     quantity: "",
+    Image: undefined,
     orderID: undefined,
   };
   const [name, setName] = React.useState(initialValues.name);
   const [price, setPrice] = React.useState(initialValues.price);
   const [quantity, setQuantity] = React.useState(initialValues.quantity);
+  const [Image, setImage] = React.useState(initialValues.Image);
+  const [ImageLoading, setImageLoading] = React.useState(false);
+  const [imageRecords, setImageRecords] = React.useState([]);
   const [orderID, setOrderID] = React.useState(initialValues.orderID);
   const [orderIDLoading, setOrderIDLoading] = React.useState(false);
   const [orderIDRecords, setOrderIDRecords] = React.useState([]);
@@ -211,23 +215,40 @@ export default function OrderItemCreateForm(props) {
     setName(initialValues.name);
     setPrice(initialValues.price);
     setQuantity(initialValues.quantity);
+    setImage(initialValues.Image);
+    setCurrentImageValue(undefined);
+    setCurrentImageDisplayValue("");
     setOrderID(initialValues.orderID);
     setCurrentOrderIDValue(undefined);
     setCurrentOrderIDDisplayValue("");
     setErrors({});
   };
+  const [currentImageDisplayValue, setCurrentImageDisplayValue] =
+    React.useState("");
+  const [currentImageValue, setCurrentImageValue] = React.useState(undefined);
+  const ImageRef = React.createRef();
   const [currentOrderIDDisplayValue, setCurrentOrderIDDisplayValue] =
     React.useState("");
   const [currentOrderIDValue, setCurrentOrderIDValue] =
     React.useState(undefined);
   const orderIDRef = React.createRef();
+  const getIDValue = {
+    Image: (r) => JSON.stringify({ id: r?.id }),
+  };
+  const ImageIdSet = new Set(
+    Array.isArray(Image)
+      ? Image.map((r) => getIDValue.Image?.(r))
+      : getIDValue.Image?.(Image)
+  );
   const getDisplayValue = {
+    Image: (r) => `${r?.url ? r?.url + " - " : ""}${r?.id}`,
     orderID: (r) => `${r?.totalPrice ? r?.totalPrice + " - " : ""}${r?.id}`,
   };
   const validations = {
     name: [],
     price: [],
     quantity: [],
+    Image: [],
     orderID: [{ type: "Required" }],
   };
   const runValidationTasks = async (
@@ -246,6 +267,35 @@ export default function OrderItemCreateForm(props) {
     }
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
+  };
+  const fetchImageRecords = async (value) => {
+    setImageLoading(true);
+    const newOptions = [];
+    let newNext = "";
+    while (newOptions.length < autocompleteLength && newNext != null) {
+      const variables = {
+        limit: autocompleteLength * 5,
+        filter: {
+          or: [{ url: { contains: value } }, { id: { contains: value } }],
+        },
+      };
+      if (newNext) {
+        variables["nextToken"] = newNext;
+      }
+      const result = (
+        await client.graphql({
+          query: listImages.replaceAll("__typename", ""),
+          variables,
+        })
+      )?.data?.listImages?.items;
+      var loaded = result.filter(
+        (item) => !ImageIdSet.has(getIDValue.Image?.(item))
+      );
+      newOptions.push(...loaded);
+      newNext = result.nextToken;
+    }
+    setImageRecords(newOptions.slice(0, autocompleteLength));
+    setImageLoading(false);
   };
   const fetchOrderIDRecords = async (value) => {
     setOrderIDLoading(true);
@@ -278,6 +328,7 @@ export default function OrderItemCreateForm(props) {
     setOrderIDLoading(false);
   };
   React.useEffect(() => {
+    fetchImageRecords("");
     fetchOrderIDRecords("");
   }, []);
   return (
@@ -292,6 +343,7 @@ export default function OrderItemCreateForm(props) {
           name,
           price,
           quantity,
+          Image,
           orderID,
         };
         const validationResponses = await Promise.all(
@@ -299,13 +351,21 @@ export default function OrderItemCreateForm(props) {
             if (Array.isArray(modelFields[fieldName])) {
               promises.push(
                 ...modelFields[fieldName].map((item) =>
-                  runValidationTasks(fieldName, item)
+                  runValidationTasks(
+                    fieldName,
+                    item,
+                    getDisplayValue[fieldName]
+                  )
                 )
               );
               return promises;
             }
             promises.push(
-              runValidationTasks(fieldName, modelFields[fieldName])
+              runValidationTasks(
+                fieldName,
+                modelFields[fieldName],
+                getDisplayValue[fieldName]
+              )
             );
             return promises;
           }, [])
@@ -322,11 +382,18 @@ export default function OrderItemCreateForm(props) {
               modelFields[key] = null;
             }
           });
+          const modelFieldsToSave = {
+            name: modelFields.name,
+            price: modelFields.price,
+            quantity: modelFields.quantity,
+            orderItemImageId: modelFields?.Image?.id,
+            orderID: modelFields.orderID,
+          };
           await client.graphql({
             query: createOrderItem.replaceAll("__typename", ""),
             variables: {
               input: {
-                ...modelFields,
+                ...modelFieldsToSave,
               },
             },
           });
@@ -358,6 +425,7 @@ export default function OrderItemCreateForm(props) {
               name: value,
               price,
               quantity,
+              Image,
               orderID,
             };
             const result = onChange(modelFields);
@@ -389,6 +457,7 @@ export default function OrderItemCreateForm(props) {
               name,
               price: value,
               quantity,
+              Image,
               orderID,
             };
             const result = onChange(modelFields);
@@ -420,6 +489,7 @@ export default function OrderItemCreateForm(props) {
               name,
               price,
               quantity: value,
+              Image,
               orderID,
             };
             const result = onChange(modelFields);
@@ -444,6 +514,88 @@ export default function OrderItemCreateForm(props) {
               name,
               price,
               quantity,
+              Image: value,
+              orderID,
+            };
+            const result = onChange(modelFields);
+            value = result?.Image ?? value;
+          }
+          setImage(value);
+          setCurrentImageValue(undefined);
+          setCurrentImageDisplayValue("");
+        }}
+        currentFieldValue={currentImageValue}
+        label={"Image"}
+        items={Image ? [Image] : []}
+        hasError={errors?.Image?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("Image", currentImageValue)
+        }
+        errorMessage={errors?.Image?.errorMessage}
+        getBadgeText={getDisplayValue.Image}
+        setFieldValue={(model) => {
+          setCurrentImageDisplayValue(
+            model ? getDisplayValue.Image(model) : ""
+          );
+          setCurrentImageValue(model);
+        }}
+        inputFieldRef={ImageRef}
+        defaultFieldValue={""}
+      >
+        <Autocomplete
+          label="Image"
+          isRequired={false}
+          isReadOnly={false}
+          placeholder="Search Image"
+          value={currentImageDisplayValue}
+          options={imageRecords
+            .filter((r) => !ImageIdSet.has(getIDValue.Image?.(r)))
+            .map((r) => ({
+              id: getIDValue.Image?.(r),
+              label: getDisplayValue.Image?.(r),
+            }))}
+          isLoading={ImageLoading}
+          onSelect={({ id, label }) => {
+            setCurrentImageValue(
+              imageRecords.find((r) =>
+                Object.entries(JSON.parse(id)).every(
+                  ([key, value]) => r[key] === value
+                )
+              )
+            );
+            setCurrentImageDisplayValue(label);
+            runValidationTasks("Image", label);
+          }}
+          onClear={() => {
+            setCurrentImageDisplayValue("");
+          }}
+          onChange={(e) => {
+            let { value } = e.target;
+            fetchImageRecords(value);
+            if (errors.Image?.hasError) {
+              runValidationTasks("Image", value);
+            }
+            setCurrentImageDisplayValue(value);
+            setCurrentImageValue(undefined);
+          }}
+          onBlur={() => runValidationTasks("Image", currentImageDisplayValue)}
+          errorMessage={errors.Image?.errorMessage}
+          hasError={errors.Image?.hasError}
+          ref={ImageRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "Image")}
+        ></Autocomplete>
+      </ArrayField>
+      <ArrayField
+        lengthLimit={1}
+        onChange={async (items) => {
+          let value = items[0];
+          if (onChange) {
+            const modelFields = {
+              name,
+              price,
+              quantity,
+              Image,
               orderID: value,
             };
             const result = onChange(modelFields);

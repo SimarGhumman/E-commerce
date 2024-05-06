@@ -25,6 +25,7 @@ const HistoryPage = () => {
           authMode: 'userPool'
         });
         setOrders(data.listOrders.items);
+        console.log("data", data.listOrders.items);
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
@@ -69,6 +70,10 @@ const HistoryPage = () => {
                                       </span>
                                     </div>
                                   )
+                                },
+                                "ed-o-neil-AvvdZlhDowA-unsplash 1": {
+                                  src: item.orderItemImageId || "",
+                                  alt: item.name
                                 },
                             }}/>
                         </div>

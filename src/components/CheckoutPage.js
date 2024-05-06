@@ -51,11 +51,11 @@ const CheckoutPage = () => {
         localCartItems[item.Product.name] = {
           quantity: item.quantity,
           price: item.Product.price,
-          id: item.id
+          id: item.id,
+          image: item.Product.Image
         };
         localTotalPrice += item.quantity * item.Product.price;
       });
-
       setCartItems(localCartItems);
       setTotalPrice(localTotalPrice);
     } catch (error) {
@@ -91,7 +91,7 @@ const CheckoutPage = () => {
   
     try {
       const orderItemResponses = await Promise.all(
-        Object.entries(cartItems).map(([name, { price, quantity, id }]) =>
+        Object.entries(cartItems).map(([name, { price, quantity, id, image }]) =>
           client.graphql({
             query: mutations.createOrderItem,
             variables: {
@@ -99,7 +99,8 @@ const CheckoutPage = () => {
                 name,
                 price,
                 quantity,
-                orderID
+                orderID,
+                orderItemImageId: image.url
               }
             },
             authMode: 'userPool'

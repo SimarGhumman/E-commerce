@@ -123,9 +123,19 @@ export const getOrder = /* GraphQL */ `
           name
           price
           quantity
+          Image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
           orderID
           createdAt
           updatedAt
+          orderItemImageId
           username
           __typename
         }
@@ -160,6 +170,7 @@ export const listOrders = /* GraphQL */ `
             orderID
             createdAt
             updatedAt
+            orderItemImageId
             username
             __typename
           }
@@ -205,6 +216,7 @@ export const ordersByUserID = /* GraphQL */ `
             orderID
             createdAt
             updatedAt
+            orderItemImageId
             username
             __typename
           }
@@ -228,9 +240,19 @@ export const getOrderItem = /* GraphQL */ `
       name
       price
       quantity
+      Image {
+        id
+        url
+        description
+        createdAt
+        updatedAt
+        username
+        __typename
+      }
       orderID
       createdAt
       updatedAt
+      orderItemImageId
       username
       __typename
     }
@@ -248,9 +270,19 @@ export const listOrderItems = /* GraphQL */ `
         name
         price
         quantity
+        Image {
+          id
+          url
+          description
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
         orderID
         createdAt
         updatedAt
+        orderItemImageId
         username
         __typename
       }
@@ -279,9 +311,19 @@ export const orderItemsByOrderID = /* GraphQL */ `
         name
         price
         quantity
+        Image {
+          id
+          url
+          description
+          createdAt
+          updatedAt
+          username
+          __typename
+        }
         orderID
         createdAt
         updatedAt
+        orderItemImageId
         username
         __typename
       }

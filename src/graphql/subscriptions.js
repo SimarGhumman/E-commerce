@@ -200,9 +200,19 @@ export const onCreateOrder = /* GraphQL */ `
           name
           price
           quantity
+          Image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
           orderID
           createdAt
           updatedAt
+          orderItemImageId
           username
           __typename
         }
@@ -232,9 +242,19 @@ export const onUpdateOrder = /* GraphQL */ `
           name
           price
           quantity
+          Image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
           orderID
           createdAt
           updatedAt
+          orderItemImageId
           username
           __typename
         }
@@ -264,9 +284,19 @@ export const onDeleteOrder = /* GraphQL */ `
           name
           price
           quantity
+          Image {
+            id
+            url
+            description
+            createdAt
+            updatedAt
+            username
+            __typename
+          }
           orderID
           createdAt
           updatedAt
+          orderItemImageId
           username
           __typename
         }
@@ -290,9 +320,19 @@ export const onCreateOrderItem = /* GraphQL */ `
       name
       price
       quantity
+      Image {
+        id
+        url
+        description
+        createdAt
+        updatedAt
+        username
+        __typename
+      }
       orderID
       createdAt
       updatedAt
+      orderItemImageId
       username
       __typename
     }
@@ -308,9 +348,19 @@ export const onUpdateOrderItem = /* GraphQL */ `
       name
       price
       quantity
+      Image {
+        id
+        url
+        description
+        createdAt
+        updatedAt
+        username
+        __typename
+      }
       orderID
       createdAt
       updatedAt
+      orderItemImageId
       username
       __typename
     }
@@ -326,9 +376,19 @@ export const onDeleteOrderItem = /* GraphQL */ `
       name
       price
       quantity
+      Image {
+        id
+        url
+        description
+        createdAt
+        updatedAt
+        username
+        __typename
+      }
       orderID
       createdAt
       updatedAt
+      orderItemImageId
       username
       __typename
     }
