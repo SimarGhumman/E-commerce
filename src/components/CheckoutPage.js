@@ -86,76 +86,107 @@ const CheckoutPage = () => {
     navigate('/login');
   };
 
+  const getBaseUrl = () => {
+    // window.location.origin gives you the protocol + hostname + port (if there's any)
+    return window.location.origin;
+  };
+
+  const handleStripeCheckout = async () => {
+    // The existing Stripe checkout logic goes here
+    // This function will be similar to your current handleCheckoutClick function
+    // API call to Stripe Checkout
+    const returnUrl = getBaseUrl();
+    console.log(returnUrl);
+    const response = await fetch('https://ydhrxlii7i.execute-api.us-west-1.amazonaws.com/default/stripeCheckout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Ensuring this is set correctly
+        'x-api-key': 'lDtErXps0d4L6CSHxz1yi1ETeoxw9h3s1YQGbqQT'  // Your API key
+      },
+      body: JSON.stringify({
+        quantity: 2, // Example quantity
+        returnUrl: returnUrl
+      })
+    });
+
+    if (response.ok) {
+      const checkoutSession = await response.json();
+      window.location.href = checkoutSession.url; // Redirect to Stripe Checkout URL
+    } else {
+      console.error('Failed to create checkout session:', await response.text());
+    }
+  };
+
   const handleCheckoutClick = async () => {
     const orderID = generateOrderID();  // Generate a unique order ID
-  
+
     try {
-      const orderItemResponses = await Promise.all(
-        Object.entries(cartItems).map(([name, { price, quantity, id, image }]) =>
-          client.graphql({
-            query: mutations.createOrderItem,
-            variables: {
-              input: {
-                name,
-                price,
-                quantity,
-                orderID,
-                orderItemImageId: image.url
-              }
-            },
-            authMode: 'userPool'
-          })
-        )
-      );
-  
-      console.log("Order items created:");
-      orderItemResponses.forEach(response => {
-        console.log(response.data.createOrderItem);
-      });
-  
-      const totalOrderPrice = orderItemResponses.reduce((acc, res) => acc + (res.data.createOrderItem.price * res.data.createOrderItem.quantity), 0) + SHIPPING_COST;
-  
-      // Create the order with the total price and linked items
-      const orderResponse = await client.graphql({
-        query: mutations.createOrder,
-        variables: {
-          input: {
-            id: orderID,
-            date: new Date().toISOString(),
-            totalPrice: totalOrderPrice,
-            userID: user.userId
-          }
-        },
-        authMode: 'userPool'
-      });
-  
-      console.log("Order created:", orderResponse.data.createOrder);
-  
-      // After successfully creating order items and the order, delete the cart items
-      await Promise.all(
-        Object.values(cartItems).map(item =>
-          client.graphql({
-            query: mutations.deleteCartItem,
-            variables: {
-              input: {
-                id: item.id  // Ensure this is correctly obtaining a non-null id
+        const orderItemResponses = await Promise.all(
+          Object.entries(cartItems).map(([name, { price, quantity, id, image }]) =>
+            client.graphql({
+              query: mutations.createOrderItem,
+              variables: {
+                input: {
+                  name,
+                  price,
+                  quantity,
+                  orderID,
+                  orderItemImageId: image.url
+                }
               },
-            },
-            authMode: 'userPool'
-          })
-        )
-      );
-  
-      // Clear local state and navigate to order completion
-      setCartItems({});
-      setTotalPrice(0);
-      navigate('/ordercomplete');
+              authMode: 'userPool'
+            })
+          )
+        );
+
+        console.log("Order items created:");
+        orderItemResponses.forEach(response => {
+          console.log(response.data.createOrderItem);
+        });
+
+        const totalOrderPrice = orderItemResponses.reduce((acc, res) => acc + (res.data.createOrderItem.price * res.data.createOrderItem.quantity), 0) + SHIPPING_COST;
+
+        // Create the order with the total price and linked items
+        const orderResponse = await client.graphql({
+          query: mutations.createOrder,
+          variables: {
+            input: {
+              id: orderID,
+              date: new Date().toISOString(),
+              totalPrice: totalOrderPrice,
+              userID: user.userId
+            }
+          },
+          authMode: 'userPool'
+        });
+
+        console.log("Order created:", orderResponse.data.createOrder);
+
+        // After successfully creating order items and the order, delete the cart items
+        await Promise.all(
+          Object.values(cartItems).map(item =>
+            client.graphql({
+              query: mutations.deleteCartItem,
+              variables: {
+                input: {
+                  id: item.id  // Ensure this is correctly obtaining a non-null id
+                },
+              },
+              authMode: 'userPool'
+            })
+          )
+        );
+
+        // Clear local state and navigate to order completion
+        setCartItems({});
+        setTotalPrice(0);
+        navigate('/ordercomplete');
     } catch (error) {
       console.error('Error processing the order:', error);
     }
   };
-  
-  
+
+
 
   // Event handlers to update the state variables
   const handleBillingChange = (event) => {
@@ -316,6 +347,11 @@ const CheckoutPage = () => {
             tax: { children: `$${(totalPrice * 0.09).toFixed(2)}` },
             Checkout: { onClick: handleCheckoutClick }
           }} />
+          <div className="stripe-checkout-button">
+            <button onClick={handleStripeCheckout} style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', marginTop: '20px' }}>
+              Proceed to Stripe Checkout
+            </button>
+          </div>
         </div>
 
       </div>
